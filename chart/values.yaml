@@ -3,6 +3,9 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 
+ingress:
+  basic_auth: true
+
 os2mo:
   replicaCount: 1
 
