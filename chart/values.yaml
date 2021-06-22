@@ -32,6 +32,7 @@ moxdb:
     tag: 10-11.7-test
     pullPolicy: IfNotPresent
 
+load_fixture: true
 
 nameOverride: ""
 fullnameOverride: ""
