@@ -5,3 +5,9 @@
 */}}
 
 OS2mo is deployed! :)
+
+Produce basic auth credentials using:
+```
+kubectl get secrets/basic-auth-secret --template={{"{{"}}.data.username{{"}}"}} | base64 --decode
+kubectl get secrets/basic-auth-secret --template={{"{{"}}.data.password{{"}}"}} | base64 --decode
+```
