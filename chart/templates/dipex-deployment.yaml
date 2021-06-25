@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dipex-deployment
+  labels:
+    app: dipex
+spec:
+  replicas: {{ .Values.dipex.replicaCount }}
+  selector:
+    matchLabels:
+      app: dipex
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: dipex
+    spec:
+      containers:
+        - name: dipex
+          image: "{{ .Values.dipex.image.repository }}:{{ .Values.dipex.image.tag }}"
+          imagePullPolicy: {{ .Values.dipex.image.pullPolicy }}
+          volumeMounts:
+            - name: settingsfile
+              mountPath: "./opt/settings"
+              readOnly: true
+      volumes:
+        - name: settingsfile
+          secret:
+            secretName: dipexsettings
+
+      restartPolicy: Always

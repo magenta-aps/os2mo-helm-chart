@@ -115,3 +115,40 @@ helm install chart/ --generate-name
 After which OS2mo will be available on the cluster ingress.
 If using the local `kind` setup, this will be: http://localhost:80/
 If using another cluster use whatever method is available to access the ingress.
+
+## 4. Using Dipex
+Goal: Get data to OS2MO
+
+Currently it's a bit of a struggle. We need a settings.json file as a kubernetes secret. 
+
+```
+kubectl create secret generic dipexsettings \
+--save-config --dry-run=client \
+--from-file=settings.json=/<some-path>/settings.json \
+-o yaml | 
+kubectl apply -f 
+```
+
+The settings must include this section:
+```
+"mox.base": "http://mox-service:80",
+"mora.base": "http://mo-service:80",
+```
+
+In order to actually use MO we need a root organisation which must be created manually from the dipex container.
+
+First use `kubectl get pods` to find the name of the dipex pod and then attach a shell whith: 
+```
+kubectl exec -it dipex-deployment-676d7798b6-bvmn9 -- /bin/bash
+```
+
+The settingsfile can't be mounted in the correct path, so we need to use a symlink to use it from dipex. While you'r there you should create a cpr-map file and a tmp folder.
+```
+ln -s /opt/settings/settings.json settings/settings.json
+touch settings/cpr_uuid_map.csv
+mkdir tmp
+```
+To setup a root organisation and some default classes use `python3 tools/default_mo_setup.py``
+
+Now you _should_ be ready to use dipex commands: `python3 integrations/SD_Lon/sd_changed_at.py --init` or `bash tools/job-runner.sh imports_sd_changed_at`
+

@@ -35,7 +35,17 @@ moxdb:
     tag: 10-11.7-test
     pullPolicy: IfNotPresent
 
-load_fixture: false
+dipex:
+  replicaCount: 1
+
+  image:
+    repository: magentaaps/dipex
+    tag: feature_dipex_in_docker
+    pullPolicy: IfNotPresent
+
+  settingsfile: dipexsettings
 
 nameOverride: ""
 fullnameOverride: ""
+
+load_fixture: false
