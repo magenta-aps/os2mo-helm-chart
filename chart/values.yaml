@@ -4,7 +4,8 @@
 ---
 
 ingress:
-  basic_auth: true
+  basic_auth: false
+  class: ""
 
 os2mo:
   replicaCount: 1
@@ -32,7 +33,7 @@ moxdb:
     tag: 10-11.7-test
     pullPolicy: IfNotPresent
 
-load_fixture: true
+load_fixture: false
 
 nameOverride: ""
 fullnameOverride: ""

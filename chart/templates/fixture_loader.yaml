@@ -13,6 +13,7 @@ spec:
   containers:
     - name: fixture-loader
       image: magentaaps/os2mo-kolding-fixture:latest
+      imagePullPolicy: Always
       env:
         - name: PGHOST
           value: mox-db-service
