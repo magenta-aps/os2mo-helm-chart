@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+
+os2mo:
+  replicaCount: 1
+
+  image:
+    repository: magentaaps/os2mo
+    tag: azure
+    pullPolicy: IfNotPresent
+
+  port: 80
+
+lora:
+  replicaCount: 1
+
+  image:
+    repository: magentaaps/lora
+    tag: azure
+    pullPolicy: IfNotPresent
+
+moxdb:
+  replicaCount: 1
+
+  image:
+    repository: magentaaps/postgres-os2mo
+    tag: 10-11.7-test
+    pullPolicy: IfNotPresent
+
+
+nameOverride: ""
+fullnameOverride: ""

@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mo-deployment
+  labels:
+    app: mo
+spec:
+  replicas: {{ .Values.os2mo.replicaCount }}
+  selector:
+    matchLabels:
+      app: mo
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mo
+    spec:
+      containers:
+        - name: mo
+          image: "{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
+          imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
+          env:
+            - name: LORA_URL
+              value: "http://mox-service:80/"
+            - name: CONF_DB_HOST
+              value: mox-db-service
+            - name: CONF_DB_PORT
+              value: "5432"
+            - name: CONF_DB_NAME
+              value: "mora"
+            - name: CONF_DB_USER
+              value: "mora"
+            - name: CONF_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mo-secret
+                  key: db_password
+          ports:
+            - containerPort: 80
+      restartPolicy: Always

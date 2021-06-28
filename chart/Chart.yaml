@@ -1,0 +1,24 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+apiVersion: v2
+name: OS2mo
+version: 0.0.1
+kubeVersion: 1.19.11
+description: Helm Chart to deploy OS2mo
+type: application
+keywords:
+  - OS2mo
+  - Rammearkitektur
+home: https://os2.eu/produkt/os2mo
+sources:
+  - https://git.magenta.dk/rammearkitektur/os2mo-helm-chart
+  - https://github.com/OS2mo/os2mo
+  - https://github.com/magenta-aps/mox
+maintainers:
+  - name: Emil Madsen
+    email: emil@magenta.dk
+  - name: Andreas Kring
+    email: andreas@magenta.dk
+appVersion: "1.16.0"

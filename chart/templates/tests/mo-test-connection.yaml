@@ -1,0 +1,19 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mo-test-connection
+  labels:
+    app: mo-test-connection
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['-O', '-', 'mo-service:80/service/configuration']
+  restartPolicy: Never
