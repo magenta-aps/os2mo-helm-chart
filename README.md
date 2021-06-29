@@ -116,39 +116,50 @@ After which OS2mo will be available on the cluster ingress.
 If using the local `kind` setup, this will be: http://localhost:80/
 If using another cluster use whatever method is available to access the ingress.
 
-## 4. Using Dipex
-Goal: Get data to OS2MO
+## 5. Using Dipex
+Goal: Get data into OS2mo
 
-Currently it's a bit of a struggle. We need a settings.json file as a kubernetes secret. 
+Currently there are two ways of getting data into OS2mo:
+1. Using the fixture loader
+2. Using the data integrations
 
-```
-kubectl create secret generic dipexsettings \
---save-config --dry-run=client \
---from-file=settings.json=/<some-path>/settings.json \
--o yaml | 
-kubectl apply -f 
-```
+### 5.1 Using the fixture loader
+Goal: Get data into OS2mo
 
-The settings must include this section:
-```
-"mox.base": "http://mox-service:80",
-"mora.base": "http://mo-service:80",
-```
+Using the fixture loader is simple, simply set `load_fixture: true` and update the deployment.
+The fixture loader will run, and load the Kolding Fixture into the OS2mo instance.
+
+### 5.2
+Goal: Get data into OS2mo
+
+The following section will be a generalized setup, as dataloading depends on the integration used.
+However several steps are generic, and can be presented here.
+
+First, any configuration required in the `settings.json` file, should be added via the `values.yaml`
+and `secrets.yaml` files in `values/{{ CUSTOMER }}/{{ ENVIRONMENT }}/`.
+
+Once this is done, update the deployment using `helm secrets upgrade -f values.yaml -f secrets.yaml ...`.
+After this we should have a DIPEX deployment pod running.
 
 In order to actually use MO we need a root organisation which must be created manually from the dipex container.
 
-First use `kubectl get pods` to find the name of the dipex pod and then attach a shell whith: 
+First use `kubectl get pods` to find the name of the dipex pod and then attach a shell with:
 ```
 kubectl exec -it dipex-deployment-676d7798b6-bvmn9 -- /bin/bash
 ```
-
-The settingsfile can't be mounted in the correct path, so we need to use a symlink to use it from dipex. While you'r there you should create a cpr-map file and a tmp folder.
+At this point, the settingsfile must be generated using the following commands:
 ```
-ln -s /opt/settings/settings.json settings/settings.json
+python3 tools/k8s_gen_settings.py /opt/settings /opt/secrets
 touch settings/cpr_uuid_map.csv
 mkdir tmp
 ```
 To setup a root organisation and some default classes use `python3 tools/default_mo_setup.py``
 
-Now you _should_ be ready to use dipex commands: `python3 integrations/SD_Lon/sd_changed_at.py --init` or `bash tools/job-runner.sh imports_sd_changed_at`
-
+Now you _should_ be ready to use dipex commands, such as:
+```
+python3 integrations/SD_Lon/sd_changed_at.py --init
+```
+or equivalently:
+```
+bash tools/job-runner.sh imports_sd_changed_at
+```

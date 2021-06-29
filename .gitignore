@@ -3,4 +3,5 @@
 # SPDX-License-Identifier: MPL-2.0
 
 .cache
+*.yaml.dec
 kind

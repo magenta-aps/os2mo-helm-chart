@@ -1,0 +1,12 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dipex-config
+data:
+{{- range $key, $val := $.Values.dipex.settings }}
+  {{ $key | quote }}: {{ $val | quote }}
+{{- end }}

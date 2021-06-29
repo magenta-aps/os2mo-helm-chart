@@ -43,7 +43,23 @@ dipex:
     tag: feature_dipex_in_docker
     pullPolicy: IfNotPresent
 
-  settingsfile: dipexsettings
+  settings:
+    mox.base: "http://mox-service:80"
+    mora.base: "http://mo-service:80"
+
+    crontab.RUN_IMPORTS_DUMMY: true
+
+    crontab.SVC_USER: "USER@KOMMUNE.NET"
+    crontab.SVC_KEYTAB: "/tmp/keytab-file"
+    crontab.CRON_BACKUP: "/tmp/backup-dir"
+    crontab.CRON_LOG_FILE: "/tmp/cron-log-file"
+    crontab.CRON_LOG_JSON_SINK: "/tmp/log.json"
+    crontab.BACKUP_SAVE_DAYS: "60"
+    crontab.SNAPSHOT_LORA: "/tmp/db-snapshot.sql"
+    crontab.OS2MO_COMPOSE_YML: "/tmp/to/os2mo/docker-compose.yml"
+
+  secrets: {}
+
 
 nameOverride: ""
 fullnameOverride: ""

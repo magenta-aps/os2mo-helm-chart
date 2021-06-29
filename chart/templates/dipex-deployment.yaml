@@ -28,9 +28,14 @@ spec:
             - name: settingsfile
               mountPath: "./opt/settings"
               readOnly: true
+            - name: secretsfile
+              mountPath: "./opt/secrets"
+              readOnly: true
       volumes:
         - name: settingsfile
+          configMap:
+            name: dipex-config
+        - name: secretsfile
           secret:
-            secretName: dipexsettings
-
+            secretName: dipex-secret
       restartPolicy: Always
