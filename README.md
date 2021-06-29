@@ -149,11 +149,11 @@ kubectl exec -it dipex-deployment-676d7798b6-bvmn9 -- /bin/bash
 ```
 At this point, the settingsfile must be generated using the following commands:
 ```
-python3 tools/k8s_gen_settings.py /opt/settings /opt/secrets
+python3 tools/k8s_gen_settings.py /opt/settings/ /opt/secrets/ > settings/settings.json
 touch settings/cpr_uuid_map.csv
 mkdir tmp
 ```
-To setup a root organisation and some default classes use `python3 tools/default_mo_setup.py``
+To setup a root organisation and some default classes use `python3 tools/default_mo_setup.py`
 
 Now you _should_ be ready to use dipex commands, such as:
 ```

@@ -41,7 +41,7 @@ dipex:
   image:
     repository: magentaaps/dipex
     tag: feature_dipex_in_docker
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   settings:
     mox.base: "http://mox-service:80"
