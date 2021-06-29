@@ -6,6 +6,8 @@
 ingress:
   basic_auth: false
   class: ""
+  hostname: null
+  tls_secret: null
 
 os2mo:
   replicaCount: 1
