@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{ if .Values.ingress.tls_secret }}
+{{ if .Values.ingress.tls_cert.key }}
+{{ if .Values.ingress.tls_cert.cert }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.ingress.tls_secret }}
+stringData:
+  tls.key: {{ .Values.ingress.tls_cert.key }}
+  tls.crt: {{ .Values.ingress.tls_cert.cert }}
+type: kubernetes.io/tls
+{{ end }}
+{{ end }}
+{{ end }}
