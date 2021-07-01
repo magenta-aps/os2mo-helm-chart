@@ -40,13 +40,14 @@ lora:
     tag: azure
     pullPolicy: IfNotPresent
 
+  init:
+    image:
+      repository: magentaaps/postgres-os2mo
+      tag: azure
+      pullPolicy: IfNotPresent
+
 moxdb:
   replicaCount: 1
-
-  image:
-    repository: magentaaps/postgres-os2mo
-    tag: 10-11.7-test
-    pullPolicy: IfNotPresent
 
 dipex:
   replicaCount: 1

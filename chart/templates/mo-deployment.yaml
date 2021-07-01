@@ -42,4 +42,22 @@ spec:
                   key: db_password
           ports:
             - containerPort: 80
+      initContainers:
+        - name: wait-for-mox
+          image: curlimages/curl
+          command: ["/bin/sh","-c"]
+          args: ['echo -e "Waiting for MOX to be ready\c"; while [ $(curl -ksw "%{http_code}" "http://mox-service/site-map" -o /dev/null) -ne 200 ]; do sleep 1; echo -e ".\c"; done; echo "OK"']
+{{ if .Values.load_fixture }}
+        - name: fixture-loader
+          image: magentaaps/os2mo-kolding-fixture:latest
+          imagePullPolicy: Always
+          env:
+            - name: PGHOST
+              value: mox-db-service
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mox-secret
+                  key: db_password
+{{ end }}
       restartPolicy: Always
