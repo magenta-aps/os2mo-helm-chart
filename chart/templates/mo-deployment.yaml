@@ -29,16 +29,18 @@ spec:
           image: "{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
           imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
           env:
+            - name: OS2MO_AUTH # XXX: DRAGONS AHEAD
+              value: "false"
             - name: LORA_URL
               value: "http://mox-service:80/"
             - name: CONF_DB_HOST
               value: {{ .Values.database.host }}
-            - name: CONF_DB_PORT
-              value: "5432"
+            - name: CONF_DB_SSLMODE
+              value: {{ .Values.database.sslmode }}
             - name: CONF_DB_NAME
               value: "mora"
             - name: CONF_DB_USER
-              value: "mora"
+              value: "mora{{ .Values.database.username_suffix }}"
             - name: CONF_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -56,9 +58,15 @@ spec:
           image: magentaaps/os2mo-kolding-fixture:latest
           imagePullPolicy: Always
           env:
-            - name: PGHOST
+            - name: POSTGRES_HOST
               value: {{ .Values.database.host }}
-            - name: PGPASSWORD
+            - name: POSTGRES_SSL
+              value: {{ .Values.database.sslmode }}
+            - name: POSTGRES_NAME
+              value: "mox"
+            - name: POSTGRES_USER
+              value: "mox{{ .Values.database.username_suffix }}"
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mox-secret

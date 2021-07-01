@@ -31,12 +31,12 @@ spec:
           env:
             - name: DB_HOST
               value: {{ .Values.database.host }}
-            - name: DB_PORT
-              value: "5432"
+            - name: DB_SSLMODE
+              value: {{ .Values.database.sslmode }}
             - name: DB_NAME
               value: "mox"
             - name: DB_USER
-              value: "mox"
+              value: "mox{{ .Values.database.username_suffix }}"
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -53,12 +53,17 @@ spec:
           env:
             - name: POSTGRES_HOST
               value: {{ .Values.database.host }}
+            - name: POSTGRES_USER
+              value: "{{ .Values.database.user }}{{ .Values.database.username_suffix }}"
+            - name: POSTGRES_SSL
+              value: {{ .Values.database.sslmode }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mox-db-secret
                   key: db_password
 
+            # The below are intentionally without suffix
             - name: DB_NAME
               value: "mox"
             - name: DB_USER
