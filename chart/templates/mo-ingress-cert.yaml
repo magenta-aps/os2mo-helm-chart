@@ -10,8 +10,8 @@ kind: Secret
 metadata:
   name: {{ .Values.ingress.tls_secret }}
 stringData:
-  tls.key: {{ .Values.ingress.tls_cert.key }}
-  tls.crt: {{ .Values.ingress.tls_cert.cert }}
+  tls.key: {{ .Values.ingress.tls_cert.key | quote }}
+  tls.crt: {{ .Values.ingress.tls_cert.cert | quote }}
 type: kubernetes.io/tls
 {{ end }}
 {{ end }}
