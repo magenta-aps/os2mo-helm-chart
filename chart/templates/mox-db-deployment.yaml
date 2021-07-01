@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
+{{ if .Values.database.external }}
+{{ else }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -32,3 +34,4 @@ spec:
           ports:
             - containerPort: 5432
       restartPolicy: Always
+{{ end }}

@@ -2,10 +2,12 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
+{{ if .Values.database.external }}
+{{ else }}
 apiVersion: v1
 kind: Service
 metadata:
-  name: mox-db-service
+  name: {{ .Values.database.host }}
 spec:
   selector:
     app: mox-db
@@ -13,3 +15,4 @@ spec:
     - name: "5432"
       port: 5432
       targetPort: 5432
+{{ end }}

@@ -28,7 +28,7 @@ spec:
             - name: LORA_URL
               value: "http://mox-service:80/"
             - name: CONF_DB_HOST
-              value: mox-db-service
+              value: {{ .Values.database.host }}
             - name: CONF_DB_PORT
               value: "5432"
             - name: CONF_DB_NAME
@@ -53,7 +53,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: PGHOST
-              value: mox-db-service
+              value: {{ .Values.database.host }}
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
