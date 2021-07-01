@@ -8,6 +8,10 @@ metadata:
   name: mo-deployment
   labels:
     app: mo
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.os2mo.replicaCount }}
   selector:

@@ -8,6 +8,10 @@ metadata:
   name: mox-deployment
   labels:
     app: mox
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.lora.replicaCount }}
   selector:

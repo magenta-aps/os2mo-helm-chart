@@ -8,7 +8,10 @@ metadata:
   name: mo-test-connection
   labels:
     app: mo-test-connection
+  {{- with .Values.annotations }}
   annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
     "helm.sh/hook": test
 spec:
   containers:

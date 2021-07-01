@@ -2,6 +2,9 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
+# Annotations to de applied to all resources
+annotations:
+  chart_repository: "https://git.magenta.dk/rammearkitektur/os2mo-helm-chart"
 
 ingress:
   # Must be 'nginx' for basic-auth to work
