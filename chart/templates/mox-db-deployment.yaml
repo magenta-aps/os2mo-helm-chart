@@ -9,7 +9,7 @@ metadata:
   labels:
     app: mox-db
 spec:
-  replicas: {{ .Values.moxdb.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       app: mox-db

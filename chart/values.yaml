@@ -46,12 +46,7 @@ lora:
       tag: azure
       pullPolicy: IfNotPresent
 
-moxdb:
-  replicaCount: 1
-
 dipex:
-  replicaCount: 1
-
   image:
     repository: magentaaps/dipex
     tag: feature_dipex_in_docker

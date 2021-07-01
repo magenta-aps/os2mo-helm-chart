@@ -9,7 +9,7 @@ metadata:
   labels:
     app: dipex
 spec:
-  replicas: {{ .Values.dipex.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       app: dipex
