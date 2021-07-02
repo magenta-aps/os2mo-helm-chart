@@ -31,6 +31,20 @@ spec:
   rules:
     - http:
         paths:
+          - path: /keycloak.json
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak-nginx-service
+                port:
+                  number: 80
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: keycloak-service
+                port:
+                  number: 8080
           - path: /
             pathType: Prefix
             backend:

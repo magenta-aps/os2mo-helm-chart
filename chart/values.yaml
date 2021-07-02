@@ -72,6 +72,14 @@ dipex:
 
   secrets: {}
 
+keycloak:
+  builder:
+    image:
+      repository: magentaaps/os2mo-keycloak-realm-builder
+      tag: dev
+      pullPolicy: Always
+
+
 database:
   # Determine whether to deploy the database as a pod
   external: false
