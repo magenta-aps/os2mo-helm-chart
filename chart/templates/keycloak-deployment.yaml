@@ -75,6 +75,29 @@ spec:
             - name: keycloak-realm-json
               mountPath: /keycloak-realm-json
               readOnly: true
+          # Liveness probe configuration
+          livenessProbe:
+            httpGet:
+              path: /auth/
+              port: 8080
+            initialDelaySeconds: 0
+            timeoutSeconds: 5
+          # Readiness probe configuration
+          readinessProbe:
+            httpGet:
+              path: /auth/realms/master
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+          # Startup probe configuration
+          startupProbe:
+            httpGet:
+              path: /auth/
+              port: 8080
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            failureThreshold: 60
+            periodSeconds: 5
       initContainers:
         - name: keycloak-init
           image: "{{ .Values.keycloak.init.image.repository }}:{{ .Values.keycloak.init.image.tag }}"
