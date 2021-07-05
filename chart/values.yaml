@@ -40,7 +40,7 @@ lora:
 
   image:
     repository: magentaaps/lora
-    tag: azure2
+    tag: latest
     pullPolicy: Always
 
   init:

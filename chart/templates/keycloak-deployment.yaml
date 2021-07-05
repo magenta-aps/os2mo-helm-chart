@@ -50,7 +50,7 @@ spec:
             - name: KEYCLOAK_IMPORT
               value: /keycloak-realm-json/keycloak-realm.json
             - name: KEYCLOAK_FRONTEND_URL
-              value: "https://testos2mo.silkeborg.dk/auth/"
+              value: "https://{{ .Values.ingress.hostname }}/auth/"
             - name: PROXY_ADDRESS_FORWARDING
               value: 'true'
 
@@ -137,9 +137,9 @@ spec:
             - name: KEYCLOAK_AUTH_SERVER_URL
               value: /auth/
             - name: KEYCLOAK_MO_CLIENT_REDIRECT_URI
-              value: https://testos2mo.silkeborg.dk/*
+              value: "https://{{ .Values.ingress.hostname }}/*"
             - name: KEYCLOAK_MO_CLIENT_WEB_ORIGIN
-              value: https://testos2mo.silkeborg.dk
+              value: "https://{{ .Values.ingress.hostname }}"
           volumeMounts:
             - name: keycloak-json
               mountPath: /keycloak-json

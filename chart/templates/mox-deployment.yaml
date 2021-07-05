@@ -42,7 +42,7 @@ spec:
                 secretKeyRef:
                   name: mox-secret
                   key: db_password
-            - name: DB_EXTENSIONS
+            - name: DB_EXTENSIONS_PATH
               value: "oio_rest/oio_rest/db_extensions/mo-01.json"
           ports:
             - containerPort: 80
