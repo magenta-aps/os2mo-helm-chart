@@ -73,6 +73,12 @@ dipex:
   secrets: {}
 
 keycloak:
+  init:
+    image:
+      repository: magentaaps/postgres-keycloak-init
+      tag: 0.0.4-11.7
+      pullPolicy: Always
+
   builder:
     image:
       repository: magentaaps/os2mo-keycloak-realm-builder

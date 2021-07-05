@@ -29,10 +29,9 @@ spec:
           image: "{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
           imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
           env:
-            - name: OS2MO_AUTH # XXX: DRAGONS AHEAD
-              value: "false"
             - name: LORA_URL
               value: "http://mox-service:80/"
+            # Confdb
             - name: CONF_DB_HOST
               value: {{ .Values.database.host }}
             - name: CONF_DB_SSLMODE
@@ -46,6 +45,13 @@ spec:
                 secretKeyRef:
                   name: mo-secret
                   key: db_password
+            # Keycloak
+            - name: KEYCLOAK_SCHEMA
+              value: http
+            - name: KEYCLOAK_PORT
+              value: "8080"
+            - name: KEYCLOAK_HOST
+              value: "keycloak-service"
           ports:
             - containerPort: 80
       initContainers:

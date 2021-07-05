@@ -13,3 +13,8 @@ kubectl get secrets/mo-ingress-basic-auth-secret --template={{"{{"}}.data.userna
 kubectl get secrets/mo-ingress-basic-auth-secret --template={{"{{"}}.data.password{{"}}"}} | base64 --decode
 ```
 {{ end }}
+
+Produce keycloak admin password with:
+```
+kubectl get secrets/keycloak-admin-secret --template={{"{{"}}.data.admin_password{{"}}"}} | base64 --decode
+```
