@@ -29,6 +29,10 @@ spec:
           image: "{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
           imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
           env:
+            # Disable service platformen
+            - name: DUMMY_MODE
+              value: "true"
+
             - name: LORA_URL
               value: "http://mox-service:80/"
             # Confdb
