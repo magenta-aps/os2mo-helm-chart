@@ -69,8 +69,10 @@ spec:
                 secretKeyRef:
                   name: keycloak-secret
                   key: db_password
+            {{ if ne .Values.database.sslmode "" }}
             - name: JDBC_PARAMS
               value: "sslmode={{ .Values.database.sslmode }}"
+            {{ end }}
           volumeMounts:
             - name: keycloak-realm-json
               mountPath: /keycloak-realm-json
@@ -107,8 +109,10 @@ spec:
               value: {{ .Values.database.host }}
             - name: POSTGRES_USER
               value: "{{ .Values.database.user }}{{ .Values.database.username_suffix }}"
+            {{ if ne .Values.database.sslmode "" }}
             - name: POSTGRES_SSL
               value: {{ .Values.database.sslmode }}
+            {{ end }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -136,10 +140,19 @@ spec:
               value: /keycloak-realm-json/keycloak-realm.json
             - name: KEYCLOAK_AUTH_SERVER_URL
               value: /auth/
+            {{- $is_https := empty .Values.ingress.tls_secret }}
+            {{- $protocol := ternary "http" "https" $is_https }}
             - name: KEYCLOAK_MO_CLIENT_REDIRECT_URI
-              value: "https://{{ .Values.ingress.hostname }}/*"
+              value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/*"
             - name: KEYCLOAK_MO_CLIENT_WEB_ORIGIN
-              value: "https://{{ .Values.ingress.hostname }}"
+              value: "{{ $protocol }}://{{ .Values.ingress.hostname }}"
+            - name: KEYCLOAK_DIPEX_CLIENT_ENABLED
+              value: 'true'
+            - name: KEYCLOAK_DIPEX_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
           volumeMounts:
             - name: keycloak-json
               mountPath: /keycloak-json

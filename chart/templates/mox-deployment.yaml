@@ -31,8 +31,10 @@ spec:
           env:
             - name: DB_HOST
               value: {{ .Values.database.host }}
+            {{ if ne .Values.database.sslmode "" }}
             - name: DB_SSLMODE
               value: {{ .Values.database.sslmode }}
+            {{ end }}
             - name: DB_NAME
               value: "mox"
             - name: DB_USER
@@ -55,8 +57,10 @@ spec:
               value: {{ .Values.database.host }}
             - name: POSTGRES_USER
               value: "{{ .Values.database.user }}{{ .Values.database.username_suffix }}"
+            {{ if ne .Values.database.sslmode "" }}
             - name: POSTGRES_SSL
               value: {{ .Values.database.sslmode }}
+            {{ end }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

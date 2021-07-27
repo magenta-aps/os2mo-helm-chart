@@ -38,8 +38,10 @@ spec:
             # Confdb
             - name: CONF_DB_HOST
               value: {{ .Values.database.host }}
+            {{ if ne .Values.database.sslmode "" }}
             - name: CONF_DB_SSLMODE
               value: {{ .Values.database.sslmode }}
+            {{ end }}
             - name: CONF_DB_NAME
               value: "mora"
             - name: CONF_DB_USER
@@ -70,8 +72,10 @@ spec:
           env:
             - name: POSTGRES_HOST
               value: {{ .Values.database.host }}
+            {{ if ne .Values.database.sslmode "" }}
             - name: POSTGRES_SSL
               value: {{ .Values.database.sslmode }}
+            {{ end }}
             - name: POSTGRES_NAME
               value: "mox"
             - name: POSTGRES_USER

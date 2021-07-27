@@ -4,8 +4,8 @@
 ---
 apiVersion: v2
 name: OS2mo
-version: 0.0.1
-kubeVersion: 1.19.11
+version: 0.0.7
+kubeVersion: ">= 1.19.0 < 1.20.0"
 description: Helm Chart to deploy OS2mo
 type: application
 keywords:
