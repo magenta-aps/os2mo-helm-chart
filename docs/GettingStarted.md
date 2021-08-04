@@ -202,3 +202,14 @@ or equivalently:
 ```shell
 bash tools/job-runner.sh imports_sd_changed_at
 ```
+
+## 6. Testing the installation
+The chart includes deployment tests which can be triggered using:
+```shell
+helm test RELEASE_NAME
+```
+If unsuccessful a message alike:
+```
+Error: pod mo-test-connection failed
+```
+Will show up, indicating that some part of the stack did not function as expected.
