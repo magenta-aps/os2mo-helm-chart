@@ -158,10 +158,10 @@ spec:
               value: /keycloak-json/keycloak.json
             - name: KEYCLOAK_REALM_JSON_PATH
               value: /keycloak-realm-json/keycloak-realm.json
-            - name: KEYCLOAK_AUTH_SERVER_URL
-              value: /auth/
             {{- $is_https := empty .Values.ingress.tls_secret }}
             {{- $protocol := ternary "http" "https" $is_https }}
+            - name: KEYCLOAK_AUTH_SERVER_URL
+              value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
             - name: KEYCLOAK_MO_CLIENT_REDIRECT_URI
               value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/*"
             - name: KEYCLOAK_MO_CLIENT_WEB_ORIGIN
