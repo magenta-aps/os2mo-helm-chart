@@ -39,7 +39,7 @@ sudo mv ./kind /usr/local/bin/kind
 sudo chown root. /usr/local/bin/kind
 ```
 
-### Getting kubectl
+### Getting `kubectl`
 **Goal**: Ensuring that we have `kubectl` installed.
 
 If you do not already have `kubectl` installed, now is the time to install it:
@@ -47,7 +47,7 @@ If you do not already have `kubectl` installed, now is the time to install it:
 sudo apt-get update && sudo apt-get install -y kubectl
 ```
 
-### Getting kubectl
+### Getting `helm`
 **Goal**: Ensuring that we have `helm` installed.
 
 If you do not already have `helm` installed, now is the time to install it:
