@@ -19,6 +19,7 @@ cache:
 stages:
   - lint
   - test
+  - deploy
 
 # ---------------------------------------------------------------------------
 # Templates
@@ -69,3 +70,19 @@ Generate Project:
   <<: *test
   script:
     - helm template --kube-version 1.19.11 chart/
+
+
+pages:
+  image: python:3.8
+  stage: deploy
+  needs: []
+  before_script:
+    - pip install mkdocs-material
+    - pip install mkdocs-autorefs
+  script:
+    - mkdocs build --strict --site-dir public
+  artifacts:
+    paths:
+      - public
+#  rules:
+#    - if: '$CI_COMMIT_BRANCH == "development"'
