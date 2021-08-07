@@ -68,6 +68,13 @@ Lint Project:
   script:
     - pre-commit run --all-files
 
+Lint Chart:
+  <<: *lint
+  image: quay.io/helmpack/chart-testing:v3.4.0
+  script:
+    - ct lint --all --chart-dirs .
+
+
 # ---------------------------------------------------------------------------
 # Test
 # ---------------------------------------------------------------------------
