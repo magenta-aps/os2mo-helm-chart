@@ -29,7 +29,8 @@ spec:
           emptyDir: {}
       containers:
         - name: keycloak
-          image: quay.io/keycloak/keycloak:14.0.0
+          image: "{{ .Values.keycloak.image.repository }}:{{ .Values.keycloak.image.tag }}"
+          imagePullPolicy: {{ .Values.keycloak.image.pullPolicy }}
           env:
             - name: KEYCLOAK_USER
               value: admin

@@ -73,6 +73,10 @@ dipex:
   secrets: {}
 
 keycloak:
+  image:
+    repository: quay.io/keycloak/keycloak
+    tag: 14.0.0
+    pullPolicy:
   init:
     image:
       repository: magentaaps/postgres-keycloak-init
