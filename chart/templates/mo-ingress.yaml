@@ -31,13 +31,6 @@ spec:
   rules:
     - http:
         paths:
-          - path: /keycloak.json
-            pathType: Prefix
-            backend:
-              service:
-                name: keycloak-nginx-service
-                port:
-                  number: 80
           - path: /auth
             pathType: Prefix
             backend:
@@ -51,7 +44,7 @@ spec:
               service:
                 name: mo-service
                 port:
-                  number: 80
+                  number: 8080
   {{ if .Values.ingress.hostname }}
       host: {{ .Values.ingress.hostname }}
   {{ end }}
