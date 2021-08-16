@@ -30,7 +30,7 @@ os2mo:
 
   image:
     repository: magentaaps/os2mo
-    tag: azure2
+    tag: dev
     pullPolicy: Always
 
   port: 80
@@ -46,7 +46,7 @@ lora:
   init:
     image:
       repository: magentaaps/postgres-os2mo
-      tag: azure
+      tag: 12.7-11.7
       pullPolicy: Always
 
 dipex:
@@ -77,16 +77,17 @@ keycloak:
     repository: quay.io/keycloak/keycloak
     tag: 14.0.0
     pullPolicy:
+
   init:
     image:
       repository: magentaaps/postgres-keycloak-init
-      tag: 0.0.4-11.7
+      tag: 12.7-11.7
       pullPolicy: Always
 
   builder:
     image:
       repository: magentaaps/os2mo-keycloak-realm-builder
-      tag: dev
+      tag: 1.0.0
       pullPolicy: Always
 
 
