@@ -28,6 +28,16 @@ spec:
         - name: dipex
           image: "{{ .Values.dipex.image.repository }}:{{ .Values.dipex.image.tag }}"
           imagePullPolicy: {{ .Values.dipex.image.pullPolicy }}
+          env:
+            - name: CLIENT_ID
+              value: "dipex"
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
+            - name: AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
           volumeMounts:
             - name: settingsfile
               mountPath: "./opt/settings"
