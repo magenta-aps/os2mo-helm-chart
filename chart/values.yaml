@@ -52,11 +52,11 @@ lora:
 dipex:
   image:
     repository: magentaaps/dipex
-    tag: feature_dipex_in_docker
+    tag: dev
     pullPolicy: Always
 
   settings:
-    mox.base: "http://mox-service:80"
+    mox.base: "http://mox-service:8080"
     mora.base: "http://mo-service:80"
 
     crontab.RUN_IMPORTS_DUMMY: true
