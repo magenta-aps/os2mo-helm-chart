@@ -14,8 +14,8 @@ ingress:
   basic_auth: false
   # Whitelist of ip-ranges that can access the application.
   whitelist: null
-  # TLS hostname, only required if using TLS, otherwise IP access will be fine
-  hostname: null
+  # TLS hostname
+  hostname: "os2mo.example.com"
   # Name of the TLS secret to use for ingress. If set TLS will be enabled.
   # Can be used to point to externally managed seccrets if tls_cert key and cert below
   # are not set.

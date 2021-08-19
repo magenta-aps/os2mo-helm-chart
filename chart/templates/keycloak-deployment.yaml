@@ -149,9 +149,9 @@ spec:
             {{- $is_https := empty .Values.ingress.tls_secret }}
             {{- $protocol := ternary "http" "https" $is_https }}
             - name: KEYCLOAK_MO_CLIENT_REDIRECT_URI
-              value: ["{{ $protocol }}://{{ .Values.ingress.hostname }}/*"]
+              value: "[\"{{ $protocol }}://{{ .Values.ingress.hostname }}/*\"]"
             - name: KEYCLOAK_MO_CLIENT_WEB_ORIGIN
-              value: ["{{ $protocol }}://{{ .Values.ingress.hostname }}"]
+              value: "[\"{{ $protocol }}://{{ .Values.ingress.hostname }}\"]"
             - name: KEYCLOAK_DIPEX_CLIENT_ENABLED
               value: 'true'
             - name: KEYCLOAK_DIPEX_CLIENT_SECRET
