@@ -33,7 +33,11 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
+                  {{ if .Values.database.password_secret }}
+                  name: {{ .Values.database.password_secret }}
+                  {{ else }}
                   name: mox-db-secret
+                  {{ end }}
                   key: db_password
           ports:
             - containerPort: 5432
