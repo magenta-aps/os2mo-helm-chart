@@ -147,6 +147,9 @@ spec:
         - name: keycloak-gen
           image: "{{ .Values.keycloak.builder.image.repository }}:{{ .Values.keycloak.builder.image.tag }}"
           imagePullPolicy: {{ .Values.keycloak.builder.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: keycloak-gen-config
           env:
             - name: KEYCLOAK_REALM_JSON_PATH
               value: /keycloak-realm-json/keycloak-realm.json

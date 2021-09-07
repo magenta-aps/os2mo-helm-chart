@@ -90,6 +90,7 @@ keycloak:
       tag: 1.2.0
       pullPolicy: Always
 
+    environment: {}
 
 database:
   # Determine whether to deploy the database as a pod
