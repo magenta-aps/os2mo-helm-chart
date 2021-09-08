@@ -57,7 +57,7 @@ dipex:
 
   settings:
     mox.base: "http://mox-service:8080"
-    mora.base: "http://mo-service:80"
+    mora.base: "http://mo-service:8080"
 
     crontab.RUN_IMPORTS_DUMMY: true
 
