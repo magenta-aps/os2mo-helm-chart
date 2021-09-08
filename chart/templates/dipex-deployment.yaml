@@ -30,11 +30,6 @@ spec:
           imagePullPolicy: {{ .Values.dipex.image.pullPolicy }}
           command: ["sleep"]
           args: ["infinity"]
-          envFrom:
-            - configMapRef:
-                name: dipex-config
-            - secretRef:
-                name: dipex-secret
           env:
             - name: CLIENT_ID
               value: "dipex"
@@ -45,11 +40,25 @@ spec:
                   key: client_secret
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
+          volumeMounts:
+            - name: settingsfile
+              mountPath: "./opt/settings"
+              readOnly: true
+            - name: secretsfile
+              mountPath: "./opt/secrets"
+              readOnly: true
           resources:
             requests:
               memory: "64Mi"
-              cpu: "50m"
+              cpu: "5m"
             limits:
               memory: "128Mi"
-              cpu: "100m"
+              cpu: "10m"
+      volumes:
+        - name: settingsfile
+          configMap:
+            name: dipex-config
+        - name: secretsfile
+          secret:
+            secretName: dipex-secret
       restartPolicy: Always
