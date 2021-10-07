@@ -29,6 +29,9 @@ spec:
           image: "{{ .Values.lora.image.repository }}:{{ .Values.lora.image.tag }}"
           imagePullPolicy: {{ .Values.lora.image.pullPolicy }}
           env:
+            - name: LORA_AUTH
+              value: "false"
+
             - name: PORT
               value: "8080"
 
