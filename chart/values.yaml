@@ -57,7 +57,7 @@ dipex:
 
   settings:
     mox.base: "http://mox-service:8080"
-    mora.base: "http://mo-service:8080"
+    mora.base: "http://mo-service:5000"
 
     crontab.RUN_IMPORTS_DUMMY: true
 
@@ -76,7 +76,7 @@ keycloak:
   image:
     repository: quay.io/keycloak/keycloak
     tag: 14.0.0
-    pullPolicy:
+    pullPolicy: Always
 
   init:
     image:
