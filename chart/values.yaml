@@ -89,6 +89,7 @@ keycloak:
       repository: magentaaps/os2mo-keycloak-realm-builder
       tag: 1.2.0
       pullPolicy: Always
+    lora_dipex_client_enabled: false
 
     environment: {}
 
