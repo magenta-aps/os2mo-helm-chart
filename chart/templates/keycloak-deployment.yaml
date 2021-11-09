@@ -173,11 +173,13 @@ spec:
                   key: client_secret
             - name: KEYCLOAK_LORA_DIPEX_CLIENT_ENABLED
               value: "{{ .Values.keycloak.builder.lora_dipex_client_enabled }}"
+            {{- if .Values.keycloak.builder.lora_dipex_client_enabled }}
             - name: KEYCLOAK_LORA_DIPEX_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: keycloak-lora-dipex-secret
                   key: client_secret
+            {{- end }}
           resources:
             requests:
               memory: "64Mi"
