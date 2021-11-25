@@ -43,6 +43,10 @@ spec:
             - name: CONF_DB_USE
               value: "false"
 
+            # gunicorn MAX_WORKERS
+            - name: MAX_WORKERS
+              value: "{{ .Values.os2mo.gunicorn.max_workers }}"
+
             # Keycloak
             - name: KEYCLOAK_SCHEMA
               value: http

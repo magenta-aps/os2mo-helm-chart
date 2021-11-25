@@ -35,6 +35,10 @@ spec:
             - name: PORT
               value: "8080"
 
+            # gunicorn MAX_WORKERS
+            - name: MAX_WORKERS
+              value: "{{ .Values.lora.gunicorn.max_workers }}"
+
             - name: DB_HOST
               value: {{ .Values.database.host }}
             {{ if ne .Values.database.sslmode "" }}
