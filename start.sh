@@ -21,10 +21,13 @@ if [ -z "${OS2MO_CLUSTER_EXISTS}" ]; then
     echo ""
 fi
 
-kubectl apply -f https://github.com/datawire/ambassador-operator/releases/latest/download/ambassador-operator-crds.yaml
-kubectl apply -n ambassador -f https://github.com/datawire/ambassador-operator/releases/latest/download/ambassador-operator-kind.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 sleep 3
-kubectl wait --timeout=180s -n ambassador --for=condition=deployed ambassadorinstallations/ambassador
+kubectl wait --namespace ingress-nginx \
+             --for=condition=ready pod \
+             --selector=app.kubernetes.io/component=controller \
+             --timeout=90s
+kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
 
 helm repo add mittwald https://helm.mittwald.de
 helm repo update

@@ -1,0 +1,13 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+keycloak:
+  builder:
+    lora_dipex_client_enabled: true
+    environment:
+      KEYCLOAK_SSL_REQUIRED_MO: none
+      KEYCLOAK_SSL_REQUIRED_LORA: none
+  startupProbe:
+    initialDelaySeconds: 90
+

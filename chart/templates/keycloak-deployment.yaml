@@ -96,7 +96,7 @@ spec:
             httpGet:
               path: /auth/
               port: 8080
-            initialDelaySeconds: 300
+            initialDelaySeconds: {{ .Values.keycloak.startupProbe.initialDelaySeconds }}
             timeoutSeconds: 1
             failureThreshold: 60
             periodSeconds: 5
