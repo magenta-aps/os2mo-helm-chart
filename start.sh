@@ -22,12 +22,6 @@ if [ -z "${OS2MO_CLUSTER_EXISTS}" ]; then
 fi
 
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
-sleep 3
-kubectl wait --namespace ingress-nginx \
-             --for=condition=ready pod \
-             --selector=app.kubernetes.io/component=controller \
-             --timeout=90s
-kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
 
 helm repo add mittwald https://helm.mittwald.de
 helm repo update
