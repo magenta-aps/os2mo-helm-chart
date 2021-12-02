@@ -38,6 +38,17 @@ os2mo:
   gunicorn:
     max_workers: 1
 
+  graphql:
+    enabled: false
+
+  init:
+    enabled: false
+    image:
+      repository: magentaaps/os2mo-init
+      tag: latest
+      pullPolicy: Always
+    config: {}
+
 lora:
   replicaCount: 1
 
@@ -95,6 +106,7 @@ keycloak:
       repository: magentaaps/os2mo-keycloak-realm-builder
       tag: latest
       pullPolicy: Always
+    lora_realm_enabled: false
     lora_dipex_client_enabled: false
 
     environment: {}

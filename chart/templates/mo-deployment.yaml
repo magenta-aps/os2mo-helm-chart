@@ -47,6 +47,10 @@ spec:
             - name: MAX_WORKERS
               value: "{{ .Values.os2mo.gunicorn.max_workers }}"
 
+            # GraphQL
+            - name: GRAPHQL_ENABLE
+              value: "{{ .Values.os2mo.graphql.enabled }}"
+
             # Keycloak
             - name: KEYCLOAK_SCHEMA
               value: http

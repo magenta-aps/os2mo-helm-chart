@@ -171,6 +171,14 @@ spec:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
+            - name: KEYCLOAK_LORA_REALM_ENABLED
+              value: "{{ .Values.keycloak.builder.lora_realm_enabled }}"
+            {{- if .Values.keycloak.builder.lora_realm_enabled }}
+            - name: KEYCLOAK_LORA_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-lora-client-secret
+                  key: client_secret
             - name: KEYCLOAK_LORA_DIPEX_CLIENT_ENABLED
               value: "{{ .Values.keycloak.builder.lora_dipex_client_enabled }}"
             {{- if .Values.keycloak.builder.lora_dipex_client_enabled }}
@@ -179,6 +187,7 @@ spec:
                 secretKeyRef:
                   name: keycloak-lora-dipex-secret
                   key: client_secret
+            {{- end }}
             {{- end }}
           resources:
             requests:

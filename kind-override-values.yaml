@@ -1,0 +1,35 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+os2mo:
+  image:
+    tag: 3.4.8
+  graphql:
+    enabled: true
+  gunicorn:
+    max_workers: 2
+  init:
+    enabled: true
+    image:
+      tag: latest
+    config:
+      root_organisation:
+        name: xyz
+        user_key: 702d97ea-4e03-11ec-8163-c70f41b96b32
+      facets:
+        org_unit_address_type:
+          PhoneUnit:
+            title: "CVR"
+            scope: "CVR"
+      it_systems: {}
+
+keycloak:
+  builder:
+    lora_realm_enabled: true
+    lora_dipex_client_enabled: true
+    environment:
+      KEYCLOAK_SSL_REQUIRED_MO: none
+      KEYCLOAK_SSL_REQUIRED_LORA: none
+  startupProbe:
+    initialDelaySeconds: 90
