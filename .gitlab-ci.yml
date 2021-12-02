@@ -19,12 +19,17 @@ cache:
 stages:
   - lint
   - test
-  - deploy
+  - release
 
 workflow:
   rules:
     - if: '$CI_COMMIT_BRANCH'
     - if: '$CI_COMMIT_TAG'
+
+include:
+  - project: 'labs/salt-automation'
+    ref: 'master'
+    file: '/gitlab-ci-templates/common/autopub.v1.yml'
 
 # ---------------------------------------------------------------------------
 # Templates
@@ -55,11 +60,6 @@ workflow:
   image: python:3.8
   stage: test
 
-.deploy-template: &deploy
-  <<: *install-deps
-  image: python:3.8
-  stage: deploy
-
 # ---------------------------------------------------------------------------
 # Lint
 # ---------------------------------------------------------------------------
@@ -84,27 +84,34 @@ Generate Project:
     - helm template --kube-version 1.19.11 chart/
 
 
+deploy:
+  stage: release
+  needs: []
+  image:
+    name: alpine/helm:3.7.1
+    entrypoint: [""]
+  tags:
+    - docker
+  before_script:
+  - helm plugin install https://github.com/chartmuseum/helm-push.git
+  - helm repo add magenta-chartmuseum https://chartmuseum.magentahosted.dk/
+  script:
+  - helm cm-push chart magenta-chartmuseum
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
+
+
 pages:
   image: python:3.8
-  stage: deploy
+  stage: release
   needs: []
   before_script:
     - pip install mkdocs-material
     - pip install mkdocs-autorefs
-    # Install Helm
-    - curl https://baltocdn.com/helm/signing.asc | apt-key add -
-    - apt-get update && apt-get install -y apt-transport-https coreutils
-    - |-
-        echo "deb https://baltocdn.com/helm/stable/debian/ all main" |
-        tee /etc/apt/sources.list.d/helm-stable-debian.list
-    - apt-get update && apt-get install -y helm
   script:
     - mkdocs build --strict --site-dir public
-    - helm package chart/ -d public
-    - helm repo index public/
   artifacts:
     paths:
       - public
   rules:
-    - if: '$CI_COMMIT_BRANCH == "development"'
     - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
