@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.2.2 - 2021-12-03
+------------------
+
+[#47374] Fixup chart name to be a valid flux identifier
+
 0.2.1 - 2021-12-03
 ------------------
 
