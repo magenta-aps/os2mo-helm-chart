@@ -66,12 +66,14 @@ include:
 Lint Project:
   <<: *lint
   script:
+    - ./tools/set_chart_version.sh
     - pre-commit run --all-files
 
 Lint Chart:
   stage: lint
   image: quay.io/helmpack/chart-testing:v3.4.0
   script:
+    - ./tools/set_chart_version.sh
     - ct lint --all --chart-dirs .
 
 
@@ -81,6 +83,7 @@ Lint Chart:
 Generate Project:
   <<: *test
   script:
+    - ./tools/set_chart_version.sh
     - helm template --kube-version 1.19.11 chart/
 
 
@@ -93,10 +96,11 @@ deploy:
   tags:
     - docker
   before_script:
-  - helm plugin install https://github.com/chartmuseum/helm-push.git
-  - helm repo add magenta-chartmuseum https://chartmuseum.magentahosted.dk/
+    - helm plugin install https://github.com/chartmuseum/helm-push.git
+    - helm repo add magenta-chartmuseum https://chartmuseum.magentahosted.dk/
   script:
-  - helm cm-push chart magenta-chartmuseum
+    - ./tools/set_chart_version.sh
+    - helm cm-push chart magenta-chartmuseum
   rules:
     - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 
