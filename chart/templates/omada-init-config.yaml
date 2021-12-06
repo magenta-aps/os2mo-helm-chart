@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+{{- if .Values.omada.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: omada-init-config
+  labels:
+    app: omada
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  config: |
+    facets:
+      employee_address_type:
+        EmailEmployee:
+          title: "Email"
+          scope: "EMAIL"
+        PhoneEmployee:
+          title: "Telefon"
+          scope: "PHONE"
+        MobilePhoneEmployee:
+          title: "Mobiltelefon"
+          scope: "PHONE"
+        InstitutionPhoneEmployee:
+          title: "Institutionstelefonnummer"
+          scope: "PHONE"
+      visibility:
+        Intern:
+          title: "Må vises internt"
+          scope: "INTERNAL"
+    it_systems:
+      {{ .Values.omada.it_system_user_key }}: "Omada"
+{{- end }}

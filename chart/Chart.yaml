@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 apiVersion: v2
-name: os2mo
+name: OS2mo
+version: 0.3.1
 kubeVersion: ">= 1.19.0 < 1.21.0"
 description: Helm Chart to deploy OS2mo
 type: application

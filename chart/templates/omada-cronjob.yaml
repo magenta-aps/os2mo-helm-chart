@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+{{- if .Values.omada.enabled }}
+---
+{{- if .Capabilities.APIVersions.Has "batch/v1beta1/CronJob" }}
+# v1beta1 necessary for Kubernetes versions < 1.21
+apiVersion: batch/v1beta1
+{{- else }}
+apiVersion: batch/v1
+{{- end }}
+kind: CronJob
+metadata:
+  name: omada-sync-cronjob
+  labels:
+    app: omada
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  schedule: {{ .Values.omada.cronjob_schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: omada-sync-cronjob
+              image: curlimages/curl
+              command: ["/bin/sh","-c"]
+              args: [ 'curl -X POST "http://omada-service/import/it-users"' ]
+              resources:
+                requests:
+                  memory: "64Mi"
+                  cpu: "5m"
+                limits:
+                  memory: "128Mi"
+                  cpu: "10m"
+          initContainers:
+            - name: wait-for-omada
+              image: curlimages/curl
+              command: ["/bin/sh","-c"]
+              args: ['echo -e "Waiting for Omada to be ready\c"; while [ $(curl -ksw "%{http_code}" "http://omada-service/ready" -o /dev/null) -ne 200 ]; do sleep 1; echo -e ".\c"; done; echo "OK"']
+              resources:
+                requests:
+                  memory: "64Mi"
+                  cpu: "5m"
+                limits:
+                  memory: "128Mi"
+                  cpu: "10m"
+          restartPolicy: OnFailure
+{{- end }}
