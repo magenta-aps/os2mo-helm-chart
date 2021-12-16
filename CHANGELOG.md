@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+0.3.0 - 2021-12-16
+------------------
+
+[#47404] Omada services and cronjob for syncing users
+
 0.2.2 - 2021-12-03
 ------------------
 
