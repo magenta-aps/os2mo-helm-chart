@@ -33,3 +33,6 @@ keycloak:
       KEYCLOAK_SSL_REQUIRED_LORA: none
   startupProbe:
     initialDelaySeconds: 90
+
+omada:
+  cronjob_schedule: "0/2 * * * *"

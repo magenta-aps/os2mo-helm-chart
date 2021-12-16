@@ -128,6 +128,23 @@ database:
   username_suffix: ""
   sslmode: ""
 
+omada:
+  enabled: false
+  image:
+    repository: magentaaps/os2mint-omada
+    tag: latest
+    pullPolicy: Always
+  it_system_user_key: omada_ad_guid
+  odata_url: "MUST BE OVERRIDDEN"
+  cronjob_schedule: "0 6 * * *"
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "100m"
+    limits:
+      memory: "1024Mi"
+      cpu: "250m"
+
 nameOverride: ""
 fullnameOverride: ""
 

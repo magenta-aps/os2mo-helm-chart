@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.omada.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: omada-service
+  labels:
+    app: omada
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    app: omada
+  ports:
+    - name: "8080"
+      port: 8080
+      targetPort: 8080
+{{- end }}
