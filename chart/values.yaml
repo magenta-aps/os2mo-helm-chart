@@ -117,7 +117,7 @@ keycloak:
     lora_dipex_client_enabled: false
     environment: {}
   startupProbe:
-    initialDelaySeconds: 300
+    initialDelaySeconds: 90
   resources:
     requests:
       memory: "1024Mi"
