@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.3.1 - 2022-01-10
+------------------
+
+[#47628] Decrease Keycloak startup probe initial delay time
+
 1.3.0 - 2022-01-07
 ------------------
 
