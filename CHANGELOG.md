@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.4.0 - 2022-01-13
+------------------
+
+[#47857] Add support for sending random environmental variables to OS2mo
+
 1.3.1 - 2022-01-10
 ------------------
 
