@@ -23,6 +23,8 @@ os2mo:
             title: "CVR"
             scope: "CVR"
       it_systems: {}
+  environment:
+    GRAPHQL_ENABLE: true
 
 keycloak:
   builder:

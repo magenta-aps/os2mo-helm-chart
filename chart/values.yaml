@@ -34,8 +34,6 @@ os2mo:
   port: 80
   gunicorn:
     max_workers: 1
-  graphql:
-    enabled: false
   init:
     enabled: false
     image:
@@ -50,6 +48,8 @@ os2mo:
     limits:
       memory: "1536Mi"
       cpu: "250m"
+  external_env_config_map_name: null
+  environment: {}
 
 lora:
   replicaCount: 1
