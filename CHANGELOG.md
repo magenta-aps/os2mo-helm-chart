@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.6.0 - 2022-01-24
+------------------
+
+[#47215] Liveness and readiness probes for MO and LoRa
+
 1.5.0 - 2022-01-14
 ------------------
 
