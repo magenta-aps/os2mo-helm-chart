@@ -60,6 +60,22 @@ spec:
             - containerPort: 8080
           resources:
             {{- toYaml .Values.lora.resources | nindent 12 }}
+          {{- if .Values.lora.probes.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /kubernetes/live
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /kubernetes/ready
+              port: 8080
+          startupProbe:
+            httpGet:
+              path: /kubernetes/ready
+              port: 8080
+            failureThreshold: {{ .Values.lora.probes.startupProbe.failureThreshold }}
+            periodSeconds: {{ .Values.lora.probes.startupProbe.periodSeconds }}
+          {{- end }}
       initContainers:
         - name: mox-init
           image: "{{ .Values.lora.init.image.repository }}:{{ .Values.lora.init.image.tag }}"
@@ -114,6 +130,12 @@ spec:
                 secretKeyRef:
                   name: mo-secret
                   key: db_password
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+        - name: wait-for-keycloak
+          image: curlimages/curl
+          command: ["/bin/sh","-c"]
+          args: ['echo -e "Waiting for Keycloak to be ready\c"; while [ $(curl -ksw "%{http_code}" "http://keycloak-service:8080/auth/realms/master" -o /dev/null) -ne 200 ]; do sleep 1; echo -e ".\c"; done; echo "OK"']
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
       restartPolicy: Always

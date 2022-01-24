@@ -69,11 +69,33 @@ spec:
             - containerPort: 5000
           resources:
             {{- toYaml .Values.os2mo.resources | nindent 12 }}
+          {{- if .Values.os2mo.probes.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 5000
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 5000
+          startupProbe:
+            httpGet:
+              path: /health/ready
+              port: 5000
+            failureThreshold: {{ .Values.os2mo.probes.startupProbe.failureThreshold }}
+            periodSeconds: {{ .Values.os2mo.probes.startupProbe.periodSeconds }}
+          {{- end }}
       initContainers:
         - name: wait-for-mox
           image: curlimages/curl
           command: ["/bin/sh","-c"]
           args: ['echo -e "Waiting for MOX to be ready\c"; while [ $(curl -ksw "%{http_code}" "http://mox-service:8080/site-map" -o /dev/null) -ne 200 ]; do sleep 1; echo -e ".\c"; done; echo "OK"']
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+        - name: wait-for-keycloak
+          image: curlimages/curl
+          command: ["/bin/sh","-c"]
+          args: ['echo -e "Waiting for Keycloak to be ready\c"; while [ $(curl -ksw "%{http_code}" "http://keycloak-service:8080/auth/realms/master" -o /dev/null) -ne 200 ]; do sleep 1; echo -e ".\c"; done; echo "OK"']
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
 {{ if .Values.load_fixture }}

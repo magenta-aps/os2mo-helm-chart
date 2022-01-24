@@ -82,24 +82,19 @@ spec:
             httpGet:
               path: /auth/
               port: 8080
-            initialDelaySeconds: 0
             timeoutSeconds: 5
           # Readiness probe configuration
           readinessProbe:
             httpGet:
               path: /auth/realms/master
               port: 8080
-            initialDelaySeconds: 30
-            timeoutSeconds: 1
           # Startup probe configuration
           startupProbe:
             httpGet:
-              path: /auth/
+              path: /auth/realms/master
               port: 8080
-            initialDelaySeconds: {{ .Values.keycloak.startupProbe.initialDelaySeconds }}
-            timeoutSeconds: 1
-            failureThreshold: 60
-            periodSeconds: 5
+            failureThreshold: {{ .Values.keycloak.startupProbe.failureThreshold }}
+            periodSeconds: {{ .Values.keycloak.startupProbe.periodSeconds }}
           resources:
             {{- toYaml .Values.keycloak.resources | nindent 12 }}
       initContainers:

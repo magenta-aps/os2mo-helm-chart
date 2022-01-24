@@ -68,7 +68,7 @@ spec:
         - name: wait-for-keycloak
           image: curlimages/curl
           command: ["/bin/sh","-c"]
-          args: ['echo -e "Waiting for Keycloak to be ready\c"; while [ $(curl -ksw "%{http_code}" "http://keycloak-service:8080/auth/" -o /dev/null) -ne 200 ]; do sleep 1; echo -e ".\c"; done; echo "OK"']
+          args: ['echo -e "Waiting for Keycloak to be ready\c"; while [ $(curl -ksw "%{http_code}" "http://keycloak-service:8080/auth/realms/master" -o /dev/null) -ne 200 ]; do sleep 1; echo -e ".\c"; done; echo "OK"']
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         - name: os2mo-init

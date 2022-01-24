@@ -13,10 +13,6 @@ metadata:
 spec:
   selector:
     app: mo
-
-  # TODO: remove later - necessary for now due to https://redmine.magenta-aps.dk/issues/47372
-  sessionAffinity: ClientIP
-
   ports:
     - name: "5000"
       port: 5000

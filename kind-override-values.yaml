@@ -3,12 +3,11 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 os2mo:
-  image:
-    tag: 3.4.8
+  replicaCount: 1
   graphql:
     enabled: true
   gunicorn:
-    max_workers: 2
+    max_workers: 1
   init:
     enabled: false
     image:
@@ -25,6 +24,19 @@ os2mo:
       it_systems: {}
   environment:
     GRAPHQL_ENABLE: true
+  resources:
+    requests:
+      memory: "1024Mi"
+      cpu: "500m"
+    limits:
+      memory: "1536Mi"
+      cpu: "1000m"
+  probes:
+    enabled: true
+
+lora:
+  probes:
+    enabled: true
 
 keycloak:
   builder:
@@ -44,10 +56,15 @@ keycloak:
           "enabled": true
         }
       ]'
-  startupProbe:
-    initialDelaySeconds: 90
+  resources:
+    requests:
+      memory: "2048Mi"
+      cpu: "1000m"
+    limits:
+      memory: "4096Mi"
+      cpu: "2000m"
 
 omada:
   cronjob_schedule: "0/2 * * * *"
 
-load_fixture: true
+load_fixture: false

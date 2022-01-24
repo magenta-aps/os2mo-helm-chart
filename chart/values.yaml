@@ -43,13 +43,18 @@ os2mo:
     config: {}
   resources:
     requests:
-      memory: "512Mi"
-      cpu: "100m"
+      memory: "1024Mi"
+      cpu: "500m"
     limits:
       memory: "1536Mi"
-      cpu: "250m"
+      cpu: "1000m"
   external_env_config_map_name: null
   environment: {}
+  probes:
+    enabled: false
+    startupProbe:
+      failureThreshold: 150
+      periodSeconds: 2
 
 lora:
   replicaCount: 1
@@ -71,6 +76,11 @@ lora:
     limits:
       memory: "1024Mi"
       cpu: "250m"
+  probes:
+    enabled: false
+    startupProbe:
+      failureThreshold: 150
+      periodSeconds: 2
 
 dipex:
   image:
@@ -117,14 +127,15 @@ keycloak:
     lora_dipex_client_enabled: false
     environment: {}
   startupProbe:
-    initialDelaySeconds: 90
+    failureThreshold: 60
+    periodSeconds: 5
   resources:
     requests:
-      memory: "1024Mi"
-      cpu: "500m"
-    limits:
       memory: "2048Mi"
       cpu: "1000m"
+    limits:
+      memory: "4096Mi"
+      cpu: "2000m"
 
 database:
   # Determine whether to deploy the database as a pod
