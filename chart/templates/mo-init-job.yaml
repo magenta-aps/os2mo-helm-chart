@@ -8,7 +8,7 @@ kind: Job
 metadata:
   name: mo-init-job
   labels:
-    app: mo
+    app: os2mo-init
   {{- with .Values.annotations }}
   annotations:
   {{- toYaml . | nindent 4 }}
@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       labels:
-        app: mo
+        app: os2mo-init
     spec:
       containers:
         - name: os2mo-init
