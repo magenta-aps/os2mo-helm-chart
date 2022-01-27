@@ -41,6 +41,7 @@ os2mo:
       tag: latest
       pullPolicy: Always
     config: {}
+    log_level: INFO
   resources:
     requests:
       memory: "1024Mi"

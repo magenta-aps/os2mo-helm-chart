@@ -4,8 +4,6 @@
 ---
 os2mo:
   replicaCount: 1
-  graphql:
-    enabled: true
   gunicorn:
     max_workers: 1
   init:
@@ -22,6 +20,7 @@ os2mo:
             title: "CVR"
             scope: "CVR"
       it_systems: {}
+    log_level: DEBUG
   environment:
     GRAPHQL_ENABLE: true
   resources:
