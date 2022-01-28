@@ -7,19 +7,66 @@ os2mo:
   gunicorn:
     max_workers: 1
   init:
-    enabled: false
+    enabled: true
     image:
       tag: latest
     config:
       root_organisation:
-        name: xyz
-        user_key: 702d97ea-4e03-11ec-8163-c70f41b96b32
+        name: xyzw
+        user_key: 702d97ea-4e03-11ec-8163-c70f41b96b31
       facets:
-        org_unit_address_type:
-          PhoneUnit:
-            title: "CVR"
-            scope: "CVR"
-      it_systems: {}
+        manager_type:
+          MunicipalDirector:
+            title: "Kommunaldirektør"
+            scope: "TEXT"
+          GroupDirector:
+            title: "Koncerndirektør"
+            scope: "TEXT"
+          DepartmentHead:
+            title: "Afdelingschef"
+            scope: "TEXT"
+          SectionHead:
+            title: "Sektionsleder"
+            scope: "TEXT"
+          ManagerLevel4:
+            title: "Leder - Niveau 4"
+            scope: "TEXT"
+          ManagerLevel5:
+            title: "Leder - Niveau 5"
+            scope: "TEXT"
+        responsibility:
+          PersonnelResponsibility:
+            title: "Personaleansvar"
+            scope: "TEXT"
+        manager_level:
+          Level0:
+            title: "Niveau 0"
+            scope: "TEXT"
+          Level1:
+            title: "Niveau 1"
+            scope: "TEXT"
+          Level2:
+            title: "Niveau 2"
+            scope: "TEXT"
+          Level3:
+            title: "Niveau 3"
+            scope: "TEXT"
+          Level4:
+            title: "Niveau 4"
+            scope: "TEXT"
+          Level5:
+            title: "Niveau 5"
+            scope: "TEXT"
+#    config:
+#      root_organisation:
+#        name: xyz
+#        user_key: 702d97ea-4e03-11ec-8163-c70f41b96b32
+#      facets:
+#        org_unit_address_type:
+#          PhoneUnit:
+#            title: "CVR"
+#            scope: "CVR"
+#      it_systems: {}
     log_level: DEBUG
   environment:
     GRAPHQL_ENABLE: true
