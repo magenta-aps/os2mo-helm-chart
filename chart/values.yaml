@@ -167,6 +167,7 @@ omada:
     pullPolicy: Always
   it_system_user_key: omada_ad_guid
   odata_url: "MUST BE OVERRIDDEN"
+  host_header: null
   ntlm:
     enabled: false
   cronjob_schedule: "0 6 * * *"

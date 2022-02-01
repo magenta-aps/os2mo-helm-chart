@@ -48,9 +48,11 @@ spec:
               value: "{{ .Values.omada.odata_url }}"
             - name: MAX_WORKERS
               value: "1"
-            {{- if .Values.omada.ntlm.enabled }}
+            {{- if .Values.omada.host_header }}
             - name: OMADA_HOST_HEADER
-              value: "{{ .Values.omada.ntlm.host_header }}"
+              value: "{{ .Values.omada.host_header }}"
+            {{- end }}
+            {{- if .Values.omada.ntlm.enabled }}
             - name: OMADA_NTLM_USERNAME
               valueFrom:
                 secretKeyRef:
