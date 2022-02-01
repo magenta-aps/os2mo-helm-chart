@@ -48,6 +48,20 @@ spec:
               value: "{{ .Values.omada.odata_url }}"
             - name: MAX_WORKERS
               value: "1"
+            {{- if .Values.omada.ntlm.enabled }}
+            - name: OMADA_HOST_HEADER
+              value: "{{ .Values.omada.ntlm.host_header }}"
+            - name: OMADA_NTLM_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: omada-ntml-secret
+                  key: ntlm_username
+            - name: OMADA_NTLM_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: omada-ntlm-secret
+                  key: ntlm_password
+            {{- end }}
           ports:
             - containerPort: 80
           resources:
