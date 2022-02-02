@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.0.0 - 2022-02-02
+------------------
+
+[#48328] Enable Kubernetes liveness and readiness probes per default
+
 1.8.0 - 2022-02-02
 ------------------
 
