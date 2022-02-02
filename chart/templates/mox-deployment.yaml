@@ -26,6 +26,11 @@ spec:
     spec:
       containers:
         - name: mox
+          {{- if ne .Values.lora.image.tag "latest" }}
+            {{- if and (.Values.lora.probes.enabled) (semverCompare "<3.3.0" .Values.lora.image.tag) }}
+              {{- fail "LoRa version must be at least 3.3.0 when probes are enabled" }}
+            {{- end }}
+          {{- end }}
           image: "{{ .Values.lora.image.repository }}:{{ .Values.lora.image.tag }}"
           imagePullPolicy: {{ .Values.lora.image.pullPolicy }}
           env:
