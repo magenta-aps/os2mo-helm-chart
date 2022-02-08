@@ -31,7 +31,7 @@ spec:
       containers:
         - name: mo
           {{- if ne .Values.os2mo.image.tag "latest" }}
-            {{- if and (.Values.os2mo.probes.enabled) (semverCompare "<3.24.0" .Values.os2mo.image.tag) }}
+            {{- if and (.Values.os2mo.probes.enabled) (contains "." .Values.os2mo.image.tag) (semverCompare "<3.24.0" .Values.os2mo.image.tag) }}
               {{- fail "MO version must be at least 3.24.0 when probes are enabled" }}
             {{- end }}
           {{- end }}
