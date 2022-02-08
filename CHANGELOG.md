@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.1.2 - 2022-02-08
+------------------
+
+[#48474] Actually add proper support for image pullSecret
+
 2.1.1 - 2022-02-08
 ------------------
 
