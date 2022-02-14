@@ -6,6 +6,8 @@
 annotations:
   chart_repository: "https://git.magenta.dk/rammearkitektur/os2mo-helm-chart"
 
+network_policies: true
+
 ingress:
   # Must be 'nginx' for basic-auth to work
   class: "nginx"
