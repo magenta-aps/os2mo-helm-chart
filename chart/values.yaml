@@ -192,4 +192,4 @@ initContainers:
 nameOverride: ""
 fullnameOverride: ""
 
-load_fixture: false
+fixture: null
