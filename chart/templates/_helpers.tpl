@@ -165,3 +165,37 @@ app.kubernetes.io/name: mox-db
 app.kubernetes.io/component: database
 {{ include "common.selectorLabels" . }}
 {{- end }}
+
+{{/*
+Omada labels
+*/}}
+{{- define "omada.labels" -}}
+{{ include "omada.selectorLabels" . }}
+{{ include "common.labels" . }}
+{{- end }}
+
+{{/*
+Omada Selector labels
+*/}}
+{{- define "omada.selectorLabels" -}}
+app.kubernetes.io/name: omada
+app.kubernetes.io/component: integration
+{{ include "common.selectorLabels" . }}
+{{- end }}
+
+{{/*
+Omada-Cronjob labels
+*/}}
+{{- define "omada-cronjob.labels" -}}
+{{ include "omada-cronjob.selectorLabels" . }}
+{{ include "common.labels" . }}
+{{- end }}
+
+{{/*
+Omada-Cronjob Selector labels
+*/}}
+{{- define "omada-cronjob.selectorLabels" -}}
+app.kubernetes.io/name: omada-cronjob
+app.kubernetes.io/component: integration
+{{ include "common.selectorLabels" . }}
+{{- end }}

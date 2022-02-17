@@ -7,15 +7,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: omada-service
-  labels:
-    app: omada
-  {{- with .Values.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "omada.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   selector:
-    app: omada
+    {{- include "omada.selectorLabels" . | nindent 4 }}
   ports:
     - name: "8080"
       port: 8080

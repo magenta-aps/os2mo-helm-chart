@@ -7,22 +7,25 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: omada-deployment
-  labels:
-    app: omada
-  {{- with .Values.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "omada.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   selector:
     matchLabels:
-      app: omada
+      {{- include "omada.selectorLabels" . | nindent 6 }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: omada
+        {{- include "omada.labels" . | nindent 8 }}
     spec:
       containers:
         - name: omada

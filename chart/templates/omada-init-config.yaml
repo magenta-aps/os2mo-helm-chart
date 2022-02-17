@@ -7,12 +7,15 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: omada-init-config
-  labels:
-    app: omada
-  {{- with .Values.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "omada.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 data:
   config: |
     facets:

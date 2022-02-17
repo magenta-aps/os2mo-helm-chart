@@ -8,17 +8,23 @@ apiVersion: {{ ternary "batch/v1beta1" "batch/v1" (.Capabilities.APIVersions.Has
 kind: CronJob
 metadata:
   name: omada-sync-cronjob
-  labels:
-    app: omada
-  {{- with .Values.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "omada-cronjob.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   schedule: {{ .Values.omada.cronjob_schedule }}
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            {{- include "omada-cronjob.labels" . | nindent 8 }}
         spec:
           containers:
             - name: omada-sync-cronjob
