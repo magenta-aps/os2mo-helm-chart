@@ -35,6 +35,17 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Create the name of the service account to use
+*/}}
+{{- define "os2mo.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "os2mo.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "os2mo.labels" -}}
@@ -52,15 +63,4 @@ Selector labels
 {{- define "os2mo.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "os2mo.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- end }}
-
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "os2mo.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "os2mo.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
 {{- end }}
