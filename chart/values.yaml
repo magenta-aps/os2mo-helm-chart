@@ -4,7 +4,11 @@
 ---
 # Annotations to de applied to all resources
 annotations:
-  chart_repository: "https://git.magenta.dk/rammearkitektur/os2mo-helm-chart"
+  chart_source: "https://git.magenta.dk/rammearkitektur/os2mo-helm-chart"
+
+labels:
+  # Should be override by deployment tool (Flux, ArgoCD, etc.)
+  app.kubernetes.io/created-by: Helm
 
 ingress:
   # Must be 'nginx' for basic-auth to work

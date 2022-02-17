@@ -48,9 +48,8 @@ Create the name of the service account to use
 {{/*
 Common labels
 */}}
-{{- define "os2mo.labels" -}}
+{{- define "common.labels" -}}
 helm.sh/chart: {{ include "os2mo.chart" . }}
-{{ include "os2mo.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -60,7 +59,25 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "os2mo.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "os2mo.name" . }}
+{{- define "common.selectorLabels" -}}
 app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/part-of: {{ include "os2mo.name" . }}
+{{- end }}
+
+{{/*
+DIPEX labels
+*/}}
+{{- define "dipex.labels" -}}
+{{ include "dipex.selectorLabels" . }}
+{{ include "common.labels" . }}
+{{- end }}
+
+{{/*
+DIPEX Selector labels
+*/}}
+{{- define "dipex.selectorLabels" -}}
+app.kubernetes.io/name: dipex
+app.kubernetes.io/component: integration
+{{ include "common.selectorLabels" . }}
+{{- end }}
 {{- end }}
