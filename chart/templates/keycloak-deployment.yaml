@@ -6,23 +6,26 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: keycloak-deployment
-  labels:
-    app: keycloak
-  {{- with .Values.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "keycloak.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: keycloak
+      {{- include "keycloak.selectorLabels" . | nindent 6 }}
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: keycloak
+        {{- include "keycloak.labels" . | nindent 8 }}
     spec:
       volumes:
         - name: keycloak-realm-json

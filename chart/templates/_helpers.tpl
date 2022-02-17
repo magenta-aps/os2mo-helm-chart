@@ -80,4 +80,20 @@ app.kubernetes.io/name: dipex
 app.kubernetes.io/component: integration
 {{ include "common.selectorLabels" . }}
 {{- end }}
+
+{{/*
+Keycloak labels
+*/}}
+{{- define "keycloak.labels" -}}
+{{ include "keycloak.selectorLabels" . }}
+{{ include "common.labels" . }}
+{{- end }}
+
+{{/*
+Keycloak Selector labels
+*/}}
+{{- define "keycloak.selectorLabels" -}}
+app.kubernetes.io/name: keycloak
+app.kubernetes.io/component: iam
+{{ include "common.selectorLabels" . }}
 {{- end }}
