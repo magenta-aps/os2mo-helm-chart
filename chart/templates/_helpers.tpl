@@ -131,3 +131,20 @@ app.kubernetes.io/name: os2mo-init
 app.kubernetes.io/component: initializer
 {{ include "common.selectorLabels" . }}
 {{- end }}
+
+{{/*
+MOX labels
+*/}}
+{{- define "mox.labels" -}}
+{{ include "mox.selectorLabels" . }}
+{{ include "common.labels" . }}
+{{- end }}
+
+{{/*
+MOX Selector labels
+*/}}
+{{- define "mox.selectorLabels" -}}
+app.kubernetes.io/name: mox
+app.kubernetes.io/component: api
+{{ include "common.selectorLabels" . }}
+{{- end }}
