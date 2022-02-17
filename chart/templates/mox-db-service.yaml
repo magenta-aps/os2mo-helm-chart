@@ -8,13 +8,18 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.database.host }}
-  {{- with .Values.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  labels:
+    {{- include "mox-db.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   selector:
-    app: mox-db
+    {{- include "mox-db.selectorLabels" . | nindent 4 }}
   ports:
     - name: "5432"
       port: 5432

@@ -148,3 +148,20 @@ app.kubernetes.io/name: mox
 app.kubernetes.io/component: api
 {{ include "common.selectorLabels" . }}
 {{- end }}
+
+{{/*
+MOXDB labels
+*/}}
+{{- define "mox-db.labels" -}}
+{{ include "mox-db.selectorLabels" . }}
+{{ include "common.labels" . }}
+{{- end }}
+
+{{/*
+MOXDB Selector labels
+*/}}
+{{- define "mox-db.selectorLabels" -}}
+app.kubernetes.io/name: mox-db
+app.kubernetes.io/component: database
+{{ include "common.selectorLabels" . }}
+{{- end }}
