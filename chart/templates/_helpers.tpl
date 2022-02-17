@@ -97,3 +97,37 @@ app.kubernetes.io/name: keycloak
 app.kubernetes.io/component: iam
 {{ include "common.selectorLabels" . }}
 {{- end }}
+
+{{/*
+OS2mo labels
+*/}}
+{{- define "os2mo.labels" -}}
+{{ include "os2mo.selectorLabels" . }}
+{{ include "common.labels" . }}
+{{- end }}
+
+{{/*
+OS2mo Selector labels
+*/}}
+{{- define "os2mo.selectorLabels" -}}
+app.kubernetes.io/name: os2mo
+app.kubernetes.io/component: api
+{{ include "common.selectorLabels" . }}
+{{- end }}
+
+{{/*
+OS2mo-init labels
+*/}}
+{{- define "os2mo-init.labels" -}}
+{{ include "os2mo-init.selectorLabels" . }}
+{{ include "common.labels" . }}
+{{- end }}
+
+{{/*
+OS2mo-init Selector labels
+*/}}
+{{- define "os2mo-init.selectorLabels" -}}
+app.kubernetes.io/name: os2mo-init
+app.kubernetes.io/component: initializer
+{{ include "common.selectorLabels" . }}
+{{- end }}

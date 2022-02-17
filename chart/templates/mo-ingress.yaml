@@ -6,10 +6,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: mo-ingress
-  {{- with .Values.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 {{ if ne .Values.ingress.class "" }}
     kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 {{ if .Values.ingress.whitelist }}
@@ -21,6 +21,11 @@ metadata:
     nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required - OS2mo'
 {{ end }}
 {{ end }}
+  labels:
+    {{- include "os2mo.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   {{ if .Values.ingress.tls_secret }}
   tls:

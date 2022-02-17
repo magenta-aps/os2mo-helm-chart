@@ -7,19 +7,22 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: mo-init-job
-  labels:
-    app: os2mo-init
-  {{- with .Values.annotations }}
   annotations:
-  {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+  labels:
+    {{- include "os2mo-init.labels" . | nindent 4 }}
+    {{- with .Values.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   template:
     metadata:
       labels:
-        app: os2mo-init
+        {{- include "os2mo-init.labels" . | nindent 8 }}
     spec:
       containers:
         - name: os2mo-init
