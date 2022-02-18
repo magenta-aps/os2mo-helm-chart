@@ -36,7 +36,7 @@ spec:
             - name: wait-for-omada
               image: curlimages/curl
               command: ["/bin/sh","-c"]
-              args: ['echo -e "Waiting for Omada to be ready\c"; while [ $(curl -ksw "%{http_code}" "http://omada-service:8080/ready" -o /dev/null) -ne 200 ]; do sleep 1; echo -e ".\c"; done; echo "OK"']
+              args: ['while [ $(curl -ksw "%{http_code}" "http://omada-service:8080/ready" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for Omada to be ready"; done; echo "OK"']
               resources:
                 requests:
                   memory: "64Mi"
