@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.3.0 - 2022-02-18
+------------------
+
+[#48629] Add support for custom keycloak admin password
+
 2.2.0 - 2022-02-17
 ------------------
 
