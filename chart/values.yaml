@@ -127,6 +127,7 @@ keycloak:
       pullPolicy: Always
     lora_realm_enabled: false
     lora_dipex_client_enabled: false
+    dipex_client_secret: null
     environment: {}
   startupProbe:
     failureThreshold: 60
