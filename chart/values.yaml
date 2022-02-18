@@ -138,6 +138,7 @@ keycloak:
     limits:
       memory: "4096Mi"
       cpu: "2000m"
+  admin_password: null
 
 database:
   # Determine whether to deploy the database as a pod
