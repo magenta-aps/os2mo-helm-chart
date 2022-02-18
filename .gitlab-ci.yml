@@ -139,9 +139,9 @@ deploy_review:
     - helm cm-push --version=$REVIEW_VERSION --force chart magenta-chartmuseum
   environment:
     name: review/$CI_MERGE_REQUEST_IID
-    url: $REVIEW_URL
+    url: "https://www.google.com/"
     on_stop: stop_review
-    auto_stop_in: 1 week # lol
+    auto_stop_in: 1 week
   rules:
     - if: $CI_MERGE_REQUEST_ID
       when: manual
