@@ -67,6 +67,12 @@ spec:
             {{- $protocol := ternary "http" "https" $is_http }}
             - name: KEYCLOAK_AUTH_SERVER_URL
               value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
+            - name: KEYCLOAK_MO_CLIENT
+            {{- if include "useTerraformRealmBuilder" . }}
+              value: "mo-frontend"
+            {{- else }}
+              value: "mo"
+            {{- end }}
           envFrom:
 {{ if .Values.os2mo.external_env_config_map_name }}
           - configMapRef:

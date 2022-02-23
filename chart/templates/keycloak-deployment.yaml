@@ -24,13 +24,16 @@ spec:
       labels:
         app: keycloak
     spec:
+      {{- if not (include "useTerraformRealmBuilder" .) }}
       volumes:
         - name: keycloak-realm-json
           emptyDir: {}
+      {{- end }}
       containers:
         - name: keycloak
           image: "{{ .Values.keycloak.image.repository }}:{{ .Values.keycloak.image.tag }}"
           imagePullPolicy: {{ .Values.keycloak.image.pullPolicy }}
+          {{- if not (include "useTerraformRealmBuilder" .) }}
           args: [
               "-b", "0.0.0.0",
               "-Dkeycloak.migration.action=import",
@@ -38,6 +41,7 @@ spec:
               "-Dkeycloak.migration.file=/keycloak-realm-json/keycloak-realm.json",
               "-Dkeycloak.migration.strategy=OVERWRITE_EXISTING"
           ]
+          {{- end }}
           env:
             - name: KEYCLOAK_USER
               value: admin
@@ -73,10 +77,12 @@ spec:
             - name: JDBC_PARAMS
               value: "sslmode={{ .Values.database.sslmode }}"
             {{ end }}
+          {{- if not (include "useTerraformRealmBuilder" .) }}
           volumeMounts:
             - name: keycloak-realm-json
               mountPath: /keycloak-realm-json
               readOnly: true
+          {{- end }}
           # Liveness probe configuration
           livenessProbe:
             httpGet:
@@ -136,7 +142,8 @@ spec:
                   key: db_password
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
-        - name: keycloak-gen
+        {{- if not (include "useTerraformRealmBuilder" .) }}
+        - name: keycloak-realm-builder
           image: "{{ .Values.keycloak.builder.image.repository }}:{{ .Values.keycloak.builder.image.tag }}"
           imagePullPolicy: {{ .Values.keycloak.builder.image.pullPolicy }}
           envFrom:
@@ -179,3 +186,4 @@ spec:
           volumeMounts:
             - name: keycloak-realm-json
               mountPath: /keycloak-realm-json
+        {{- end }}

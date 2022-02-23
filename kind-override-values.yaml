@@ -30,12 +30,6 @@ os2mo:
     limits:
       memory: "1536Mi"
       cpu: "1000m"
-  probes:
-    enabled: true
-
-lora:
-  probes:
-    enabled: true
 
 keycloak:
   builder:
@@ -66,4 +60,4 @@ keycloak:
 omada:
   cronjob_schedule: "0/2 * * * *"
 
-load_fixture: false
+fixture: "kolding"
