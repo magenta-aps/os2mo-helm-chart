@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.4.2 - 2022-02-23
+------------------
+
+[#48827] Fixed MAKE-SUPERUSER bug in mox-init container
+
 2.4.1 - 2022-02-23
 ------------------
 
