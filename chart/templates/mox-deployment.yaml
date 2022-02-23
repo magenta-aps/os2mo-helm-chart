@@ -94,8 +94,10 @@ spec:
               value: "{{ .Values.database.user }}"
             - name: POSTGRES_USER_SUFFIX
               value: "{{ .Values.database.username_suffix }}"
+            {{- if .Values.lora.init.make_superuser }}
             - name: MAKE_SUPERUSER
-              value: "{{ .Values.lora.init.make_superuser }}"
+              value: "true"
+            {{- end }}
             {{ if ne .Values.database.sslmode "" }}
             - name: POSTGRES_SSL
               value: {{ .Values.database.sslmode }}
