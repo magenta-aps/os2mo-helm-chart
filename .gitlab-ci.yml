@@ -60,6 +60,7 @@ include:
         echo "deb https://baltocdn.com/helm/stable/debian/ all main" |
         tee /etc/apt/sources.list.d/helm-stable-debian.list
     - apt-get update && apt-get install -y helm
+    - curl -sL https://github.com/instrumenta/kubeval/releases/latest/download/kubeval-linux-amd64.tar.gz | tar xz -C /usr/bin/
 
 .lint-template: &lint
   <<: *install-deps
@@ -92,7 +93,8 @@ Lint Chart:
 Generate Project:
   <<: *test
   script:
-    - helm template --kube-version 1.19.11 chart/
+    - helm template --kube-version 1.19.11 chart
+    - helm template --kube-version 1.19.11 chart | kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
 
 
 Release version:
