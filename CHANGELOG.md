@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.8.0 - 2022-03-08
+------------------
+
+[#49103] Add support for external keycloak admin secret
+
 2.7.0 - 2022-02-28
 ------------------
 
