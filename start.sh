@@ -21,6 +21,7 @@ if [ -z "${OS2MO_CLUSTER_EXISTS}" ]; then
     echo ""
 fi
 
+kubectl config use-context kind-os2mo
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 
 helm repo add mittwald https://helm.mittwald.de
