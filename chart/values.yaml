@@ -35,6 +35,10 @@ os2mo:
   port: 80
   gunicorn:
     max_workers: 1
+#  triggers:
+#    http_endpoints: []
+#    fetch_trigger_timeout: 5
+#    run_trigger_timeout: 5
   init:
     enabled: false
     image:

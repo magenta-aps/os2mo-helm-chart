@@ -10,6 +10,7 @@ os2mo:
     enabled: false
     image:
       tag: latest
+      pullPolicy: IfNotPresent
     config:
       root_organisation:
         name: xyz
@@ -22,8 +23,13 @@ os2mo:
       it_systems: {}
     log_level: DEBUG
   environment:
-    GRAPHQL_ENABLE: true
-    KEYCLOAK_VERIFY_AUDIENCE: false
+    GRAPHQL_ENABLE: 'true'
+    KEYCLOAK_VERIFY_AUDIENCE: 'false'
+    HTTP_ENDPOINTS: '["http://sdtool-service/triggers/ou/refresh"]'
+    FETCH_TRIGGER_TIMEOUT: '60'
+    RUN_TRIGGER_TIMEOUT: '60'
+#  triggers:
+#    http_endpoints: '["http://sdtool-service/triggers/ou/refresh"]'
   resources:
     requests:
       memory: "1024Mi"
@@ -33,10 +39,14 @@ os2mo:
       cpu: "1000m"
 
 lora:
+  image:
+    pullPolicy: IfNotPresent
   init:
     make_superuser: true
 
 keycloak:
+  image:
+    pullPolicy: IfNotPresent
   builder:
     lora_realm_enabled: true
     lora_dipex_client_enabled: true
@@ -64,5 +74,10 @@ keycloak:
 
 omada:
   cronjob_schedule: "0/2 * * * *"
+
+sdtool:
+  enabled: true
+  image:
+    pullPolicy: IfNotPresent
 
 fixture: "kolding"

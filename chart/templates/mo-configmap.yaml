@@ -11,6 +11,4 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 data:
-{{- range $key, $val := $.Values.os2mo.environment }}
-  {{ $key | quote }}: {{ $val | quote }}
-{{- end }}
+{{ toYaml .Values.os2mo.environment | indent 2 }}
