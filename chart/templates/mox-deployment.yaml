@@ -227,6 +227,15 @@ spec:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
+            - name: KEYCLOAK_ORGVIEWER_CLIENT_ENABLED
+              value: "{{ .Values.keycloak.builder.orgviewer_client_enabled }}"
+            {{- if .Values.keycloak.builder.orgviewer_client_enabled }}
+            - name: KEYCLOAK_ORGVIEWER_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-orgviewer-client-secret
+                  key: client_secret
+            {{- end }}
             - name: KEYCLOAK_LORA_REALM_ENABLED
               value: "{{ .Values.keycloak.builder.lora_realm_enabled }}"
             {{- if .Values.keycloak.builder.lora_realm_enabled }}
