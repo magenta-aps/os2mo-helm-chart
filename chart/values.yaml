@@ -201,6 +201,28 @@ omada:
       memory: "1024Mi"
       cpu: "250m"
 
+sd_changed_at:
+  enabled: false
+  image:
+    repository: magentaaps/os2mo-sd-changed-at
+    tag: latest
+    pullPolicy: Always
+  mora_base: http://mo-service:5000
+  sd_secret_name: sd-secret
+  sd_global_from_date: null
+  sd_job_function: null
+  sd_monthly_hourly_divide: null
+  sd_import_run_db: null
+  environment: {}
+  cronjob_schedule: "0 6 * * *"
+  resources:
+    requests:
+      memory: "1536Mi"
+      cpu: "1000m"
+    limits:
+      memory: "2048Mi"
+      cpu: "2000m"
+
 sdtool:
   enabled: false
   image:
