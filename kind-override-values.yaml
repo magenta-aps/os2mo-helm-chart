@@ -40,6 +40,7 @@ keycloak:
   builder:
     lora_realm_enabled: true
     lora_dipex_client_enabled: true
+    orgviewer_client_enabled: true
     environment:
       KEYCLOAK_SSL_REQUIRED_MO: none
       KEYCLOAK_SSL_REQUIRED_LORA: none
@@ -69,3 +70,20 @@ sdtool:
   enabled: false
 
 fixture: "kolding"
+
+orgviewer:
+  med:
+    enabled: true
+    url: http://orgviewer-med.example.com
+    org_uuid: "f06ee470-9f17-566f-acbe-e938112d46d9"
+    title: "Medarbejder organisation"
+    ingress:
+      hostname: orgviewer-med.example.com
+
+  adm:
+    enabled: true
+    url: http://orgviewer-adm.example.com
+    org_uuid: "fb2d158f-114e-5f67-8365-2c520cf10b58"
+    title: "Administrativ organisation"
+    ingress:
+      hostname: orgviewer-adm.example.com

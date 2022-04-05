@@ -1,0 +1,87 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.orgviewer.adm.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orgviewer-adm-deployment
+  labels:
+    app: orgviewer-adm
+spec:
+  selector:
+    matchLabels:
+      app: orgviewer-adm
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: orgviewer-adm
+    spec:
+      containers:
+        - name: orgviewer-adm
+          image: "{{ .Values.orgviewer.image.repository }}:{{ .Values.orgviewer.image.tag }}"
+          imagePullPolicy: {{ .Values.orgviewer.image.pullPolicy }}
+          env:
+            {{- if not .Values.orgviewer.adm.url }}
+              {{- fail ".Values.orgviewer.adm.url must be set" }}
+            {{- end }}
+            {{- if not .Values.orgviewer.adm.title }}
+              {{- fail ".Values.orgviewer.adm.title must be set" }}
+            {{- end }}
+            {{- if not .Values.orgviewer.adm.org_uuid }}
+              {{- fail ".Values.orgviewer.adm.org_uuid must be set" }}
+            {{- end }}
+
+            - name: GLOBAL_API_URL
+              value: {{ .Values.orgviewer.adm.url }}
+
+            - name: GLOBAL_APP_TITLE
+              value: {{ .Values.orgviewer.adm.title }}
+
+            - name: GLOBAL_API_ROOT_UUID
+              value: {{ .Values.orgviewer.adm.org_uuid }}
+
+            - name: KEYCLOAK_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-orgviewer-client-secret
+                  key: client_secret
+
+            - name: KEYCLOAK_BASEURL
+              value: "http://keycloak-service:8080/auth"
+
+            - name: PROXY_PASS_TO
+              value: "http://mo-service:5000"
+
+            - name: GLOBAL_ORG_PERSON_RELATION
+              value: "engagement"
+
+            - name: CUSTOMER
+              value: "default"
+
+            - name: VUE_APP_TREE_LAYOUT
+              value: "vertical"
+          ports:
+            - containerPort: 80
+          resources:
+            {{- toYaml .Values.orgviewer.adm.resources | nindent 12 }}
+      initContainers:
+        - name: wait-for-keycloak
+          image: curlimages/curl
+          command: ["/bin/sh","-c"]
+          args: ['while [ $(curl -ksw "%{http_code}" "http://keycloak-service:8080/auth/realms/master" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for Keycloak to be ready"; done; echo "OK"']
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+        # What we are really waiting for is for keycloak to be up _and_ have
+        # our client registered.
+        - name: wait-for-mox
+          image: curlimages/curl
+          command: ["/bin/sh","-c"]
+          args: ['while [ $(curl -ksw "%{http_code}" "http://mox-service:8080/site-map" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for MOX to be ready"; done; echo "OK"']
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+      restartPolicy: Always
+{{- end }}

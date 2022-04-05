@@ -145,6 +145,7 @@ keycloak:
       pullPolicy: Always
     lora_realm_enabled: false
     lora_dipex_client_enabled: false
+    orgviewer_client_enabled: false
     environment: {}
   startupProbe:
     failureThreshold: 60
@@ -252,3 +253,41 @@ nameOverride: ""
 fullnameOverride: ""
 
 fixture: null
+
+orgviewer:
+  image:
+    repository: magentaaps/os2orgviewer
+    tag: "2.1.0"
+    pullPolicy: Always
+
+  med:
+    enabled: false
+    url: null
+    org_uuid: null
+    title: null
+    ingress:
+      hostname: null
+      tls_secret: null
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "100m"
+      limits:
+        memory: "1024Mi"
+        cpu: "250m"
+
+  adm:
+    enabled: false
+    url: null
+    org_uuid: null
+    title: null
+    ingress:
+      hostname: null
+      tls_secret: null
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "100m"
+      limits:
+        memory: "1024Mi"
+        cpu: "250m"
