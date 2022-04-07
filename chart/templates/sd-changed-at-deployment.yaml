@@ -76,7 +76,7 @@ spec:
             {{- toYaml .Values.sd_changed_at.resources | nindent 12 }}
           volumeMounts:
             mountPath: "/mnt/dipex"
-            name: run-db-pv
+            name: sd-pv
       initContainers:
         - name: wait-for-keycloak
           image: curlimages/curl
@@ -97,7 +97,7 @@ spec:
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
       volumes:
-        - name: run-db-pv
+        - name: sd-pv
           persistentVolumeClaim:
-            claimName: run-db-pvc
+            claimName: sd-pvc
 {{- end }}
