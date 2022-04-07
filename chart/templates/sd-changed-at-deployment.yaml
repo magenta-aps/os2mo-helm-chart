@@ -52,7 +52,7 @@ spec:
 
             # The three ENVs below require an sd-secret created in Flux
 
-            - name: SD_USERNAME
+            - name: SD_USER
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.sd_changed_at.sd_secret_name }}
@@ -62,7 +62,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.sd_changed_at.sd_secret_name }}
                   key: sd_password
-            - name: SD_INSTITUTION
+            - name: SD_INSTITUTION_IDENTIFIER
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.sd_changed_at.sd_secret_name }}
