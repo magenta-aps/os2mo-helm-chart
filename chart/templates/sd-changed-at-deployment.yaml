@@ -75,8 +75,8 @@ spec:
           resources:
             {{- toYaml .Values.sd_changed_at.resources | nindent 12 }}
           volumeMounts:
-            mountPath: "/mnt/dipex"
-            name: sd-pv
+            - name: sd-pv
+              mountPath: "/mnt/dipex"
       initContainers:
         - name: wait-for-keycloak
           image: curlimages/curl
