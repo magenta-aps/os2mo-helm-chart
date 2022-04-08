@@ -50,6 +50,20 @@ spec:
             - name: SD_IMPORT_RUN_DB
               value: "{{ .Values.sd_changed_at.sd_import_run_db }}"
 
+            - name: MO_URL
+              value: "http://mo-service:5000"
+            - name: AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: AUTH_REALM
+              value: "mo"
+            - name: CLIENT_ID
+              value: "dipex"
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
+
             # The three ENVs below require an sd-secret created in Flux
 
             - name: SD_USER
