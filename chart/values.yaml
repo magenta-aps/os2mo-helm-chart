@@ -204,6 +204,11 @@ omada:
 
 sd_changed_at:
   enabled: false
+  init:
+    image:
+      repository: magentaaps/os2mo-sd-changed-at-init
+      tag: master
+      pullPolicy: Always
   image:
     repository: magentaaps/os2mo-sd-changed-at
     tag: latest
