@@ -7,7 +7,7 @@
 apiVersion: {{ ternary "batch/v1beta1" "batch/v1" (.Capabilities.APIVersions.Has "batch/v1beta1/CronJob") }}
 kind: CronJob
 metadata:
-  name: sd-changed-at
+  name: cronjob-sd-changed-at
   labels:
     app: sd-changed-at
   {{- with .Values.annotations }}
@@ -21,10 +21,10 @@ spec:
       template:
         spec:
           containers:
-            - name: sd-changed-at
+            - name: cronjob-sd-changed-at
               image: curlimages/curl
               command: ["/bin/sh","-c"]
-              args: [ 'curl -X POST "http://sd-changed-at-service:5000/trigger"' ]
+              args: [ 'curl "http://sd-changed-at-service:8000/trigger"' ]
               resources:
                 requests:
                   memory: "64Mi"
@@ -36,7 +36,7 @@ spec:
             - name: wait-for-sd-changed-at
               image: curlimages/curl
               command: ["/bin/sh","-c"]
-              args: ['while [ $(curl -ksw "%{http_code}" "http://sd-changed-at-service:5000/" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for SD-changed-at to be ready"; done; echo "OK"']
+              args: ['while [ $(curl -ksw "%{http_code}" "http://sd-changed-at-service:8000/" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for SD-changed-at to be ready"; done; echo "OK"']
               resources:
                 requests:
                   memory: "64Mi"
