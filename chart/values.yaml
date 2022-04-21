@@ -147,6 +147,7 @@ keycloak:
     lora_dipex_client_enabled: false
     orgviewer_client_enabled: false
     environment: {}
+  admin_secret_name: null
   startupProbe:
     failureThreshold: 60
     periodSeconds: 5
