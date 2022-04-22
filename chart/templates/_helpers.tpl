@@ -64,17 +64,3 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
-
-{{/*
-Boolean function to determine if the Terraform version of the Keycloak
-realm builder should be used
-*/}}
-{{- define "useTerraformRealmBuilder" -}}
-{{- if not (contains "." .Values.keycloak.builder.image.tag) }}
-true
-{{- else }}
-{{- if semverCompare ">=3.0.0" .Values.keycloak.builder.image.tag }}
-true
-{{- end }}
-{{- end }}
-{{- end }}
