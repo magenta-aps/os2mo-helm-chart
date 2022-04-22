@@ -162,7 +162,7 @@ spec:
 
           {{- if ne .Values.keycloak.builder.image.tag "latest" }}
             {{- if (semverCompare "<3.0.0" .Values.keycloak.builder.image.tag) }}
-              {{- fail "Realm builder version must be at least 3.0.0" }}
+              {{- fail "Realm builder version must be at least 3.0.0 when probes are enabled" }}
             {{- end }}
           {{- end }}
         - name: keycloak-realm-builder
@@ -173,7 +173,6 @@ spec:
                 name: keycloak-gen-config
           env:
             {{ include "keycloak_terraform_db_connection" .  | nindent 12 }}
-
             - name: KEYCLOAK_ADMIN_USERNAME
               value: "admin"
             - name: KEYCLOAK_ADMIN_PASSWORD
