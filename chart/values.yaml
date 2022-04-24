@@ -165,7 +165,6 @@ keycloak:
       pullPolicy: Always
     lora_realm_enabled: false
     lora_dipex_client_enabled: false
-    orgviewer_client_enabled: false
     environment: {}
   integrationbuilder:
     image:
