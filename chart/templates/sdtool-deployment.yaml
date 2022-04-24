@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 {{- if .Values.sdtool.enabled }}
+{{- $keycloak_client_id := "integration_sdtool" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -36,11 +37,11 @@ spec:
             - name: AUTH_REALM
               value: "mo"
             - name: CLIENT_ID
-              value: "dipex"
+              value: $keycloak_client_id
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: keycloak-dipex-secret
+                  name: sdtool-client-secret
                   key: client_secret
 
             # The three ENVs below require an sd-secret created in Flux
@@ -74,4 +75,33 @@ spec:
           args: ['while [ $(curl -ksw "%{http_code}" "http://keycloak-service:8080/auth/realms/master" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for Keycloak to be ready"; done; echo "OK"']
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
+        - name: create-client-secret
+          image: "{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
+          imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
+          env:
+            {{- $use_ssl := (ne .Values.database.sslmode "") }}
+            {{- $sslmode := ternary "require" "disable" $use_ssl }}
+            # Postgres state connection
+            - name: POSTGRES_CONNECTION_STRING
+              value: "postgres://keycloak:$(KEYCLOAK_DB_PASSWORD)@{{ .Values.database.host }}/keycloak?sslmode={{ $sslmode }}"
+            - name: POSTGRES_SCHEMA_NAME
+              value: terraform_remote_state_sdtool
+
+            # Keycloak REST connection
+            - name: TF_VAR_admin_password
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin-secret
+                  key: admin_password
+
+            # Configuration of the client
+            - name: TF_VAR_client_name
+              value: $keycloak_client_id
+            - name: TF_VAR_client_roles
+              value: '["admin"]'
+            - name: TF_VAR_client_secret
+              valueFrom:
+                secretKeyRef:
+                  name: sdtool-client-secret
+                  key: client_secret
 {{- end }}

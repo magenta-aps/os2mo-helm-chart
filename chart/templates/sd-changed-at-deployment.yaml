@@ -116,24 +116,26 @@ spec:
           imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
           env:
             # Postgres state connection
+            {{- $use_ssl := (ne .Values.database.sslmode "") }}
+            {{- $sslmode := ternary "require" "disable" $use_ssl }}
             - name: POSTGRES_CONNECTION_STRING
               value: "postgres://keycloak:$(KEYCLOAK_DB_PASSWORD)@{{ .Values.database.host }}/keycloak?sslmode={{ $sslmode }}"
             - name: POSTGRES_SCHEMA_NAME
               value: terraform_remote_state_sd_changed_at
 
             # Keycloak REST connection
-            - name: TF_VAR_KEYCLOAK_ADMIN_PASSWORD
+            - name: TF_VAR_admin_password
               valueFrom:
                 secretKeyRef:
                   name: keycloak-admin-secret
                   key: admin_password
 
             # Configuration of the client
-            - name: TF_VAR_keycloak_client_name
+            - name: TF_VAR_client_name
               value: $keycloak_client_id
-            - name: TF_VAR_keycloak_client_roles
+            - name: TF_VAR_client_roles
               value: '["admin"]'
-            - name: TF_VAR_keycloak_client_secret
+            - name: TF_VAR_client_secret
               valueFrom:
                 secretKeyRef:
                   name: sd-changed-at-client-secret
