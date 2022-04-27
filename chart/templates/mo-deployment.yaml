@@ -85,6 +85,9 @@ spec:
               value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
             - name: KEYCLOAK_MO_CLIENT
               value: "mo-frontend"
+
+            - name: CONFDB_SHOW_ORG_UNIT_BUTTON
+              value: {{ .Values.sdtool.enabled | quote }}
           envFrom:
 {{ if .Values.os2mo.external_env_config_map_name }}
           - configMapRef:
