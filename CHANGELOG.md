@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.16.0 - 2022-04-27
+-------------------
+
+[#49970] Flag to toggle sd-changed-at cronjob enablement
+
 2.15.0 - 2022-04-22
 -------------------
 
