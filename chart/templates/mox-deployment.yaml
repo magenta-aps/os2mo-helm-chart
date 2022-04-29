@@ -210,7 +210,11 @@ spec:
             - name: KEYCLOAK_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
+                  {{- if .Values.keycloak.admin_secret }}
+                  name: {{ .Values.keycloak.admin_secret }}
+                  {{- else }}
                   name: keycloak-admin-secret
+                  {{- end }}
                   key: admin_password
             - name: KEYCLOAK_URL
               value: "http://keycloak-service:8080"
