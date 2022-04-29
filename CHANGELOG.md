@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.18.1 - 2022-04-29
+-------------------
+
+[#49132] Fix Keycloak admin secret bug in realm builder
+
 2.18.0 - 2022-04-28
 -------------------
 
