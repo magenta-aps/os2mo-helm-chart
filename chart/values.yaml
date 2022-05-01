@@ -98,8 +98,6 @@ os2mo:
         timeoutSeconds: 1
         failureThreshold: 3
 
-
-
 lora:
   replicaCount: 1
   image:
