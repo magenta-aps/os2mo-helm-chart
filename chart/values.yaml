@@ -74,17 +74,17 @@ os2mo:
   frontend:
     replicaCount: 1
     image:
-      repository: magentaaps/os2mo
+      repository: magentaaps/os2mo-frontend
       tag: latest
       pullPolicy: Always
       pullSecret: null
     resources:
       requests:
-        memory: "1024Mi"
-        cpu: "500m"
+        memory: "64Mi"
+        cpu: "100m"
       limits:
-        memory: "1536Mi"
-        cpu: "1000m"
+        memory: "128Mi"
+        cpu: "200m"
     probes:
       startupProbe:
         failureThreshold: 150
