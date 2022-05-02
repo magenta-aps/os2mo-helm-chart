@@ -90,3 +90,32 @@ postgres://keycloak:$(KEYCLOAK_DB_PASSWORD)@{{ .Values.database.host }}/{{ inclu
 {{- define "mox_db_name" -}}
 {{ .Values.database.db_prefix }}_mox
 {{- end }}
+
+{{- define "wait-for-service" -}}
+- name: wait-for-{{ .name }}
+  image: curlimages/curl
+  command: ["/bin/sh","-c"]
+  args: ['while [ $(curl -ksw "%{http_code}" "http://{{ .name }}-service:{{ .port }}{{ .url }}" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for {{ .name | title }} to be ready"; done; echo "OK"']
+  resources:
+    {{- toYaml .resources | nindent 4 }}
+{{- end }}
+
+{{- define "wait-for-keycloak" -}}
+{{ ( include "wait-for-service" (dict "name" "keycloak" "port" 8080 "url" "/auth/realms/master" "resources" .Values.initContainers.resources ) ) }}
+{{- end }}
+
+{{- define "wait-for-mo" -}}
+{{ ( include "wait-for-service" (dict "name" "mo" "port" 5000 "url" "/" "resources" .Values.initContainers.resources ) ) }}
+{{- end }}
+
+{{- define "wait-for-mox" -}}
+{{ ( include "wait-for-service" (dict "name" "mox" "port" 8080 "url" "/site-map" "resources" .Values.initContainers.resources ) ) }}
+{{- end }}
+
+{{- define "wait-for-sdtool" -}}
+{{ ( include "wait-for-service" (dict "name" "sdtool" "port" 80 "url" "/triggers" "resources" .Values.initContainers.resources ) ) }}
+{{- end }}
+
+{{- define "wait-for-sd-changed-at" -}}
+{{ ( include "wait-for-service" (dict "name" "sd-changed-at" "port" 8000 "url" "/" "resources" .Values.initContainers.resources ) ) }}
+{{- end }}
