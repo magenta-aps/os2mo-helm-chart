@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.20.1 - 2022-05-02
+-------------------
+
+[#48771] Fix non backwards compatible behavior when db_prefix is unset
+
 2.20.0 - 2022-05-02
 -------------------
 
