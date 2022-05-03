@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.21.0 - 2022-05-03
+-------------------
+
+[#50058] Optional replicas count adjustment for orgviewer
+
 2.20.2 - 2022-05-02
 -------------------
 
