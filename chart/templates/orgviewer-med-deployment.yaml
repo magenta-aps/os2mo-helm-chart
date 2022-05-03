@@ -10,6 +10,7 @@ metadata:
   labels:
     app: orgviewer-med
 spec:
+  replicas: {{ .Values.orgviewer.med.replicaCount }}
   selector:
     matchLabels:
       app: orgviewer-med
