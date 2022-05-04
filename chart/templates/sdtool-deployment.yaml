@@ -46,7 +46,7 @@ spec:
 
             # The three ENVs below require an sd-secret created in Flux
 
-            - name: SD_USERNAME
+            - name: SD_USER
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.sdtool.sd_secret_name }}
@@ -56,7 +56,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.sdtool.sd_secret_name }}
                   key: sd_password
-            - name: SD_INSTITUTION
+            - name: SD_INSTITUTION_IDENTIFIER
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.sdtool.sd_secret_name }}
@@ -64,6 +64,10 @@ spec:
 
             - name: SD_TOO_DEEP
               value: {{ .Values.sdtool.sd_too_deep | quote }}
+
+          envFrom:
+            - configMapRef:
+                name: sdtool-config
           ports:
             - containerPort: 80
           resources:
