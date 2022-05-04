@@ -1,8 +1,9 @@
+---
 # SPDX-FileCopyrightText: Magenta ApS
 #
 # SPDX-License-Identifier: MPL-2.0
----
 {{- if .Values.orgviewer.med.enabled }}
+{{- $keycloak_client_id := "integration_orgviewer_med" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,6 +24,11 @@ spec:
     spec:
       containers:
         - name: orgviewer-med
+          {{- if and (ne .Values.orgviewer.image.tag "latest") (contains "." .Values.orgviewer.image.tag) }}
+            {{- if (semverCompare "<2.3.0" .Values.orgviewer.image.tag) }}
+              {{- fail "Orgviewer version must be at least 2.3.0" }}
+            {{- end }}
+          {{- end }}
           image: "{{ .Values.orgviewer.image.repository }}:{{ .Values.orgviewer.image.tag }}"
           imagePullPolicy: {{ .Values.orgviewer.image.pullPolicy }}
           env:
@@ -45,10 +51,13 @@ spec:
             - name: GLOBAL_API_ROOT_UUID
               value: {{ .Values.orgviewer.med.org_uuid }}
 
+            - name: KEYCLOAK_CLIENT_ID
+              value: {{ $keycloak_client_id }}
+
             - name: KEYCLOAK_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: keycloak-orgviewer-client-secret
+                  name: orgviewer-med-client-secret
                   key: client_secret
 
             - name: KEYCLOAK_BASEURL
@@ -72,5 +81,32 @@ spec:
       initContainers:
         {{ include "wait-for-keycloak" . | nindent 8 }}
         {{ include "wait-for-mox" . | nindent 8 }}
+        - name: create-client-secret
+          image: "{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
+          imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
+          env:
+            {{ include "keycloak_terraform_db_connection" .  | nindent 12 }}
+            - name: POSTGRES_SCHEMA_NAME
+              value: terraform_remote_state_orgviewer_med
+
+            # Keycloak REST connection
+            - name: TF_VAR_admin_password
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-admin-secret
+                  key: admin_password
+
+            # Configuration of the client
+            - name: TF_VAR_client_name
+              value: {{ $keycloak_client_id }}
+            - name: TF_VAR_client_roles
+              value: '["reader"]'
+            - name: TF_VAR_client_secret
+              valueFrom:
+                secretKeyRef:
+                  name: orgviewer-med-client-secret
+                  key: client_secret
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
       restartPolicy: Always
 {{- end }}
