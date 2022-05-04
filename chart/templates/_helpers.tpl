@@ -73,6 +73,14 @@ keycloak
 {{- end }}
 {{- end }}
 
+{{- define "keycloak_db_user" -}}
+{{- if .Values.database.db_prefix -}}
+{{ .Values.database.db_prefix }}_keycloak
+{{- else -}}
+keycloak
+{{- end }}
+{{- end }}
+
 {{- define "keycloak_db_connection_string" -}}
 {{- $use_ssl := (ne .Values.database.sslmode "") -}}
 {{- $sslmode := ternary "require" "disable" $use_ssl -}}
@@ -92,6 +100,14 @@ postgres://keycloak:$(KEYCLOAK_DB_PASSWORD)@{{ .Values.database.host }}/{{ inclu
 {{- end }}
 
 {{- define "mox_db_name" -}}
+{{- if .Values.database.db_prefix -}}
+{{ .Values.database.db_prefix }}_mox
+{{- else -}}
+mox
+{{- end }}
+{{- end }}
+
+{{- define "mox_db_user" -}}
 {{- if .Values.database.db_prefix -}}
 {{ .Values.database.db_prefix }}_mox
 {{- else -}}
