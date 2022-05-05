@@ -86,7 +86,11 @@ spec:
             - name: TF_VAR_admin_password
               valueFrom:
                 secretKeyRef:
+                  {{- if .Values.keycloak.admin_secret }}
+                  name: {{ .Values.keycloak.admin_secret }}
+                  {{- else }}
                   name: keycloak-admin-secret
+                  {{- end }}
                   key: admin_password
 
             # Configuration of the client
