@@ -95,8 +95,6 @@ spec:
           image: "{{ .Values.lora.init.image.repository }}:{{ .Values.lora.init.image.tag }}"
           imagePullPolicy: {{ .Values.lora.init.image.pullPolicy }}
           env:
-            - name: POSTGRES_DB
-              value: {{ .Values.database.db }}
             - name: POSTGRES_HOST
               value: {{ .Values.database.host }}
             - name: POSTGRES_USER
@@ -200,16 +198,7 @@ spec:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
-            - name: TF_VAR_KEYCLOAK_ORGVIEWER_CLIENT_ENABLED
-              value: "{{ .Values.keycloak.builder.orgviewer_client_enabled }}"
-            {{- if .Values.keycloak.builder.orgviewer_client_enabled }}
-            - name: TF_VAR_KEYCLOAK_ORGVIEWER_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-orgviewer-client-secret
-                  key: client_secret
-            {{- end }}
-            - name: TF_VAR_KEYCLOAK_LORA_REALM_ENABLED
+            - name: KEYCLOAK_LORA_REALM_ENABLED
               value: "{{ .Values.keycloak.builder.lora_realm_enabled }}"
             {{- if .Values.keycloak.builder.lora_realm_enabled }}
             - name: TF_VAR_KEYCLOAK_LORA_CLIENT_SECRET
