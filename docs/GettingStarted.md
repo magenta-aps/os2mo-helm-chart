@@ -199,7 +199,37 @@ os2mo:
       it_systems: {}
 ```
 
-## 6. Testing the installation
+## 6. OS2sync
+
+For development purposes the following command can be used to spin up
+a MySQL DB used by the OS2sync pod. In production, we will use a DB
+managed by the cloud provider. The below has deliberately not been
+included in the chart, since the MySQL DB should not be deployed via
+Helm.
+
+#### The MySQL Pod
+
+Run the following to start a MySQL server pod, a service that exposes the
+MySQL pod and a MySQL client pod that can be used to verify that remote
+access to the MySQL server is possible: 
+```
+$ kubectl run mysql --image=mysql:8.0.29 --env="MYSQL_ROOT_PASSWORD=admin"
+$ kubectl expose pod mysql --port=3306 --target-port=3306 --name mysql
+$ kubectl run mysql-client --image=mysql:8.0.29 --env="MYSQL_ROOT_PASSWORD=admin"
+```
+
+#### Setting up the DB
+
+Prepare the database:
+```
+$ mysql -h mysql -u root -p
+mysql> CREATE DATABASE os2sync;
+mysql> CREATE USER 'os2sync_admin'@'%' IDENTIFIED BY 'secret';
+mysql> GRANT ALL PRIVILEGES ON os2sync.* TO 'os2sync_admin'@'%';
+mysql> FLUSH PRIVILEGES;
+```
+
+## 7. Testing the installation
 The chart includes deployment tests which can be triggered using:
 ```shell
 helm test RELEASE_NAME
