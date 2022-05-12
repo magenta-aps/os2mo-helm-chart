@@ -93,8 +93,8 @@ Lint Chart:
 Generate Project:
   <<: *test
   script:
-    - helm template --kube-version 1.19.11 chart
-    - helm template --kube-version 1.19.11 chart | kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
+    - helm template --kube-version 1.19.11 os2mo
+    - helm template --kube-version 1.19.11 os2mo | kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
 
 
 Release version:
@@ -109,7 +109,7 @@ Release version:
     - helm plugin install https://github.com/chartmuseum/helm-push.git
     - helm repo add magenta-chartmuseum $HELM_REPO
   script:
-    - helm cm-push --version=$CI_COMMIT_TAG chart magenta-chartmuseum
+    - helm cm-push --version=$CI_COMMIT_TAG os2mo magenta-chartmuseum
   rules:
     - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 
@@ -143,7 +143,7 @@ deploy_helm_chart:
     - helm plugin install https://github.com/chartmuseum/helm-push.git
     - helm repo add magenta-chartmuseum $HELM_REPO
   script:
-    - helm cm-push --version=$REVIEW_VERSION --force chart magenta-chartmuseum
+    - helm cm-push --version=$REVIEW_VERSION --force os2mo magenta-chartmuseum
   environment:
     name: chart/$CI_MERGE_REQUEST_IID
     url: $REVIEW_CHART_URL
