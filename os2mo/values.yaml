@@ -23,7 +23,7 @@ os2mo:
   image:
     repository: magentaaps/os2mo
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     pullSecret: null
   port: 80
   gunicorn:
@@ -33,7 +33,7 @@ os2mo:
     image:
       repository: magentaaps/os2mo-init
       tag: latest
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     config: {}
     log_level: INFO
   resources:
@@ -65,7 +65,7 @@ os2mo:
     image:
       repository: magentaaps/os2mo-frontend
       tag: latest
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
       pullSecret: null
     resources:
       requests:
@@ -92,14 +92,14 @@ lora:
   image:
     repository: magentaaps/lora
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   gunicorn:
     max_workers: 1
   init:
     image:
       repository: magentaaps/postgres-os2mo
       tag: 12.7-11.7
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     make_superuser: false
   resources:
     requests:
@@ -126,7 +126,7 @@ dipex:
   image:
     repository: magentaaps/dipex
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   settings:
     mox.base: "http://mox-service:8080"
     mora.base: "http://mo-service:5000"
@@ -152,17 +152,17 @@ keycloak:
   image:
     repository: quay.io/keycloak/keycloak
     tag: 14.0.0
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   init:
     image:
       repository: magentaaps/postgres-keycloak-init
       tag: 12.7-11.7
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
   builder:
     image:
       repository: magentaaps/os2mo-keycloak-realm-builder
       tag: latest
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
     lora_realm_enabled: false
     lora_dipex_client_enabled: false
     environment: {}
@@ -170,7 +170,7 @@ keycloak:
     image:
       repository: magentaaps/os2mo-keycloak-integration-builder
       tag: latest
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
   startupProbe:
     failureThreshold: 60
     periodSeconds: 5
@@ -211,7 +211,7 @@ omada:
   image:
     repository: magentaaps/os2mint-omada
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   it_system_user_key: omada_ad_guid
   odata_url: "MUST BE OVERRIDDEN"
   host_header: null
@@ -232,11 +232,11 @@ sd_changed_at:
     image:
       repository: magentaaps/os2mo-sd-changed-at-init
       tag: master
-      pullPolicy: Always
+      pullPolicy: IfNotPresent
   image:
     repository: magentaaps/os2mo-sd-changed-at
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   mora_base: http://mo-service:5000
   sd_secret_name: sd-secret
   sd_global_from_date: null
@@ -259,7 +259,7 @@ sdtool:
   image:
     repository: magentaaps/os2mo-http-trigger-sdtool
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   sd_secret_name: sd-secret
   sd_too_deep: '[]'
   environment: {}
@@ -289,7 +289,7 @@ orgviewer:
   image:
     repository: magentaaps/os2orgviewer
     tag: "2.3.0"
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 
   med:
     enabled: false
@@ -330,7 +330,7 @@ os2sync:
   image:
     repository: os2sync/linux
     tag: 2.0.3
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   disable_revocation_check: true
   log_request_response: true
   log_level: DEBUG

@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 os2mo:
+  image:
+    pullPolicy: Always
   replicaCount: 1
   gunicorn:
     max_workers: 1
@@ -10,6 +12,7 @@ os2mo:
     enabled: false
     image:
       tag: latest
+      pullPolicy: Always
     config:
       root_organisation:
         name: xyz
@@ -33,11 +36,24 @@ os2mo:
       cpu: "1000m"
 
 lora:
+  image:
+    pullPolicy: Always
   init:
+    image:
+      pullPolicy: Always
     make_superuser: true
 
+dipex:
+  image:
+    pullPolicy: Always
+
 keycloak:
+  init:
+    image:
+      pullPolicy: Always
   builder:
+    image:
+      pullPolicy: Always
     lora_realm_enabled: true
     lora_dipex_client_enabled: true
     environment:
@@ -54,6 +70,9 @@ keycloak:
           "enabled": true
         }
       ]'
+  integrationbuilder:
+    image:
+      pullPolicy: Always
   resources:
     requests:
       memory: "2048Mi"
@@ -63,14 +82,27 @@ keycloak:
       cpu: "2000m"
 
 omada:
+  image:
+    pullPolicy: Always
   cronjob_schedule: "0/2 * * * *"
+
+sd_changed_at:
+  image:
+    pullPolicy: Always
+  init:
+    image:
+      pullPolicy: Always
 
 sdtool:
   enabled: false
+  image:
+    pullPolicy: Always
 
 fixture: "kolding"
 
 orgviewer:
+  image:
+    pullPolicy: Always
   med:
     enabled: true
     url: http://orgviewer-med.example.com
@@ -89,6 +121,8 @@ orgviewer:
 
 os2sync:
   enabled: false
+  image:
+    pullPolicy: Always
   # The municipality CVR
   municipality: 12345678
   db_host: mysql
