@@ -73,8 +73,7 @@ spec:
               readOnly: true
       initContainers:
         - name: create-certificate-file
-          # TODO: is there a (safe!) openssl Docker image we can use instead?
-          image: akring1729/openssl:latest
+          image: "{{ .Values.os2sync.init.image.repository }}:{{ .Values.os2sync.init.image.tag }}"
           command: ["/bin/sh", "-c"]
           args: ["/usr/bin/openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -name os2sync -out /certificate/certificate.p12 -passout env:ClientCertPassword"]
           env:

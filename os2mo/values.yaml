@@ -331,6 +331,11 @@ os2sync:
     repository: os2sync/linux
     tag: latest
     pullPolicy: IfNotPresent
+  init:
+    image:
+      repository: magentaaps/openssl
+      tag: latest
+      pullPolicy: IfNotPresent
   disable_revocation_check: true
   log_request_response: true
   log_level: DEBUG
