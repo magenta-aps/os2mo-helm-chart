@@ -23,6 +23,7 @@ amqp:
 
 os2mo:
   replicaCount: 1
+  strategy: RollingUpdate
   image:
     repository: magentaaps/os2mo
     tag: latest
@@ -92,6 +93,7 @@ os2mo:
 
 lora:
   replicaCount: 1
+  strategy: RollingUpdate
   image:
     repository: magentaaps/lora
     tag: latest
