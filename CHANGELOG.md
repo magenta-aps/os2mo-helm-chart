@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.26.2 - 2022-05-17
+-------------------
+
+[#xxxxx] Set default image pull policy to IfNotPresent
+
 2.26.1 - 2022-05-12
 -------------------
 
