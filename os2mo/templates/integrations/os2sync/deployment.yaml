@@ -53,9 +53,9 @@ spec:
             - name: DB_HOST
               value: {{ required "The OS2sync DB_HOST ENV is missing" .Values.os2sync.db_host | quote }}
             - name: DB_NAME
-              value: {{ required "The OS2sync DB_NAME ENV is missing" .Values.os2sync.db_name | quote }}
+              value: {{ .Values.os2sync.db_name | quote }}
             - name: DB_USERNAME
-              value: {{ required "The OS2sync DB_USERNAME ENV is missing" .Values.os2sync.db_username | quote }}
+              value: {{ .Values.os2sync.db_username | quote }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -68,26 +68,30 @@ spec:
           resources:
             {{- toYaml .Values.os2sync.resources | nindent 12 }}
           volumeMounts:
-            - name: certificate
+            - name: pkcs12-certificate
               mountPath: /certificate
               readOnly: true
       initContainers:
         - name: create-certificate-file
-          image: busybox
+          image: "{{ .Values.os2sync.init.image.repository }}:{{ .Values.os2sync.init.image.tag }}"
           command: ["/bin/sh", "-c"]
-          args: ["echo ${OS2SYNC_CERT_BASE64} | base64 -d > /certificate/certificate.p12"]
+          args: ["/usr/bin/openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -name os2sync -out /certificate/certificate.p12 -passout env:ClientCertPassword"]
           env:
-            # The base64 encoded PKCS12 cert goes into this ENV
-            # The value of the ENV can be created with "base64 /path/to/certificate.p12"
-            - name: OS2SYNC_CERT_BASE64
+            - name: ClientCertPassword
               valueFrom:
                 secretKeyRef:
                   name: os2sync-secret
-                  key: base64_cert_bundle
+                  key: client_cert_password
           volumeMounts:
-            - name: certificate
+            - name: os2sync-tls-secret
+              mountPath: "/tmp"
+              readOnly: true
+            - name: pkcs12-certificate
               mountPath: /certificate
       volumes:
-        - name: certificate
+        - name: os2sync-tls-secret
+          secret:
+            secretName: os2sync-tls-secret
+        - name: pkcs12-certificate
           emptyDir: {}
 {{- end }}
