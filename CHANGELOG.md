@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.26.3 - 2022-05-17
+-------------------
+
+[#49387] OS2sync certificate configuration; missing adjustments from MR 124
+
 2.26.2 - 2022-05-17
 -------------------
 
