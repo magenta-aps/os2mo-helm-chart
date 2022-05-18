@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.27.0 - 2022-05-18
+-------------------
+
+[#xxxxx] Use rolling update strategy for MO and MOX
+
 2.26.3 - 2022-05-17
 -------------------
 
