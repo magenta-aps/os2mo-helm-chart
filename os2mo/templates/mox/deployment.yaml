@@ -18,7 +18,7 @@ spec:
     matchLabels:
       app: mox
   strategy:
-    type: Recreate
+    type: {{ .Values.lora.strategy }}
   template:
     metadata:
       labels:
