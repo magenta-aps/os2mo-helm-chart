@@ -103,7 +103,7 @@ lora:
   init:
     image:
       repository: magentaaps/postgres-os2mo
-      tag: 12.7-11.7
+      tag: 12.8-11.7
       pullPolicy: IfNotPresent
     make_superuser: false
   resources:
