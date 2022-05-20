@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.28.0 - 2022-05-20
+-------------------
+
+[#49324] ConfigMap for setting optional orgviewer environment variables
+
 2.27.2 - 2022-05-20
 -------------------
 
