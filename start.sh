@@ -27,3 +27,8 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 helm repo add mittwald https://helm.mittwald.de
 helm repo update
 helm upgrade --install kubernetes-secret-generator mittwald/kubernetes-secret-generator
+
+flux install
+helm repo add tf-controller https://weaveworks.github.io/tf-controller/
+helm repo update
+helm upgrade --install tf-controller tf-controller/tf-controller --namespace flux-system
