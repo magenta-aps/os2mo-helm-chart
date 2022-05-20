@@ -293,8 +293,9 @@ fixture: null
 orgviewer:
   image:
     repository: magentaaps/os2orgviewer
-    tag: "2.3.0"
+    tag: latest
     pullPolicy: IfNotPresent
+  environment: {}
 
   med:
     enabled: false
