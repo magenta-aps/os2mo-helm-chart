@@ -34,12 +34,8 @@ spec:
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
+                  name: {{ include "os2mo.keycloak_admin_secret" . }}
                   key: admin_password
-                  {{ if .Values.keycloak.admin_secret }}
-                  name: {{ .Values.keycloak.admin_secret }}
-                  {{ else }}
-                  name: keycloak-admin-secret
-                  {{ end }}
 
             {{- $is_https := empty .Values.ingress.tls_secret }}
             {{- $protocol := ternary "http" "https" $is_https }}
@@ -53,11 +49,11 @@ spec:
             - name: DB_ADDR
               value: {{ .Values.database.host }}
             - name: DB_DATABASE
-              value: {{ template "keycloak_db_name" . }}
+              value: {{ template "os2mo.keycloak_db_name" . }}
             - name: DB_SCHEMA
               value: public
             - name: DB_USER
-              value: {{ template "keycloak_db_user" . }}
+              value: {{ template "os2mo.keycloak_db_user" . }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -113,9 +109,9 @@ spec:
                   key: db_password
 
             - name: KEYCLOAK_DB_NAME
-              value: {{ template "keycloak_db_name" . }}
+              value: {{ template "os2mo.keycloak_db_name" . }}
             - name: KEYCLOAK_DB_USER
-              value: {{ template "keycloak_db_user" . }}
+              value: {{ template "os2mo.keycloak_db_user" . }}
             - name: KEYCLOAK_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
