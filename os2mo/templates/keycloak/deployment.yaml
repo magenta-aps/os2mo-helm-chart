@@ -34,12 +34,8 @@ spec:
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
+                  name: {{ include "os2mo.keycloak_admin_secret" . }}
                   key: admin_password
-                  {{ if .Values.keycloak.admin_secret }}
-                  name: {{ .Values.keycloak.admin_secret }}
-                  {{ else }}
-                  name: keycloak-admin-secret
-                  {{ end }}
 
             {{- $is_https := empty .Values.ingress.tls_secret }}
             {{- $protocol := ternary "http" "https" $is_https }}

@@ -65,6 +65,10 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
+{{- define "os2mo.keycloak_admin_secret" -}}
+{{- .Values.keycloak.admin_secret | default "keycloak-admin-secret" }}
+{{- end }}
+
 {{- define "os2mo.keycloak_db_name" -}}
 {{- if .Values.database.db_prefix -}}
 {{ .Values.database.db_prefix }}_keycloak

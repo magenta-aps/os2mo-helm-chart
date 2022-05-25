@@ -205,11 +205,7 @@ spec:
             - name: TF_VAR_KEYCLOAK_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  {{- if .Values.keycloak.admin_secret }}
-                  name: {{ .Values.keycloak.admin_secret }}
-                  {{- else }}
-                  name: keycloak-admin-secret
-                  {{- end }}
+                  name: {{ include "os2mo.keycloak_admin_secret" . }}
                   key: admin_password
             - name: TF_VAR_KEYCLOAK_URL
               value: "http://keycloak-service:8080"
