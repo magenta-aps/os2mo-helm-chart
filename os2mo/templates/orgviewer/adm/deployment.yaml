@@ -82,13 +82,13 @@ spec:
           resources:
             {{- toYaml .Values.orgviewer.adm.resources | nindent 12 }}
       initContainers:
-        {{ include "wait-for-keycloak" . | nindent 8 }}
-        {{ include "wait-for-mox" . | nindent 8 }}
+        {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
+        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         - name: create-client-secret
           image: "{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
           imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
           env:
-            {{ include "keycloak_terraform_db_connection" .  | nindent 12 }}
+            {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
             - name: POSTGRES_SCHEMA_NAME
               value: terraform_remote_state_orgviewer_adm
 

@@ -65,7 +65,7 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{- define "keycloak_db_name" -}}
+{{- define "os2mo.keycloak_db_name" -}}
 {{- if .Values.database.db_prefix -}}
 {{ .Values.database.db_prefix }}_keycloak
 {{- else -}}
@@ -73,7 +73,7 @@ keycloak
 {{- end }}
 {{- end }}
 
-{{- define "keycloak_db_user" -}}
+{{- define "os2mo.keycloak_db_user" -}}
 {{- if .Values.database.db_prefix -}}
 {{ .Values.database.db_prefix }}_keycloak
 {{- else -}}
@@ -81,13 +81,13 @@ keycloak
 {{- end }}
 {{- end }}
 
-{{- define "keycloak_db_connection_string" -}}
+{{- define "os2mo.keycloak_db_connection_string" -}}
 {{- $use_ssl := (ne .Values.database.sslmode "") -}}
 {{- $sslmode := ternary "require" "disable" $use_ssl -}}
-postgres://{{ include "keycloak_db_user" . }}:$(KEYCLOAK_DB_PASSWORD)@{{ .Values.database.host }}/{{ include "keycloak_db_name" . }}?sslmode={{ $sslmode }}
+postgres://{{ include "os2mo.keycloak_db_user" . }}:$(KEYCLOAK_DB_PASSWORD)@{{ .Values.database.host }}/{{ include "os2mo.keycloak_db_name" . }}?sslmode={{ $sslmode }}
 {{- end }}
 
-{{- define "keycloak_terraform_db_connection" -}}
+{{- define "os2mo.keycloak_terraform_db_connection" -}}
 - name: KEYCLOAK_DB_PASSWORD
   valueFrom:
     secretKeyRef:
@@ -96,10 +96,10 @@ postgres://{{ include "keycloak_db_user" . }}:$(KEYCLOAK_DB_PASSWORD)@{{ .Values
 
 # Postgres state connection
 - name: POSTGRES_CONNECTION_STRING
-  value: {{ include "keycloak_db_connection_string" . }}
+  value: {{ include "os2mo.keycloak_db_connection_string" . }}
 {{- end }}
 
-{{- define "mox_db_name" -}}
+{{- define "os2mo.mox_db_name" -}}
 {{- if .Values.database.db_prefix -}}
 {{ .Values.database.db_prefix }}_mox
 {{- else -}}
@@ -107,7 +107,7 @@ mox
 {{- end }}
 {{- end }}
 
-{{- define "mox_db_user" -}}
+{{- define "os2mo.mox_db_user" -}}
 {{- if .Values.database.db_prefix -}}
 {{ .Values.database.db_prefix }}_mox
 {{- else -}}
@@ -115,7 +115,7 @@ mox
 {{- end }}
 {{- end }}
 
-{{- define "wait-for-service" -}}
+{{- define "os2mo.wait-for-service" -}}
 - name: wait-for-{{ .name }}
   image: curlimages/curl
   command: ["/bin/sh","-c"]
@@ -124,22 +124,22 @@ mox
     {{- toYaml .resources | nindent 4 }}
 {{- end }}
 
-{{- define "wait-for-keycloak" -}}
-{{ ( include "wait-for-service" (dict "name" "keycloak" "port" 8080 "url" "/auth/realms/master" "resources" .Values.initContainers.resources ) ) }}
+{{- define "os2mo.wait-for-keycloak" -}}
+{{ ( include "os2mo.wait-for-service" (dict "name" "keycloak" "port" 8080 "url" "/auth/realms/master" "resources" .Values.initContainers.resources ) ) }}
 {{- end }}
 
-{{- define "wait-for-mo" -}}
-{{ ( include "wait-for-service" (dict "name" "mo" "port" 5000 "url" "/" "resources" .Values.initContainers.resources ) ) }}
+{{- define "os2mo.wait-for-mo" -}}
+{{ ( include "os2mo.wait-for-service" (dict "name" "mo" "port" 5000 "url" "/" "resources" .Values.initContainers.resources ) ) }}
 {{- end }}
 
-{{- define "wait-for-mox" -}}
-{{ ( include "wait-for-service" (dict "name" "mox" "port" 8080 "url" "/site-map" "resources" .Values.initContainers.resources ) ) }}
+{{- define "os2mo.wait-for-mox" -}}
+{{ ( include "os2mo.wait-for-service" (dict "name" "mox" "port" 8080 "url" "/site-map" "resources" .Values.initContainers.resources ) ) }}
 {{- end }}
 
-{{- define "wait-for-sdtool" -}}
-{{ ( include "wait-for-service" (dict "name" "sdtool" "port" 80 "url" "/triggers" "resources" .Values.initContainers.resources ) ) }}
+{{- define "os2mo.wait-for-sdtool" -}}
+{{ ( include "os2mo.wait-for-service" (dict "name" "sdtool" "port" 80 "url" "/triggers" "resources" .Values.initContainers.resources ) ) }}
 {{- end }}
 
-{{- define "wait-for-sd-changed-at" -}}
-{{ ( include "wait-for-service" (dict "name" "sd-changed-at" "port" 8000 "url" "/" "resources" .Values.initContainers.resources ) ) }}
+{{- define "os2mo.wait-for-sd-changed-at" -}}
+{{ ( include "os2mo.wait-for-service" (dict "name" "sd-changed-at" "port" 8000 "url" "/" "resources" .Values.initContainers.resources ) ) }}
 {{- end }}

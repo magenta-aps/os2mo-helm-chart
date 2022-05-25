@@ -128,9 +128,9 @@ spec:
             periodSeconds: {{ .Values.os2mo.probes.startupProbe.periodSeconds }}
           {{- end }}
       initContainers:
-        {{ include "wait-for-keycloak" . | nindent 8 }}
-        {{ include "wait-for-mox" . | nindent 8 }}
+        {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
+        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         {{- if .Values.sdtool.enabled }}
-        {{ include "wait-for-sdtool" . | nindent 8 }}
+        {{ include "os2mo.wait-for-sdtool" . | nindent 8 }}
         {{- end }}
       restartPolicy: Always

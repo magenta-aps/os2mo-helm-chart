@@ -58,9 +58,9 @@ spec:
              mountPath: /config
              readOnly: true
       initContainers:
-        {{ include "wait-for-keycloak" . | nindent 8 }}
-        {{ include "wait-for-mox" . | nindent 8 }}
-        {{ include "wait-for-mo" . | nindent 8 }}
+        {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
+        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
+        {{ include "os2mo.wait-for-mo" . | nindent 8 }}
       restartPolicy: Never
       volumes:
         - name: os2mo-init-config-volume

@@ -69,9 +69,9 @@ spec:
           resources:
             {{- toYaml .Values.omada.resources | nindent 12 }}
       initContainers:
-        {{ include "wait-for-keycloak" . | nindent 8 }}
-        {{ include "wait-for-mox" . | nindent 8 }}
-        {{ include "wait-for-mo" . | nindent 8 }}
+        {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
+        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
+        {{ include "os2mo.wait-for-mo" . | nindent 8 }}
         - name: os2mo-init
           image: "{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
           imagePullPolicy: {{ .Values.os2mo.init.image.pullPolicy }}
