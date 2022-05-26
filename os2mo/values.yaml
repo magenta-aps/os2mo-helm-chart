@@ -171,11 +171,6 @@ keycloak:
     lora_realm_enabled: false
     lora_dipex_client_enabled: false
     environment: {}
-  integrationbuilder:
-    image:
-      repository: magentaaps/os2mo-keycloak-integration-builder
-      tag: latest
-      pullPolicy: IfNotPresent
   startupProbe:
     failureThreshold: 60
     periodSeconds: 5
