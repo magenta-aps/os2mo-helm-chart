@@ -31,4 +31,7 @@ helm upgrade --install kubernetes-secret-generator mittwald/kubernetes-secret-ge
 flux install
 helm repo add tf-controller https://weaveworks.github.io/tf-controller/
 helm repo update
+# tf-controller is under heavy development; to run on a newer development version, use
+# --set image.tag=mytag,runner.tag=mytag
+# with tags from https://github.com/weaveworks/tf-controller/pkgs/container/tf-controller/versions
 helm upgrade --install tf-controller tf-controller/tf-controller --namespace flux-system
