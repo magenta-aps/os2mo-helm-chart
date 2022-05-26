@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 {{- if .Values.sd_changed_at.enabled }}
-{{- $keycloak_client_id := "integration_sd_changed_at" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -58,11 +57,11 @@ spec:
             - name: AUTH_REALM
               value: "mo"
             - name: CLIENT_ID
-              value: "{{ $keycloak_client_id }}"
+              value: "integration-sd-changed-at"
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: sd-changed-at-client-secret
+                  name: integration-sd-changed-at-keycloak-token
                   key: client_secret
 
             # The three ENVs below require an sd-secret created in Flux
@@ -96,33 +95,6 @@ spec:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
-        - name: create-client-secret
-          image: "{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
-          imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
-          env:
-            {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
-            - name: POSTGRES_SCHEMA_NAME
-              value: terraform_remote_state_sd_changed_at
-
-            # Keycloak REST connection
-            - name: TF_VAR_admin_password
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "os2mo.keycloak_admin_secret" . }}
-                  key: admin_password
-
-            # Configuration of the client
-            - name: TF_VAR_client_name
-              value: "{{ $keycloak_client_id }}"
-            - name: TF_VAR_client_roles
-              value: '["admin"]'
-            - name: TF_VAR_client_secret
-              valueFrom:
-                secretKeyRef:
-                  name: sd-changed-at-client-secret
-                  key: client_secret
-          resources:
-            {{- toYaml .Values.initContainers.resources | nindent 12 }}
         - name: prepare-run-db
           image: "{{ .Values.sd_changed_at.init.image.repository }}:{{ .Values.sd_changed_at.init.image.tag }}"
           imagePullPolicy: {{ .Values.sd_changed_at.init.image.pullPolicy }}
