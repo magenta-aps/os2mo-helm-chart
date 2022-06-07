@@ -29,7 +29,7 @@ spec:
               {{- fail "Orgviewer version must be at least 2.3.0" }}
             {{- end }}
           {{- end }}
-          image: "{{ .Values.orgviewer.image.repository }}:{{ .Values.orgviewer.image.tag }}"
+          image: "{{ .Values.orgviewer.image.registry }}/{{ .Values.orgviewer.image.repository }}:{{ .Values.orgviewer.image.tag }}"
           imagePullPolicy: {{ .Values.orgviewer.image.pullPolicy }}
           env:
             {{- if not .Values.orgviewer.adm.url }}
@@ -85,7 +85,7 @@ spec:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         - name: create-client-secret
-          image: "{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
+          image: "{{ .Values.keycloak.integrationbuilder.image.registry }}/{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
           imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
           env:
             {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}

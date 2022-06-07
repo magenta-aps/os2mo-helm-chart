@@ -31,7 +31,7 @@ spec:
               {{- fail "LoRa version must be at least 3.3.0 when probes are enabled" }}
             {{- end }}
           {{- end }}
-          image: "{{ .Values.lora.image.repository }}:{{ .Values.lora.image.tag }}"
+          image: "{{ .Values.lora.image.registry }}/{{ .Values.lora.image.repository }}:{{ .Values.lora.image.tag }}"
           imagePullPolicy: {{ .Values.lora.image.pullPolicy }}
           env:
             - name: LORA_AUTH
@@ -93,7 +93,7 @@ spec:
           {{- end }}
       initContainers:
         - name: mox-init
-          image: "{{ .Values.lora.init.image.repository }}:{{ .Values.lora.init.image.tag }}"
+          image: "{{ .Values.lora.init.image.registry }}/{{ .Values.lora.init.image.repository }}:{{ .Values.lora.init.image.tag }}"
           imagePullPolicy: {{ .Values.lora.init.image.pullPolicy }}
           env:
             - name: POSTGRES_HOST
@@ -159,7 +159,7 @@ spec:
         {{ end }}
 
         - name: alembic
-          image: "{{ .Values.lora.image.repository }}:{{ .Values.lora.image.tag }}"
+          image: "{{ .Values.lora.image.registry }}/{{ .Values.lora.image.repository }}:{{ .Values.lora.image.tag }}"
           imagePullPolicy: {{ .Values.lora.image.pullPolicy }}
           command: ["python3", "-m", "oio_rest", "initdb", "--wait", "30"]
           env:
@@ -192,7 +192,7 @@ spec:
             {{- end }}
           {{- end }}
         - name: keycloak-realm-builder
-          image: "{{ .Values.keycloak.builder.image.repository }}:{{ .Values.keycloak.builder.image.tag }}"
+          image: "{{ .Values.keycloak.builder.image.registry }}/{{ .Values.keycloak.builder.image.repository }}:{{ .Values.keycloak.builder.image.tag }}"
           imagePullPolicy: {{ .Values.keycloak.builder.image.pullPolicy }}
           envFrom:
             - configMapRef:

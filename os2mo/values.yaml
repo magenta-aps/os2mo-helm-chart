@@ -25,6 +25,7 @@ os2mo:
   replicaCount: 1
   strategy: RollingUpdate
   image:
+    registry: docker.io
     repository: magentaaps/os2mo
     tag: latest
     pullPolicy: IfNotPresent
@@ -35,6 +36,7 @@ os2mo:
   init:
     enabled: false
     image:
+      registry: docker.io
       repository: magentaaps/os2mo-init
       tag: latest
       pullPolicy: IfNotPresent
@@ -68,6 +70,7 @@ os2mo:
   frontend:
     replicaCount: 1
     image:
+      registry: docker.io
       repository: magentaaps/os2mo-frontend
       tag: latest
       pullPolicy: IfNotPresent
@@ -96,6 +99,7 @@ lora:
   replicaCount: 1
   strategy: RollingUpdate
   image:
+    registry: docker.io
     repository: magentaaps/lora
     tag: latest
     pullPolicy: IfNotPresent
@@ -103,6 +107,7 @@ lora:
     max_workers: 1
   init:
     image:
+      registry: docker.io
       repository: magentaaps/postgres-os2mo
       tag: 12.8-11.7
       pullPolicy: IfNotPresent
@@ -130,6 +135,7 @@ lora:
 
 dipex:
   image:
+    registry: docker.io
     repository: magentaaps/dipex
     tag: latest
     pullPolicy: IfNotPresent
@@ -156,16 +162,19 @@ dipex:
 
 keycloak:
   image:
-    repository: quay.io/keycloak/keycloak
+    registry: quay.io
+    repository: keycloak/keycloak
     tag: 14.0.0
     pullPolicy: IfNotPresent
   init:
     image:
+      registry: docker.io
       repository: magentaaps/postgres-keycloak-init
       tag: 12.7-11.7
       pullPolicy: IfNotPresent
   builder:
     image:
+      registry: docker.io
       repository: magentaaps/os2mo-keycloak-realm-builder
       tag: latest
       pullPolicy: IfNotPresent
@@ -174,6 +183,7 @@ keycloak:
     environment: {}
   integrationbuilder:
     image:
+      registry: docker.io
       repository: magentaaps/os2mo-keycloak-integration-builder
       tag: latest
       pullPolicy: IfNotPresent
@@ -215,6 +225,7 @@ database:
 omada:
   enabled: false
   image:
+    registry: docker.io
     repository: magentaaps/os2mint-omada
     tag: latest
     pullPolicy: IfNotPresent
@@ -236,10 +247,12 @@ sd_changed_at:
   enabled: false
   init:
     image:
+      registry: docker.io
       repository: magentaaps/os2mo-sd-changed-at-init
       tag: master
       pullPolicy: IfNotPresent
   image:
+    registry: docker.io
     repository: magentaaps/os2mo-sd-changed-at
     tag: latest
     pullPolicy: IfNotPresent
@@ -263,6 +276,7 @@ sd_changed_at:
 sdtool:
   enabled: false
   image:
+    registry: docker.io
     repository: magentaaps/os2mo-http-trigger-sdtool
     tag: latest
     pullPolicy: IfNotPresent
@@ -293,6 +307,7 @@ fixture: null
 
 orgviewer:
   image:
+    registry: docker.io
     repository: magentaaps/os2orgviewer
     tag: latest
     pullPolicy: IfNotPresent
@@ -335,11 +350,13 @@ orgviewer:
 os2sync:
   enabled: false
   image:
+    registry: docker.io
     repository: os2sync/linux
     tag: latest
     pullPolicy: IfNotPresent
   init:
     image:
+      registry: docker.io
       repository: magentaaps/openssl
       tag: latest
       pullPolicy: IfNotPresent

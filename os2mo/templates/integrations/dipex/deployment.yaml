@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: dipex
-          image: "{{ .Values.dipex.image.repository }}:{{ .Values.dipex.image.tag }}"
+          image: "{{ .Values.dipex.image.registry }}/{{ .Values.dipex.image.repository }}:{{ .Values.dipex.image.tag }}"
           imagePullPolicy: {{ .Values.dipex.image.pullPolicy }}
           command: ["sleep"]
           args: ["infinity"]
