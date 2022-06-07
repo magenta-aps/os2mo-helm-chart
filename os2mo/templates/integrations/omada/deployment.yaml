@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: omada
-          image: "{{ .Values.omada.image.repository }}:{{ .Values.omada.image.tag }}"
+          image: "{{ .Values.omada.image.registry }}/{{ .Values.omada.image.repository }}:{{ .Values.omada.image.tag }}"
           imagePullPolicy: {{ .Values.omada.image.pullPolicy }}
           env:
             - name: MO_URL
@@ -73,7 +73,7 @@ spec:
         {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
         - name: os2mo-init
-          image: "{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
+          image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
           imagePullPolicy: {{ .Values.os2mo.init.image.pullPolicy }}
           env:
             - name: AUTH_SERVER

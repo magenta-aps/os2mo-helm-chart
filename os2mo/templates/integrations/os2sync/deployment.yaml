@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
         - name: os2sync
-          image: "{{ .Values.os2sync.image.repository }}:{{ .Values.os2sync.image.tag }}"
+          image: "{{ .Values.os2sync.image.registry }}/{{ .Values.os2sync.image.repository }}:{{ .Values.os2sync.image.tag }}"
           imagePullPolicy: {{ .Values.os2sync.image.pullPolicy }}
           env:
             - name: ClientCertPath
@@ -73,7 +73,7 @@ spec:
               readOnly: true
       initContainers:
         - name: create-certificate-file
-          image: "{{ .Values.os2sync.init.image.repository }}:{{ .Values.os2sync.init.image.tag }}"
+          image: "{{ .Values.os2sync.init.image.registry }}/{{ .Values.os2sync.init.image.repository }}:{{ .Values.os2sync.init.image.tag }}"
           command: ["/bin/sh", "-c"]
           args: ["/usr/bin/openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -name os2sync -out /certificate/certificate.p12 -passout env:ClientCertPassword"]
           env:

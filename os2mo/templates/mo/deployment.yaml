@@ -35,7 +35,7 @@ spec:
               {{- fail "MO version must be at least 3.24.0 when probes are enabled" }}
             {{- end }}
           {{- end }}
-          image: "{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
+          image: "{{ .Values.os2mo.image.registry }}/{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
           imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
           env:
             - name: PORT
