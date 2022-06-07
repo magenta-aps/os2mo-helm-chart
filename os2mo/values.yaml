@@ -17,6 +17,12 @@ ingress:
   # Name of the TLS secret to use for ingress. If set TLS will be enabled.
   tls_secret: null
 
+wait_for_service:
+  image:
+    registry: docker.io
+    repository: curlimages/curl
+    tag: latest
+
 amqp:
   enabled: false
   url_secret: null

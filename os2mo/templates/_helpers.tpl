@@ -121,7 +121,7 @@ mox
 
 {{- define "os2mo.wait-for-service" -}}
 - name: wait-for-{{ .name }}
-  image: curlimages/curl
+  image: {{ printf "%s/%s:%s" .Values.wait_for_service.image.registry .Values.wait_for_service.image.repository .Values.wait_for_service.image.tag }}
   command: ["/bin/sh","-c"]
   args: ['while [ $(curl -ksw "%{http_code}" "http://{{ .name }}-service:{{ .port }}{{ .url }}" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for {{ .name | title }} to be ready"; done; echo "OK"']
   resources:
@@ -129,21 +129,21 @@ mox
 {{- end }}
 
 {{- define "os2mo.wait-for-keycloak" -}}
-{{ ( include "os2mo.wait-for-service" (dict "name" "keycloak" "port" 8080 "url" "/auth/realms/master" "resources" .Values.initContainers.resources ) ) }}
+{{ ( include "os2mo.wait-for-service" (dict "name" "keycloak" "port" 8080 "url" "/auth/realms/master" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}
 
 {{- define "os2mo.wait-for-mo" -}}
-{{ ( include "os2mo.wait-for-service" (dict "name" "mo" "port" 5000 "url" "/" "resources" .Values.initContainers.resources ) ) }}
+{{ ( include "os2mo.wait-for-service" (dict "name" "mo" "port" 5000 "url" "/" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}
 
 {{- define "os2mo.wait-for-mox" -}}
-{{ ( include "os2mo.wait-for-service" (dict "name" "mox" "port" 8080 "url" "/site-map" "resources" .Values.initContainers.resources ) ) }}
+{{ ( include "os2mo.wait-for-service" (dict "name" "mox" "port" 8080 "url" "/site-map" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}
 
 {{- define "os2mo.wait-for-sdtool" -}}
-{{ ( include "os2mo.wait-for-service" (dict "name" "sdtool" "port" 80 "url" "/triggers" "resources" .Values.initContainers.resources ) ) }}
+{{ ( include "os2mo.wait-for-service" (dict "name" "sdtool" "port" 80 "url" "/triggers" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}
 
 {{- define "os2mo.wait-for-sd-changed-at" -}}
-{{ ( include "os2mo.wait-for-service" (dict "name" "sd-changed-at" "port" 8000 "url" "/" "resources" .Values.initContainers.resources ) ) }}
+{{ ( include "os2mo.wait-for-service" (dict "name" "sd-changed-at" "port" 8000 "url" "/" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}
