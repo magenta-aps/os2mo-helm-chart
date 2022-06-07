@@ -47,6 +47,7 @@ os2mo:
     limits:
       memory: "1536Mi"
       cpu: "1000m"
+  headless: false
   external_env_config_map_name: null
   environment: {}
   environment_containing_json: {}

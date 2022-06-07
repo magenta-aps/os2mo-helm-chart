@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
+{{ if not .Values.os2mo.headless }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -17,3 +18,4 @@ spec:
     - name: "80"
       port: 80
       targetPort: 80
+{{ end }}

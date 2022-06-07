@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
+{{ if not .Values.os2mo.headless }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -57,3 +58,4 @@ spec:
             failureThreshold: {{ .Values.os2mo.frontend.probes.startupProbe.failureThreshold }}
             periodSeconds: {{ .Values.os2mo.frontend.probes.startupProbe.periodSeconds }}
       restartPolicy: Always
+{{ end }}
