@@ -2,6 +2,10 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: OS2mo Helm Chart
 Upstream-Contact: Magenta ApS <info@magenta.dk>
 
-Files: CHANGELOG.md RELEASE.md RELEASE.md.template
+Files: CHANGELOG.md RELEASE.md RELEASE.md.template os2mo/Chart.lock
 Copyright: 2021 Magenta ApS <https://magenta.dk>
 License: MPL-2.0
+
+Files: os2mo/charts/rabbitmq-9.1.4.tgz
+Copyright: 2022 Bitnami
+License: Apache-2.0

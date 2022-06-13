@@ -5,7 +5,7 @@
 apiVersion: v2
 name: os2mo
 version: "0.0.0"
-kubeVersion: ">= 1.19.0 < 1.23.0"
+kubeVersion: ">= 1.19.0"
 description: Helm Chart to deploy OS2mo
 type: application
 keywords:
@@ -16,6 +16,11 @@ sources:
   - https://git.magenta.dk/rammearkitektur/os2mo-helm-chart
   - https://github.com/OS2mo/os2mo
   - https://github.com/magenta-aps/mox
+dependencies:
+  - name: rabbitmq
+    version: ~9.1.4
+    repository: https://charts.bitnami.com/bitnami
+    condition: rabbitmq.enabled
 maintainers:
   - name: Emil Madsen
     email: emil@magenta.dk

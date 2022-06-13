@@ -123,3 +123,11 @@ os2sync:
   # The municipality CVR
   municipality: 12345678
   db_host: mysql
+
+
+# Dependencies
+rabbitmq:
+  enabled: true
+  auth:
+    username: admin
+    password: rabbitHunter2

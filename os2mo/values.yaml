@@ -380,3 +380,21 @@ os2sync:
     limits:
       memory: "1024Mi"
       cpu: "250m"
+
+
+# Dependencies
+rabbitmq:
+  # https://artifacthub.io/packages/helm/bitnami/rabbitmq
+  enabled: false
+  fullnameOverride: rabbitmq  # ensures service http://rabbitmq
+  auth:
+    username: null
+    password: null
+    # existingPasswordSecret with RabbitMQ credentials (must contain a value for rabbitmq-password key)
+    existingPasswordSecret: null
+  # https://artifacthub.io/packages/helm/bitnami/rabbitmq#configure-the-default-user-vhost
+  extraConfiguration: |-
+    default_vhost = os2mo
+    default_permissions.configure = .*
+    default_permissions.read = .*
+    default_permissions.write = .*
