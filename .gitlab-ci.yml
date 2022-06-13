@@ -97,6 +97,21 @@ Generate Project:
     - helm template --kube-version 1.19.11 os2mo | kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
 
 
+Release local:
+  stage: release
+  needs: []
+  image:
+    name: alpine/helm:3.9.0
+    entrypoint: [""]
+  tags:
+    - docker
+  before_script:
+    - helm registry login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY_IMAGE}
+  script:
+    - helm package --version=0.0.0-${CI_COMMIT_SHA} os2mo
+    - helm push os2mo-0.0.0-${CI_COMMIT_SHA}.tgz oci://${CI_REGISTRY_IMAGE}/helm-charts/
+
+
 Release version:
   stage: release
   needs: []
