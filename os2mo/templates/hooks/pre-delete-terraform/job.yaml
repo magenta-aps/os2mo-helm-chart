@@ -1,0 +1,44 @@
+# SPDX-FileCopyrightText: Magenta ApS
+# SPDX-License-Identifier: MPL-2.0
+
+# Helm does not currently support[1] customising the (un)install order of
+# resources, so on chart uninstallation the git repo, service account, and
+# internal services will be removed before the Terraform CRs, making the
+# tf-controller unable to `terraform destroy` them[2,3]. This is because the
+# git repo (containing the actual .tf files), service account (for the runner
+# pods), as well as internal services (to operate on), no longer exist.
+# The solution is to ensure that the Terraform resources are deleted first.
+# This is done through the following helm pre-delete hook.
+# [1] https://github.com/helm/helm/issues/8439/
+# [2] https://github.com/weaveworks/tf-controller/issues/245,
+# [3] https://github.com/weaveworks/tf-controller/issues/246
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-helm-pre-delete-terraform-hook"
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+    app.kubernetes.io/instance: {{ .Release.Name | quote }}
+    app.kubernetes.io/version: {{ .Chart.Version }}
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+  annotations:
+    # This is what defines this resource as a hook. Without this line, the
+    # job is considered part of the release.
+    "helm.sh/hook": pre-delete
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  template:
+    metadata:
+      name: "{{ .Release.Name }}-helm-pre-delete-terraform-hook"
+      labels:
+        app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+        app.kubernetes.io/instance: {{ .Release.Name | quote }}
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    spec:
+      restartPolicy: OnFailure
+      containers:
+      - name: "{{ .Release.Name }}-helm-pre-delete-terraform-job"
+        image: "bitnami/kubectl:latest"
+        command: ["kubectl", "delete", "terraforms.infra.contrib.fluxcd.io", "-l", "os2mo.magenta.dk/helm-release-name={{ .Release.Name }}"]
+      serviceAccountName: "{{ .Release.Name }}-helm-pre-delete-terraform"

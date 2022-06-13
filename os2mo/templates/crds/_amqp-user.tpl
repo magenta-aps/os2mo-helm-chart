@@ -6,6 +6,8 @@ apiVersion: infra.contrib.fluxcd.io/v1alpha1
 kind: Terraform
 metadata:
   name: {{ .name }}-amqp-user
+  labels:
+    os2mo.magenta.dk/helm-release-name: "{{ .Release.Name }}"
 spec:
   interval: 5m  # could consider increasing and/or setting `disableDriftDetection: true`
   approvePlan: "auto"

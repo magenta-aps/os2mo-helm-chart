@@ -1,4 +1,4 @@
 # SPDX-FileCopyrightText: Magenta ApS
 # SPDX-License-Identifier: MPL-2.0
 ---
-{{ include "os2mo.amqp-user" (dict "name" "mo" "amqp" .Values.amqp "user" (dict "name" "mo" "permissions" (dict "configure" ".*" "read" ".*" "write" ".*") "topic_permissions" (dict "exchange" "os2mo" "read" ".*" "write" ".*")))}}
+{{ include "os2mo.amqp-user" (dict "Release" .Release "name" "mo" "amqp" .Values.amqp "user" (dict "name" "mo" "permissions" (dict "configure" ".*" "read" ".*" "write" ".*") "topic_permissions" (dict "exchange" "os2mo" "read" ".*" "write" ".*")))}}

@@ -2,5 +2,5 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 {{- if .Values.orgviewer.med.enabled }}
-{{ include "os2mo.keycloak-token" (dict "name" "orgviewer-med" "roles" "[\"reader\"]" "admin_secret" (include "os2mo.keycloak_admin_secret" .)) }}
+{{ include "os2mo.keycloak-token" (dict "Release" .Release "name" "orgviewer-med" "roles" "[\"reader\"]" "admin_secret" (include "os2mo.keycloak_admin_secret" .)) }}
 {{- end }}
