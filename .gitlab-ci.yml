@@ -93,8 +93,8 @@ Lint Chart:
 Generate Project:
   <<: *test
   script:
-    - helm template --kube-version 1.19.11 os2mo
-    - helm template --kube-version 1.19.11 os2mo | kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
+    - helm template --kube-version 1.24.1 os2mo
+    - helm template --kube-version 1.24.1 os2mo | kubeval --ignore-missing-schemas --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
 
 
 Release version:
