@@ -135,6 +135,11 @@ os2sync:
   municipality: 12345678
   db_host: mysql
 
+#terraform:
+#  repo:
+#    ref:
+#      branch: feature/12345_my_branch
+
 
 # Dependencies
 rabbitmq:

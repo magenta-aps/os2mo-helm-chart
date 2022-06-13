@@ -392,6 +392,12 @@ os2sync:
       memory: "1024Mi"
       cpu: "250m"
 
+terraform:
+  repo:
+    url: https://github.com/OS2mo/helm.git
+    # ref can be any ref supported by flux, e.g. ref.branch = feature/12345_my_branch
+    ref: null
+
 
 # Dependencies
 rabbitmq:

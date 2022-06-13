@@ -1,0 +1,18 @@
+# SPDX-FileCopyrightText: Magenta ApS
+# SPDX-License-Identifier: MPL-2.0
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: helm-chart
+spec:
+  interval: 6h  # shouldn't need updating since we're (mostly) pinning the ref
+  url: {{ .Values.terraform.repo.url }}
+  ref:
+    {{- if .Values.terraform.repo.ref }}
+    {{ .Values.terraform.repo.ref | toYaml }}
+    {{ else if eq .Chart.Version "0.0.0" }}  {{/* 0.0.0 is dev */}}
+    branch: master
+    {{ else }}
+    semver: {{ .Chart.Version }}
+    {{ end }}
