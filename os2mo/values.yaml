@@ -25,7 +25,18 @@ wait_for_service:
 
 amqp:
   enabled: false
-  url_secret: null
+  scheme: null
+  host: null
+  port: null
+  vhost: null
+  exchange: null
+  admin:
+    endpoint: null
+    username: null
+    password: null
+    # secret can alternatively be used, but it MUST contain provider_endpoint,
+    # provider_username, provider_password
+    secret: null
 
 os2mo:
   replicaCount: 1

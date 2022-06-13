@@ -2,6 +2,17 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
+amqp:
+  enabled: true
+  host: rabbitmq
+  vhost: os2mo
+  exchange: os2mo
+  admin:
+    endpoint: http://rabbitmq:15672
+    username: admin
+    password: rabbitHunter2
+
+
 os2mo:
   image:
     pullPolicy: Always
