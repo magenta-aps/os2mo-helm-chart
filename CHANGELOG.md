@@ -415,4 +415,3 @@ MO PersistentVolumeClaim for /queries
 ------------------
 
 [#45082] Introduction of autopub, CI to push to chartmuseum
-

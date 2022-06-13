@@ -18,7 +18,7 @@ Assuming <a href="https://kubernetes.io/docs/tasks/tools/">`kubectl`</a> and
 <a href="https://helm.sh/docs/intro/install/#helm">`helm`</a> are already installed
 and <a href="https://kubernetes.io/docs/tasks/access-application-cluster/access-cluster/">cluster access is configured</a>:
 
-```console
+```shell
 $ helm install mo os2mo/
 $ helm install mo -f kind-override-values.yaml os2mo/
 ```
