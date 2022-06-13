@@ -70,9 +70,6 @@ keycloak:
           "enabled": true
         }
       ]'
-  integrationbuilder:
-    image:
-      pullPolicy: Always
   resources:
     requests:
       memory: "2048Mi"
