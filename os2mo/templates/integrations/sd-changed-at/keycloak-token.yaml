@@ -1,0 +1,6 @@
+# SPDX-FileCopyrightText: Magenta ApS
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.sd_changed_at.enabled }}
+{{ include "os2mo.keycloak-token" (dict "name" "integration-sd-changed-at" "roles" "[\"admin\"]" "admin_secret" (include "os2mo.keycloak_admin_secret" .)) }}
+{{- end }}
