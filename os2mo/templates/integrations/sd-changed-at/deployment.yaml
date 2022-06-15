@@ -61,7 +61,7 @@ spec:
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: integration-sd-changed-at-keycloak-token
+                  name: integration-sd-changed-at-keycloak-client
                   key: client_secret
 
             # The three ENVs below require an sd-secret created in Flux

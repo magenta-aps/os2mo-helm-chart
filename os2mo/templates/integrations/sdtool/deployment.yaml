@@ -40,7 +40,7 @@ spec:
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: integration-sdtool-keycloak-token
+                  name: integration-sdtool-keycloak-client
                   key: client_secret
 
             # The three ENVs below require an sd-secret created in Flux
