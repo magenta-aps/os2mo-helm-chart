@@ -2,5 +2,19 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 {{- if .Values.orgviewer.med.enabled }}
-{{ include "os2mo.keycloak-client" (dict "Release" .Release "name" "orgviewer-med" "roles" "[\"reader\"]" "admin_secret" (include "os2mo.keycloak_admin_secret" .)) }}
+{{- $name := "orgviewer-med" -}}
+{{ include "os2mo.keycloak-client" (dict "name" $name "Release" .Release ) }}
+  varsFrom:
+    - kind: Secret
+      name: {{ include "os2mo.keycloak_admin_secret" . }}
+  vars:
+    - name: client_name
+      value: {{ $name }}
+    - name: client_roles
+      value:
+        - reader
+  writeOutputsToSecret:
+    name: {{ $name }}-keycloak-client
+    outputs:
+      - client_secret
 {{- end }}
