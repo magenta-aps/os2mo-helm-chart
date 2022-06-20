@@ -7,6 +7,7 @@ kind: Terraform
 metadata:
   name: {{ .name }}-amqp-user
   labels:
+    # This label is used by the helm-pre-delete-terraform-hook
     os2mo.magenta.dk/helm-release-name: "{{ .Release.Name }}"
 spec:
   interval: 5m  # could consider increasing and/or setting `disableDriftDetection: true`
@@ -16,47 +17,4 @@ spec:
   sourceRef:
     kind: GitRepository
     name: helm-chart
-  {{ if .amqp.admin.secret }}
-  varsFrom:
-    - kind: Secret
-      name: {{ .amqp.admin.secret }}
-  {{ end }}
-  vars:
-    {{ if not .amqp.admin.secret }}
-    - name: provider_endpoint
-      value: {{ .amqp.admin.endpoint }}
-    - name: provider_username
-      value: {{ .amqp.admin.username }}
-    - name: provider_password
-      value: {{ .amqp.admin.password }}
-    {{ end }}
-    - name: vhost_name
-      value: {{ .amqp.vhost }}
-    - name: user_name
-      value: {{ .user.name }}
-    {{ if .user.password }}
-    - name: user_password
-      value: {{ .user.password }}
-    {{ end }}
-    {{ if .user.tags }}
-    - name: user_tags
-      value: {{ .user.tags }}
-    {{ end }}
-    - name: user_permissions
-      value:
-        configure: {{ .user.permissions.configure }}
-        read: {{ .user.permissions.read }}
-        write: {{ .user.permissions.write }}
-    {{ if .user.topic_permissions }}
-    - name: topic_permissions
-      value:
-        exchange: {{ .user.topic_permissions.exchange }}
-        read: {{ .user.topic_permissions.read }}
-        write: {{ .user.topic_permissions.write }}
-    {{ end }}
-  writeOutputsToSecret:
-    name: {{ .name }}-amqp-user
-    outputs:
-      - user_name:name
-      - user_password:password
 {{- end }}

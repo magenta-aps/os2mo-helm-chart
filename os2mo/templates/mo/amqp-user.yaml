@@ -1,4 +1,40 @@
 # SPDX-FileCopyrightText: Magenta ApS
 # SPDX-License-Identifier: MPL-2.0
 ---
-{{ include "os2mo.amqp-user" (dict "Release" .Release "name" "mo" "amqp" .Values.amqp "user" (dict "name" "mo" "permissions" (dict "configure" ".*" "read" ".*" "write" ".*") "topic_permissions" (dict "exchange" "os2mo" "read" ".*" "write" ".*")))}}
+{{- if .Values.amqp.enabled }}
+{{- $name := "mo" -}}
+{{ include "os2mo.amqp-user" (dict "name" $name "Release" .Release) }}
+  {{ if .Values.amqp.admin.secret }}
+  varsFrom:
+    - kind: Secret
+      name: {{ .Values.amqp.admin.secret }}
+  {{ end }}
+  vars:
+    {{ if not .Values.amqp.admin.secret }}
+    - name: provider_endpoint
+      value: {{ .Values.amqp.admin.endpoint }}
+    - name: provider_username
+      value: {{ .Values.amqp.admin.username }}
+    - name: provider_password
+      value: {{ .Values.amqp.admin.password }}
+    {{ end }}
+    - name: vhost_name
+      value: {{ .Values.amqp.vhost }}
+    - name: user_name
+      value: {{ $name }}
+    - name: user_permissions
+      value:
+        configure: .*
+        read: .*
+        write: .*
+    - name: topic_permissions
+      value:
+        exchange: os2mo
+        read: .*
+        write: .*
+  writeOutputsToSecret:
+    name: {{ $name }}-amqp-user
+    outputs:
+      - user_name:name
+      - user_password:password
+{{- end }}
