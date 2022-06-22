@@ -4,6 +4,7 @@
 ---
 {{- if .Values.orggatekeeper.enabled }}
 {{- $keycloak_client_id := "integration_orggatekeeper" }}
+# TODO: see https://git.magenta.dk/rammearkitektur/os2mo-helm-chart/-/merge_requests/142#note_140651
 {{- if .Values.amqp.enabled }}
   {{- fail "Must have AMQP enabled if orggatekeeper is enabled" }}
 {{- end }}
