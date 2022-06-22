@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: mox-db
-          image: postgres:11
+          image: "{{ .Values.database.image.registry }}/{{ .Values.database.image.repository }}:{{ .Values.database.image.tag }}"
           env:
             - name: POSTGRES_PASSWORD
               valueFrom:
