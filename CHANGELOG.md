@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.33.0 - 2022-06-22
+-------------------
+
+[#51001] Adapt Ingress to be (optionally) compatible with Azure application gateway
+
 2.32.0 - 2022-06-21
 -------------------
 
