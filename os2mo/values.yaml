@@ -212,6 +212,10 @@ database:
   # Determine whether to deploy the database as a pod
   external: false
   # Hostname for the database
+  image:
+    registry: docker.io
+    repository: postgres
+    tag: "11"
   host: mox-db-service
   user: postgres
   db_prefix: ""
