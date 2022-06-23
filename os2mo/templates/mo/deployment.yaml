@@ -51,9 +51,14 @@ spec:
             # AMQP
             {{- if .Values.amqp.enabled }}
             {{- $is_missing_url_secret := empty .Values.amqp.url_secret }}
-            {{- if (semverCompare "<4.5.0" .Values.os2mo.image.tag) }}
-              {{- fail "MO version must be at least 4.5.0 when AMQP is enabled" }}
-            {{- else if $is_missing_url_secret }}
+
+            {{- if and (ne .Values.os2mo.image.tag "latest") (contains "." .Values.os2mo.image.tag) }}
+              {{- if (semverCompare "<4.5.0" .Values.os2mo.image.tag) }}
+                {{- fail "MO version must be at least 4.5.0 when AMQP is enabled" }}
+              {{- end }}
+            {{- end }}
+
+            {{- if $is_missing_url_secret }}
               {{- fail "Must have url_secret set if AMQP is enabled" }}
             {{- else }}
             - name: AMQP_URL
