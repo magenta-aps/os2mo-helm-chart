@@ -123,7 +123,7 @@ mox
 - name: wait-for-{{ .name }}
   image: {{ printf "%s/%s:%s" .Values.wait_for_service.image.registry .Values.wait_for_service.image.repository .Values.wait_for_service.image.tag }}
   command: ["/bin/sh","-c"]
-  args: ['while [ $(curl -ksw "%{http_code}" "http://{{ .name }}-service:{{ .port }}{{ .url }}" -o /dev/null) -ne 200 ]; do sleep 1; echo "Waiting for {{ .name | title }} to be ready"; done; echo "OK"']
+  args: ['HTTP_STATUS=$(curl -ksw "%{http_code}" "http://{{ .name }}-service:{{ .port }}{{ .url }}" -o /dev/null); while [ $HTTP_STATUS -lt 200 ] || [ $HTTP_STATUS -ge 300 ]; do sleep 1; echo "Waiting for {{ .name | title }} to be ready"; done; echo "OK"']
   resources:
     {{- toYaml .resources | nindent 4 }}
 {{- end }}
@@ -133,7 +133,7 @@ mox
 {{- end }}
 
 {{- define "os2mo.wait-for-mo" -}}
-{{ ( include "os2mo.wait-for-service" (dict "name" "mo" "port" 5000 "url" "/" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
+{{ ( include "os2mo.wait-for-service" (dict "name" "mo" "port" 5000 "url" "/health/ready" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}
 
 {{- define "os2mo.wait-for-mox" -}}
