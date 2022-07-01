@@ -22,6 +22,10 @@ os2mo:
           PhoneUnit:
             title: "CVR"
             scope: "CVR"
+        org_unit_level:
+          NY1_niveau:
+            title: "NY1-niveau"
+            scope: "TEXT"
       it_systems: {}
     log_level: DEBUG
   environment:
@@ -126,3 +130,12 @@ os2sync:
   # The municipality CVR
   municipality: 12345678
   db_host: mysql
+
+amqp:
+  enabled: true
+  url_secret: amqp-url-secret
+
+orggatekeeper:
+  enabled: true
+  environment:
+    GRAPHQL_TIMEOUT: "600"
