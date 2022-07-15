@@ -30,7 +30,7 @@ amqp:
 
 os2mo:
   replicaCount: 1
-  strategy: RollingUpdate
+  strategy: Recreate
   image:
     registry: docker.io
     repository: magentaaps/os2mo
