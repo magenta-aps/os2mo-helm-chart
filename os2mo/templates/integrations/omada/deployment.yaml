@@ -3,6 +3,10 @@
 # SPDX-License-Identifier: MPL-2.0
 ---
 {{- if .Values.omada.enabled }}
+# TODO: see https://git.magenta.dk/rammearkitektur/os2mo-helm-chart/-/merge_requests/142#note_140651
+{{- if not .Values.amqp.enabled }}
+  {{- fail "Must have AMQP enabled if omada is enabled" }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,11 +18,12 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: omada
   strategy:
-    type: Recreate
+    type: Recreate  # we need to force Recreate strategy when using persistent volumes
   template:
     metadata:
       labels:
@@ -29,43 +34,55 @@ spec:
           image: "{{ .Values.omada.image.registry }}/{{ .Values.omada.image.repository }}:{{ .Values.omada.image.tag }}"
           imagePullPolicy: {{ .Values.omada.image.pullPolicy }}
           env:
-            - name: MO_URL
-              value: "http://mo-service:5000"
-            - name: AUTH_SERVER
-              value: "http://keycloak-service:8080/auth"
-            - name: AUTH_REALM
-              value: "mo"
-            - name: CLIENT_ID
+            - name: ENABLE_METRICS
+              value: "True"
+            # TODO: Use separate integration token instead of global dipex one
+            - name: MO__CLIENT_ID
               value: "dipex"
-            - name: CLIENT_SECRET
+            - name: MO__CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
-            - name: IT_SYSTEM_USER_KEY
-              value: "{{ .Values.omada.it_system_user_key }}"
-            - name: ODATA_URL
+            # TODO: use separate integration AMQP user instead of global one
+            - name: MO__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            - name: OMADA__URL
               value: "{{ .Values.omada.odata_url }}"
-            - name: MAX_WORKERS
-              value: "1"
             {{- if .Values.omada.host_header }}
-            - name: OMADA_HOST_HEADER
+            - name: OMADA__HOST_HEADER
               value: "{{ .Values.omada.host_header }}"
             {{- end }}
             {{- if .Values.omada.ntlm.enabled }}
-            - name: OMADA_NTLM_USERNAME
+            - name: OMADA__NTLM_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: omada-ntlm-secret
                   key: ntlm_username
-            - name: OMADA_NTLM_PASSWORD
+            - name: OMADA__NTLM_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: omada-ntlm-secret
                   key: ntlm_password
             {{- end }}
+            - name: OMADA__INSECURE_SKIP_SSL_VERIFY
+              value: "{{ .Values.omada.insecure_skip_ssl_verify }}"
+            # TODO: use separate integration AMQP user instead of global one
+            - name: OMADA__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            - name: OMADA__INTERVAL
+              value: "{{ .Values.omada.interval }}"
           ports:
             - containerPort: 80
+          volumeMounts:
+            - name: omada-pv-storage
+              mountPath: /data/
           resources:
             {{- toYaml .Values.omada.resources | nindent 12 }}
       initContainers:
@@ -80,6 +97,8 @@ spec:
               value: "http://keycloak-service:8080/auth"
             - name: MO_URL
               value: "http://mo-service:5000"
+            - name: CLIENT_ID
+              value: "dipex"
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
@@ -107,4 +126,8 @@ spec:
             items:
               - key: config
                 path: config.yml
+        - name: omada-pv-storage
+          persistentVolumeClaim:
+            claimName: omada-pv-claim
+
 {{- end }}
