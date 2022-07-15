@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.35.3 - 2022-07-15
+-------------------
+
+[#xxxxx] Don't use RollingUpdate for deployment with ReadWriteOnce persistent volume
+
 2.35.2 - 2022-07-15
 -------------------
 
