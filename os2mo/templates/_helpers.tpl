@@ -126,11 +126,11 @@ mox
   args:
     - |
       while true; do
+        echo "Waiting for {{ .name | title }} to be ready"
         if curl --insecure --silent --fail "http://{{ .name }}-service:{{ .port }}{{ .url }}" -o /dev/null
         then
           break
         fi
-        echo "Waiting for {{ .name | title }} to be ready"
         sleep 1
       done
       echo "OK"
