@@ -240,11 +240,12 @@ omada:
     repository: magentaaps/os2mint-omada
     tag: latest
     pullPolicy: IfNotPresent
-  it_system_user_key: omada_ad_guid
   odata_url: "MUST BE OVERRIDDEN"
   host_header: null
   ntlm:
     enabled: false
+  insecure_skip_ssl_verify: false
+  interval: 1800
   cronjob_schedule: "0 6 * * *"
   resources:
     requests:

@@ -84,7 +84,6 @@ keycloak:
 omada:
   image:
     pullPolicy: Always
-  cronjob_schedule: "0/2 * * * *"
 
 sd_changed_at:
   image:
