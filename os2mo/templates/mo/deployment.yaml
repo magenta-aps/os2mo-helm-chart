@@ -61,6 +61,8 @@ spec:
             {{- if $is_missing_url_secret }}
               {{- fail "Must have url_secret set if AMQP is enabled" }}
             {{- else }}
+            - name: AMQP_ENABLE
+              value: "true"
             - name: AMQP_URL
               valueFrom:
                 secretKeyRef:
