@@ -26,6 +26,9 @@ spec:
   rules:
     - http:
         paths:
+          # This list should correspond with:
+          # * https://git.magenta.dk/rammearkitektur/os2mo/-/blob/master/dev-environment/nginx-proxy.conf.template
+          # * All the salt pillar ones
           {{- range tuple "/openapi.json" "/graphql" "/metrics" "/docs" "/service/" "/version/" "/health/" }}
           - path: {{ . }}
             pathType: Prefix
