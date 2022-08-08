@@ -1,6 +1,7 @@
 # SPDX-FileCopyrightText: Magenta ApS
 # SPDX-License-Identifier: MPL-2.0
 ---
+{{- if .Values.omada.enabled }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -11,3 +12,4 @@ spec:
   resources:
     requests:
       storage: 128Mi
+{{- end }}
