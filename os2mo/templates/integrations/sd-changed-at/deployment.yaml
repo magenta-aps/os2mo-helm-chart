@@ -136,7 +136,43 @@ spec:
           volumeMounts:
             - name: sd-pv
               mountPath: "/mnt/dipex"
+        - name: os2mo-init
+          image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
+          imagePullPolicy: {{ .Values.os2mo.init.image.pullPolicy }}
+          env:
+            - name: AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: MO_URL
+              value: "http://mo-service:5000"
+            - name: CLIENT_ID
+              value: "{{ $keycloak_client_id }}"
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sd-changed-at-client-secret
+                  key: client_secret
+            - name: LORA_URL
+              value: "http://mox-service:8080"
+            - name: LORA_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-lora-dipex-secret
+                  key: client_secret
+            - name: LORA_AUTH_REALM
+              value: "lora"
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          volumeMounts:
+            - name: sd-changed-at-init-config-volume
+              mountPath: /config
+              readOnly: true
       volumes:
+        - name: sd-changed-at-init-config-volume
+          configMap:
+            name: sd-changed-at-init-config
+            items:
+              - key: config
+                path: config.yml
         - name: sd-pv
           persistentVolumeClaim:
             claimName: sd-pvc
