@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.37.0 - 2022-08-18
+-------------------
+
+[#51893] Omada: Add support for user visibility ("C_SYNLIG_I_OS2MO")
+
 2.36.2 - 2022-08-08
 -------------------
 
