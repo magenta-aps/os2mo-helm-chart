@@ -43,7 +43,7 @@ spec:
                   name: orggatekeeper-client-secret
                   key: client_secret
 
-            - name: AMQP_URL
+            - name: AMQP__URL
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.amqp.url_secret }}
