@@ -97,6 +97,49 @@ Generate Project:
     - helm template --kube-version 1.19.11 os2mo | kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
 
 
+Release build OCI:
+  stage: release
+  needs: []
+  image:
+    name: alpine/helm:3.9.4
+    entrypoint: [""]
+  before_script:
+    - helm registry login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+  script:
+    - helm package --version=0.0.0-${CI_COMMIT_SHA} os2mo
+    - helm push os2mo-0.0.0-${CI_COMMIT_SHA}.tgz oci://$CI_REGISTRY_IMAGE
+
+
+Release review OCI:
+  stage: release
+  needs: []
+  image:
+    name: alpine/helm:3.9.4
+    entrypoint: [""]
+  before_script:
+    - helm registry login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+  script:
+    - helm package --version=${REVIEW_VERSION} os2mo
+    - helm push os2mo-${REVIEW_VERSION}.tgz oci://${CI_REGISTRY_IMAGE}
+  rules:
+    - if: $CI_MERGE_REQUEST_ID
+
+
+Release version OCI:
+  stage: release
+  needs: []
+  image:
+    name: alpine/helm:3.9.4
+    entrypoint: [""]
+  before_script:
+    - helm registry login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+  script:
+    - helm package --version=${CI_COMMIT_TAG} os2mo
+    - helm push os2mo-${CI_COMMIT_TAG}.tgz oci://${CI_REGISTRY_IMAGE}
+  rules:
+    - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
+
+
 Release version:
   stage: release
   needs: []
