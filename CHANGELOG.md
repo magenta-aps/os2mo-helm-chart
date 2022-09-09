@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.39.0 - 2022-09-09
+-------------------
+
+[#51382] Don't allow orgviewer deployment without RBAC
+
 2.38.0 - 2022-08-26
 -------------------
 
