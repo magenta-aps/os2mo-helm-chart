@@ -64,12 +64,12 @@ include:
 
 .lint-template: &lint
   <<: *install-deps
-  image: python:3.8
+  image: python:3.10
   stage: lint
 
 .test-template: &test
   <<: *install-deps
-  image: python:3.8
+  image: python:3.10
   stage: test
 
 # ---------------------------------------------------------------------------
@@ -158,7 +158,7 @@ Release version:
 
 
 pages:
-  image: python:3.8
+  image: python:3.10
   stage: release
   needs: []
   before_script:
