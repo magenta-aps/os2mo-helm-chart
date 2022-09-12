@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+2.39.1 - 2022-09-12
+-------------------
+
+[#51729] Orggatekeeper: set enable_hide_logic environment variable default to True
+
 2.39.0 - 2022-09-09
 -------------------
 
