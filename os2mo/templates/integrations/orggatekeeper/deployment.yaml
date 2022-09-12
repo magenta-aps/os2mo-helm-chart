@@ -50,7 +50,7 @@ spec:
                   key: url
 
             - name: ENABLE_HIDE_LOGIC
-              value: "false"
+              value: "true"
           envFrom:
             - configMapRef:
                 name: orggatekeeper-config
