@@ -43,7 +43,7 @@ spec:
             {{- end }}
 
             - name: GLOBAL_API_URL
-              value: {{ .Values.ingress.hostname }}
+              value: https://{{ .Values.ingress.hostname }}
 
             - name: GLOBAL_APP_TITLE
               value: {{ .Values.orgviewer.med.title }}
@@ -59,9 +59,6 @@ spec:
                 secretKeyRef:
                   name: orgviewer-med-client-secret
                   key: client_secret
-
-            - name: KEYCLOAK_BASEURL
-              value: "{{ .Values.ingress.hostname }}/auth"
 
             - name: GLOBAL_ORG_PERSON_RELATION
               value: "association"
