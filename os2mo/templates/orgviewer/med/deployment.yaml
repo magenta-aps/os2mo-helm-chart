@@ -43,7 +43,7 @@ spec:
             {{- end }}
 
             - name: GLOBAL_API_URL
-              value: {{ .Values.orgviewer.med.url }}
+              value: {{ .Values.ingress.hostname }}
 
             - name: GLOBAL_APP_TITLE
               value: {{ .Values.orgviewer.med.title }}
