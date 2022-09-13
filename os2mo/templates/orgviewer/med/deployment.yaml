@@ -61,10 +61,7 @@ spec:
                   key: client_secret
 
             - name: KEYCLOAK_BASEURL
-              value: "http://keycloak-service:8080/auth"
-
-            - name: PROXY_PASS_TO
-              value: "http://mo-service:5000"
+              value: "{{ .Values.ingress.hostname }}/auth"
 
             - name: GLOBAL_ORG_PERSON_RELATION
               value: "association"
