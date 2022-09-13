@@ -104,6 +104,12 @@ spec:
               value: {{ $keycloak_client_id }}
             - name: TF_VAR_client_roles
               value: '["reader"]'
+            - name: TF_VAR_client_standard_flow_enabled
+              value: 'true'
+            - name: TF_VAR_client_valid_redirect_urls
+              value: '["*"]'
+            - name: TF_VAR_client_web_origins
+              value: '["*"]'
             - name: TF_VAR_client_secret
               valueFrom:
                 secretKeyRef:
