@@ -41,6 +41,9 @@ spec:
             - name: PORT
               value: "5000"
 
+            - name: ENABLE_CORS
+              value: "true"
+
             # Disable service platformen
             - name: DUMMY_MODE
               value: "true"
