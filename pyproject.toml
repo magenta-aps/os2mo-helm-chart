@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MPL-2.0
 [tool.poetry]
 name = "os2mo-helm-chart"
-version = "3.3.0"
+version = "3.4.0"
 description = "Helm Chart to deploy OS2mo"
 authors = ["Emil Madsen <emil@magenta.dk>"]
 
