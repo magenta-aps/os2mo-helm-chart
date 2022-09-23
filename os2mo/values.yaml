@@ -200,8 +200,6 @@ keycloak:
       repository: magentaaps/os2mo-keycloak-realm-builder
       tag: latest
       pullPolicy: IfNotPresent
-    lora_realm_enabled: false
-    lora_dipex_client_enabled: false
     environment: {}
   integrationbuilder:
     image:

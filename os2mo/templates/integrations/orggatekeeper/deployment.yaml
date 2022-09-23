@@ -124,13 +124,6 @@ spec:
                   key: client_secret
             - name: LORA_URL
               value: "http://mox-service:8080"
-            - name: LORA_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-lora-dipex-secret
-                  key: client_secret
-            - name: LORA_AUTH_REALM
-              value: "lora"
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
           volumeMounts:
