@@ -66,12 +66,12 @@ os2mo:
       failureThreshold: 150
       periodSeconds: 2
     liveness:
-      periodSeconds: 10
-      timeoutSeconds: 1
+      periodSeconds: 60
+      timeoutSeconds: 15
       failureThreshold: 3
     readiness:
-      periodSeconds: 10
-      timeoutSeconds: 1
+      periodSeconds: 60
+      timeoutSeconds: 15
       failureThreshold: 3
 
   frontend:
@@ -147,12 +147,12 @@ lora:
       failureThreshold: 150
       periodSeconds: 2
     liveness:
-      periodSeconds: 10
-      timeoutSeconds: 1
+      periodSeconds: 60
+      timeoutSeconds: 15
       failureThreshold: 3
     readiness:
-      periodSeconds: 10
-      timeoutSeconds: 1
+      periodSeconds: 60
+      timeoutSeconds: 15
       failureThreshold: 3
 
 dipex:
