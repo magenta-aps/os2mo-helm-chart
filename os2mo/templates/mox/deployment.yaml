@@ -222,24 +222,6 @@ spec:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
-            - name: KEYCLOAK_LORA_REALM_ENABLED
-              value: "{{ .Values.keycloak.builder.lora_realm_enabled }}"
-            {{- if .Values.keycloak.builder.lora_realm_enabled }}
-            - name: TF_VAR_KEYCLOAK_LORA_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-lora-client-secret
-                  key: client_secret
-            - name: TF_VAR_KEYCLOAK_LORA_DIPEX_CLIENT_ENABLED
-              value: "{{ .Values.keycloak.builder.lora_dipex_client_enabled }}"
-            {{- if .Values.keycloak.builder.lora_dipex_client_enabled }}
-            - name: TF_VAR_KEYCLOAK_LORA_DIPEX_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-lora-dipex-secret
-                  key: client_secret
-            {{- end }}
-            {{- end }}
             - name: TF_VAR_KEYCLOAK_IDP_NAME_ID_POLICY_FORMAT
               value: "Unspecified"
           resources:
