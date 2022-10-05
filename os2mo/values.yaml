@@ -52,10 +52,10 @@ os2mo:
   resources:
     requests:
       memory: "1024Mi"
-      cpu: "500m"
+      cpu: "750m"
     limits:
-      memory: "1536Mi"
-      cpu: "1000m"
+      memory: "2048Mi"
+      cpu: "1500m"
   headless: false
   external_env_config_map_name: null
   environment: {}
@@ -137,10 +137,10 @@ lora:
   resources:
     requests:
       memory: "512Mi"
-      cpu: "100m"
+      cpu: "500m"
     limits:
-      memory: "1024Mi"
-      cpu: "250m"
+      memory: "2048Mi"
+      cpu: "2000m"
   probes:
     enabled: true
     startupProbe:
@@ -241,10 +241,10 @@ database:
   resources:
     requests:
       memory: "1024Mi"
-      cpu: "100m"
+      cpu: "1000m"
     limits:
       memory: "2048Mi"
-      cpu: "250m"
+      cpu: "2000m"
 
 omada:
   enabled: false
@@ -266,7 +266,7 @@ omada:
       cpu: "100m"
     limits:
       memory: "1024Mi"
-      cpu: "250m"
+      cpu: "500m"
 
 sd_changed_at:
   enabled: false
@@ -311,7 +311,7 @@ sdtool:
   resources:
     requests:
       memory: "512Mi"
-      cpu: "100m"
+      cpu: "250m"
     limits:
       memory: "1024Mi"
       cpu: "250m"
