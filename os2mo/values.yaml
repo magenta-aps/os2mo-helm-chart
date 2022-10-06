@@ -52,7 +52,7 @@ os2mo:
   resources:
     requests:
       memory: "1024Mi"
-      cpu: "750m"
+      cpu: "500m"
     limits:
       memory: "2048Mi"
       cpu: "1500m"
@@ -241,7 +241,7 @@ database:
   resources:
     requests:
       memory: "1024Mi"
-      cpu: "1000m"
+      cpu: "500m"
     limits:
       memory: "2048Mi"
       cpu: "2000m"
