@@ -1,3 +1,3 @@
-Release type: major/minor/patch
+Release type: patch
 
-[#xxxxx] Insert description here
+[#52084] Chill resource requests a little bit
