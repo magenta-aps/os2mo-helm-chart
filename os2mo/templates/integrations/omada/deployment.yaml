@@ -78,6 +78,9 @@ spec:
                   key: url
             - name: OMADA__INTERVAL
               value: "{{ .Values.omada.interval }}"
+          envFrom:
+            - configMapRef:
+                name: omada
           ports:
             - containerPort: 80
           volumeMounts:

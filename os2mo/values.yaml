@@ -259,7 +259,7 @@ omada:
     enabled: false
   insecure_skip_ssl_verify: false
   interval: 1800
-  cronjob_schedule: "0 6 * * *"
+  environment: {}
   resources:
     requests:
       memory: "512Mi"
