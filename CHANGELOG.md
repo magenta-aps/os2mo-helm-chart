@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+3.9.0 - 2022-10-18
+------------------
+
+[#52084] Allow arbitrary Omada environment variables
+
 3.8.2 - 2022-10-06
 ------------------
 
