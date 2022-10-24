@@ -340,7 +340,6 @@ orgviewer:
 
   med:
     enabled: false
-    replicaCount: 2
     url: null
     org_uuid: null
     title: null
@@ -357,7 +356,6 @@ orgviewer:
 
   adm:
     enabled: false
-    replicaCount: 2
     url: null
     org_uuid: null
     title: null
