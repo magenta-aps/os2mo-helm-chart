@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+4.0.0 - 2022-10-24
+------------------
+
+[#50902] Require orgviewer >3.0.0
+Revert "[#50058] Optional replicas count adjustment for orgviewer"
+
 3.9.0 - 2022-10-18
 ------------------
 
