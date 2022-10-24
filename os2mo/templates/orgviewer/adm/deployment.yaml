@@ -11,7 +11,6 @@ metadata:
   labels:
     app: orgviewer-adm
 spec:
-  replicas: {{ .Values.orgviewer.adm.replicaCount }}
   selector:
     matchLabels:
       app: orgviewer-adm
@@ -25,7 +24,7 @@ spec:
       containers:
         - name: orgviewer-adm
           {{- if and (ne .Values.orgviewer.image.tag "latest") (contains "." .Values.orgviewer.image.tag) }}
-            {{- if (semverCompare "<2.3.0" .Values.orgviewer.image.tag) }}
+            {{- if (semverCompare "<3.0.0" .Values.orgviewer.image.tag) }}
               {{- fail "Orgviewer version must be at least 2.3.0" }}
             {{- end }}
           {{- end }}
