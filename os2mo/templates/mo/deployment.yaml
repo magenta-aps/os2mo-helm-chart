@@ -140,7 +140,6 @@ spec:
           {{- end }}
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
-        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         {{- if .Values.sdtool.enabled }}
         {{ include "os2mo.wait-for-sdtool" . | nindent 8 }}
         {{- end }}

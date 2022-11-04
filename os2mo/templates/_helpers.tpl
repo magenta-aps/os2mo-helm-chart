@@ -146,10 +146,6 @@ mox
 {{ ( include "os2mo.wait-for-service" (dict "name" "mo" "port" 5000 "url" "/health/ready" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}
 
-{{- define "os2mo.wait-for-mox" -}}
-{{ ( include "os2mo.wait-for-service" (dict "name" "mox" "port" 8080 "url" "/site-map" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
-{{- end }}
-
 {{- define "os2mo.wait-for-sdtool" -}}
 {{ ( include "os2mo.wait-for-service" (dict "name" "sdtool" "port" 80 "url" "/triggers" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}

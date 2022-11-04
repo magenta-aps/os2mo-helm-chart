@@ -52,7 +52,6 @@ spec:
              readOnly: true
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
-        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
       restartPolicy: Never
       volumes:

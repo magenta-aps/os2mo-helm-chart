@@ -94,7 +94,6 @@ spec:
               mountPath: "/mnt/dipex"
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
-        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
         - name: create-client-secret
           image: "{{ .Values.keycloak.integrationbuilder.image.registry }}/{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
