@@ -21,6 +21,9 @@ if [ -z "${OS2MO_CLUSTER_EXISTS}" ]; then
     echo ""
 fi
 
+# Ensure we bail if anything fails from now on. In particular, we do NOT want
+# the `use-context` to fail and apply on an arbitrary cluster.
+set -e
 kubectl config use-context kind-os2mo
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 
