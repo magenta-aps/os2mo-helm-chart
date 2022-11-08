@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.1.0 - 2022-11-08
+------------------
+
+[#50772] release to dockerhub final final for real final
+
 5.0.0 - 2022-11-08
 ------------------
 
