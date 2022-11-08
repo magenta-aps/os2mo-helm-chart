@@ -48,8 +48,22 @@ spec:
             - name: DUMMY_MODE
               value: "true"
 
-            - name: LORA_URL
-              value: "http://mox-service:8080/"
+            # LoRA
+            - name: DB_HOST
+              value: {{ .Values.database.host }}
+            {{ if ne .Values.database.sslmode "" }}
+            - name: DB_SSLMODE
+              value: {{ .Values.database.sslmode }}
+            {{ end }}
+            - name: DB_NAME
+              value: {{ include "os2mo.mox_db_name" . }}
+            - name: DB_USER
+              value: {{ include "os2mo.mox_db_user" . }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mox-secret
+                  key: db_password
 
             # AMQP
             {{- if .Values.amqp.enabled }}
@@ -143,4 +157,129 @@ spec:
         {{- if .Values.sdtool.enabled }}
         {{ include "os2mo.wait-for-sdtool" . | nindent 8 }}
         {{- end }}
+        - name: mox-init
+          image: "{{ .Values.os2mo.db_init.image.registry }}/{{ .Values.os2mo.db_init.image.repository }}:{{ .Values.os2mo.db_init.image.tag }}"
+          imagePullPolicy: {{ .Values.os2mo.db_init.image.pullPolicy }}
+          env:
+            - name: POSTGRES_HOST
+              value: {{ .Values.database.host }}
+            - name: POSTGRES_USER
+              value: "{{ .Values.database.user }}"
+            {{- if .Values.os2mo.db_init.make_superuser }}
+            - name: MAKE_SUPERUSER
+              value: "true"
+            {{- end }}
+            {{ if ne .Values.database.sslmode "" }}
+            - name: POSTGRES_SSL
+              value: {{ .Values.database.sslmode }}
+            {{ end }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  {{ if .Values.database.password_secret }}
+                  name: {{ .Values.database.password_secret }}
+                  {{ else }}
+                  name: mox-db-secret
+                  {{ end }}
+                  key: db_password
+
+            - name: DB_NAME
+              value: {{ include "os2mo.mox_db_name" . }}
+            - name: DB_USER
+              value: {{ include "os2mo.mox_db_user" . }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mox-secret
+                  key: db_password
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+
+        {{ if .Values.fixture }}
+        - name: fixture-loader
+          image: magentaaps/os2mo-fixture-loader:latest
+          args: [ {{ .Values.fixture }} ]
+          env:
+            - name: PGHOST
+              value: {{ .Values.database.host }}
+            {{ if ne .Values.database.sslmode "" }}
+            - name: PGSSLMODE
+              value: {{ .Values.database.sslmode }}
+            {{ end }}
+            - name: PGDATABASE
+              value: {{ include "os2mo.mox_db_name" . }}
+            - name: PGUSER
+              value: {{ .Values.database.user }}
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  {{ if .Values.database.password_secret }}
+                  name: {{ .Values.database.password_secret }}
+                  {{ else }}
+                  name: mox-db-secret
+                  {{ end }}
+                  key: db_password
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+        {{ end }}
+        - name: alembic
+          image: "{{ .Values.os2mo.image.registry }}/{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
+          imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
+          command: [ "python3", "-m", "oio_rest", "initdb", "--wait", "30" ]
+          env:
+            - name: DB_HOST
+              value: {{ .Values.database.host }}
+            {{ if ne .Values.database.sslmode "" }}
+            - name: DB_SSLMODE
+              value: {{ .Values.database.sslmode }}
+            {{ end }}
+            - name: DB_NAME
+              value: {{ include "os2mo.mox_db_name" . }}
+            - name: DB_USER
+              value: {{ include "os2mo.mox_db_user" . }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mox-secret
+                  key: db_password
+          envFrom:
+            - configMapRef:
+                name: mo-config
+          resources:
+            {{- toYaml .Values.os2mo.resources | nindent 12 }}
+
+        - name: keycloak-realm-builder
+          image: "{{ .Values.keycloak.builder.image.registry }}/{{ .Values.keycloak.builder.image.repository }}:{{ .Values.keycloak.builder.image.tag }}"
+          imagePullPolicy: {{ .Values.keycloak.builder.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: keycloak-gen-config
+          env:
+            {{ include "os2mo.keycloak_terraform_db_connection" . | nindent 12 }}
+            - name: TF_VAR_KEYCLOAK_ADMIN_USERNAME
+              value: "admin"
+            - name: TF_VAR_KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "os2mo.keycloak_admin_secret" . }}
+                  key: admin_password
+            - name: TF_VAR_KEYCLOAK_URL
+              value: "http://keycloak-service:8080"
+            {{- $is_https := empty .Values.ingress.tls_secret }}
+            {{- $protocol := ternary "http" "https" $is_https }}
+            - name: TF_VAR_KEYCLOAK_MO_CLIENT_REDIRECT_URI
+              value: "[\"{{ $protocol }}://{{ .Values.ingress.hostname }}/*\"]"
+            - name: TF_VAR_KEYCLOAK_MO_CLIENT_WEB_ORIGIN
+              value: "[\"{{ $protocol }}://{{ .Values.ingress.hostname }}\"]"
+            - name: TF_VAR_KEYCLOAK_DIPEX_CLIENT_ENABLED
+              value: 'true'
+            - name: TF_VAR_KEYCLOAK_DIPEX_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
+            - name: TF_VAR_KEYCLOAK_IDP_NAME_ID_POLICY_FORMAT
+              value: "Unspecified"
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
       restartPolicy: Always

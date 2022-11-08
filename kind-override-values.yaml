@@ -24,6 +24,8 @@ os2mo:
             scope: "CVR"
       it_systems: {}
     log_level: DEBUG
+  db_init:
+    make_superuser: true
   environment:
     GRAPHQL_ENABLE: true
     KEYCLOAK_VERIFY_AUDIENCE: false
@@ -34,14 +36,6 @@ os2mo:
     limits:
       memory: "1536Mi"
       cpu: "1000m"
-
-lora:
-  image:
-    pullPolicy: Always
-  init:
-    image:
-      pullPolicy: Always
-    make_superuser: true
 
 dipex:
   image:
@@ -103,7 +97,7 @@ orgviewer:
   image:
     pullPolicy: Always
   med:
-    enabled: true
+    enabled: false
     url: http://orgviewer-med.example.com
     org_uuid: "f06ee470-9f17-566f-acbe-e938112d46d9"
     title: "Medarbejder organisation"
@@ -111,7 +105,7 @@ orgviewer:
       hostname: orgviewer-med.example.com
 
   adm:
-    enabled: true
+    enabled: false
     url: http://orgviewer-adm.example.com
     org_uuid: "fb2d158f-114e-5f67-8365-2c520cf10b58"
     title: "Administrativ organisation"
