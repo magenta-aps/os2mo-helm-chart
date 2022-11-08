@@ -25,7 +25,9 @@ fi
 # the `use-context` to fail and apply on an arbitrary cluster.
 set -e
 kubectl config use-context kind-os2mo
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
+# TODO: Nginx is pinned to 1.3.1 pending release of https://github.com/kubernetes/ingress-nginx/pull/9245
+#  When fixed, change URL back to 'https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml'
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.3.1/deploy/static/provider/kind/deploy.yaml
 
 helm repo add mittwald https://helm.mittwald.de
 helm repo update
