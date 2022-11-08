@@ -18,5 +18,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['-O', '-', 'mox-service:80/site-map']
+      args: ['-O', '-', 'mo-service:5000/lora/site-map']
   restartPolicy: Never

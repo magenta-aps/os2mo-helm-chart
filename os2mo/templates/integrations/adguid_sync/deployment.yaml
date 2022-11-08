@@ -136,7 +136,6 @@ spec:
                 secretKeyRef:
                   name: adguid-sync-client-secret
                   key: client_secret
-        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
         - name: os2mo-init
           image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
@@ -154,7 +153,7 @@ spec:
                   name: adguid-sync-client-secret
                   key: client_secret
             - name: LORA_URL
-              value: "http://mox-service:8080"
+              value: "http://mo-service:5000/lora"
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
           volumeMounts:

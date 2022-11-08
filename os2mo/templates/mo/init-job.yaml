@@ -36,7 +36,7 @@ spec:
                   name: keycloak-dipex-secret
                   key: client_secret
             - name: LORA_URL
-              value: "http://mox-service:8080"
+              value: "http://mo-service:5000/lora"
             - name: LOG_LEVEL
               value: {{ .Values.os2mo.init.log_level | quote }}
           resources:
@@ -52,7 +52,6 @@ spec:
              readOnly: true
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
-        {{ include "os2mo.wait-for-mox" . | nindent 8 }}
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
       restartPolicy: Never
       volumes:
