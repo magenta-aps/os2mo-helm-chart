@@ -49,6 +49,12 @@ spec:
               value: "true"
 
             # LoRA
+            - name: ENABLE_INTERNAL_LORA
+              value: "true"
+            - name: LORA_AUTH
+              value: "false"
+            - name: DISABLE_ALEMBIC
+              value: "true"
             - name: DB_HOST
               value: {{ .Values.database.host }}
             {{ if ne .Values.database.sslmode "" }}
