@@ -122,7 +122,7 @@ spec:
                   name: orggatekeeper-client-secret
                   key: client_secret
             - name: LORA_URL
-              value: "http://mox-service:8080"
+              value: "http://mo-service:5000/lora"
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
           volumeMounts:

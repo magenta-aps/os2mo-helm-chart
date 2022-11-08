@@ -18,5 +18,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['-O', '-', 'mox-service:80/klassifikation/klasse?bvn=%']
+      args: ['-O', '-', 'mo-service:5000/lora/klassifikation/klasse?bvn=%']
   restartPolicy: Never

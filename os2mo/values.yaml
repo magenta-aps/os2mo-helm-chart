@@ -164,7 +164,7 @@ dipex:
     tag: latest
     pullPolicy: IfNotPresent
   settings:
-    mox.base: "http://mox-service:8080"
+    mox.base: "http://mo-service:5000/lora"
     mora.base: "http://mo-service:5000"
     crontab.RUN_IMPORTS_DUMMY: true
     crontab.SVC_USER: "USER@KOMMUNE.NET"
