@@ -13,6 +13,8 @@ variables:
   REVIEW_VERSION: 0.0.0-mr$CI_MERGE_REQUEST_IID
   REVIEW_CHART_URL: $HELM_REPO/api/charts/os2mo/$REVIEW_VERSION
   REVIEW_URL: https://review-chart-mr$CI_MERGE_REQUEST_IID.moraci.magentahosted.dk
+  RELEASE_REGISTRY: index.docker.io
+  RELEASE_REGISTRY_IMAGE: ${RELEASE_REGISTRY}/magentaaps/os2mo-helm-chart
 
 cache:
   key: "${CI_JOB_NAME}"
@@ -132,10 +134,10 @@ Release version OCI:
     name: alpine/helm:3.9.4
     entrypoint: [""]
   before_script:
-    - helm registry login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
+    - helm registry login --username ${RELEASE_REGISTRY_USER} --password ${RELEASE_REGISTRY_PASSWORD} ${RELEASE_REGISTRY}
   script:
     - helm package --version=${CI_COMMIT_TAG} os2mo
-    - helm push os2mo-${CI_COMMIT_TAG}.tgz oci://${CI_REGISTRY_IMAGE}
+    - helm push os2mo-${CI_COMMIT_TAG}.tgz oci://${RELEASE_REGISTRY_IMAGE}:${CI_COMMIT_TAG}
   rules:
     - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 
