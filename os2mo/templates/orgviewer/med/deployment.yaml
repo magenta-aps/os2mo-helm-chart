@@ -23,11 +23,6 @@ spec:
     spec:
       containers:
         - name: orgviewer-med
-          {{- if and (ne .Values.orgviewer.image.tag "latest") (contains "." .Values.orgviewer.image.tag) }}
-            {{- if (semverCompare "<3.0.0" .Values.orgviewer.image.tag) }}
-              {{- fail "Orgviewer version must be at least 2.3.0" }}
-            {{- end }}
-          {{- end }}
           image: "{{ .Values.orgviewer.image.registry }}/{{ .Values.orgviewer.image.repository }}:{{ .Values.orgviewer.image.tag }}"
           imagePullPolicy: {{ .Values.orgviewer.image.pullPolicy }}
           env:
