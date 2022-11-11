@@ -231,11 +231,15 @@ spec:
             - name: DB_NAME
               value: {{ include "os2mo.mox_db_name" . }}
             - name: DB_USER
+              {{ if .Values.os2mo.alembic.user }}
+              value: {{ .Values.os2mo.alembic.user }}
+              {{ else }}
               value: {{ include "os2mo.mox_db_user" . }}
+              {{ end }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mox-secret
+                  name: {{ .Values.os2mo.alembic.password_secret }}
                   key: db_password
           envFrom:
             - configMapRef:
