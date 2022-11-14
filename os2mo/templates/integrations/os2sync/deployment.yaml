@@ -94,4 +94,84 @@ spec:
             secretName: os2sync-tls-secret
         - name: pkcs12-certificate
           emptyDir: {}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: os2sync_export
+  labels:
+    app: os2sync_export
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: os2sync_export
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: os2sync_export
+    spec:
+      containers:
+        - name: os2sync_export
+          image: "{{ .Values.os2sync.exporter.registry }}/{{ .Values.os2sync.exporter.repository }}:{{ .Values.os2sync.exporter.tag }}"
+          imagePullPolicy: {{ .Values.os2sync.exporter.pullPolicy }}
+          env:
+            - name: Municipality
+              value: {{ required "The Municipality ENV is missing" .Values.os2sync.municipality | quote }}
+            - name: mora_base
+              value: "http://mora-service:5000/"
+            - name: os2sync_top_unit_uuid
+              value: {{ required "The top level uuid is missing" .Values.os2sync.os2sync_top_unit_uuid | quote }}
+            - name: os2sync_api_url
+              value: "http://os2sync-service:5000/api/"
+            - name: os2sync_log_level
+              value: {{ .Values.os2sync.os2sync_log_level | quote }}
+            - name: os2sync_log_file
+              value: {{ .Values.os2sync.os2sync_log_file | quote }}
+            - name: os2sync_hash_cache
+              value: {{ .Values.os2sync.os2sync_hash_cache | quote }}
+            - name: os2sync_xfer_cpr
+              value: {{ .Values.os2sync.os2sync_xfer_cpr | quote }}
+            - name: os2sync_autowash
+              value: {{ .Values.os2sync.os2sync_autowash | quote }}
+            - name: os2sync_ca_verify_os2sync
+              value: {{ .Values.os2sync.os2sync_ca_verify_os2sync | quote }}
+            - name: os2sync_ca_verify_os2mo
+              value: {{ .Values.os2sync.os2sync_ca_verify_os2mo | quote }}
+            - name: os2sync_phone_scope_classes
+              value: {{ .Values.os2sync.os2sync_phone_scope_classes | quote }}
+            - name: os2sync_email_scope_classes
+              value: {{ .Values.os2sync.os2sync_email_scope_classes | quote }}
+            - name: os2sync_ignored_unit_levels
+              value: {{ .Values.os2sync.os2sync_ignored_unit_levels | quote }}
+            - name: os2sync_ignored_unit_types
+              value: {{ .Values.os2sync.os2sync_ignored_unit_types | quote }}
+            - name: os2sync_templates
+              value: {{ .Values.os2sync.os2sync_templates | quote }}
+            - name: os2sync_sync_managers
+              value: {{ .Values.os2sync.os2sync_sync_managers | quote }}
+            - name: os2sync_use_contact_for_tasks
+              value: {{ .Values.os2sync.os2sync_use_contact_for_tasks | quote }}
+            - name: os2sync_employee_engagement_address
+              value: {{ .Values.os2sync.os2sync_employee_engagement_address | quote }}
+            - name: os2sync_uuid_from_it_systems
+              value: {{ .Values.os2sync.os2sync_uuid_from_it_systems | quote }}
+            - name: os2sync_truncate_length
+              value: {{ .Values.os2sync.os2sync_truncate_length | quote }}
+            - name: os2sync_user_key_it_system_name
+              value: {{ .Values.os2sync.os2sync_user_key_it_system_name | quote }}
+            - name: os2sync_filter_hierarchy_names
+              value: {{ .Values.os2sync.os2sync_filter_hierarchy_names | quote }}
+
+
+          ports:
+            - containerPort: 5000
+          resources:
+            {{- toYaml .Values.os2sync_export.resources | nindent 12 }}
+          
 {{- end }}
