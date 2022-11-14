@@ -8,13 +8,15 @@
 variables:
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
   PRE_COMMIT_HOME: "$CI_PROJECT_DIR/.cache/pre-commit"
-  HELM_REPO: https://chartmuseum.magentahosted.dk
-  # REVIEW_VERSION is used by the config-updater in salt-automation. Make sure to keep them synchronised!
-  REVIEW_VERSION: 0.0.0-mr$CI_MERGE_REQUEST_IID
-  REVIEW_CHART_URL: $HELM_REPO/api/charts/os2mo/$REVIEW_VERSION
-  REVIEW_URL: https://review-chart-mr$CI_MERGE_REQUEST_IID.moraci.magentahosted.dk
+
   RELEASE_REGISTRY: index.docker.io
   RELEASE_REGISTRY_NAMESPACE: ${RELEASE_REGISTRY}/magentaaps
+
+  REVIEW_URL: https://review-chart-mr$CI_MERGE_REQUEST_IID.moraci.magentahosted.dk
+  # REVIEW_VERSION is used by the config-updater in salt-automation. Make sure to keep them synchronised!
+  REVIEW_VERSION: 0.0.0-mr$CI_MERGE_REQUEST_IID
+  # Would be nice to include tag here, but Docker Hub doesn't support 🤷‍♀️
+  REVIEW_CHART_URL: ${RELEASE_REGISTRY}/magentaaps/os2mo-helm-chart
 
 cache:
   key: "${CI_JOB_NAME}"
@@ -99,7 +101,7 @@ Generate Project:
     - helm template --kube-version 1.19.11 os2mo | kubeval --schema-location https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master -
 
 
-Release build OCI:
+Release build:
   stage: release
   needs: []
   image:
@@ -112,7 +114,7 @@ Release build OCI:
     - helm push os2mo-0.0.0-${CI_COMMIT_SHA}.tgz oci://$CI_REGISTRY_IMAGE
 
 
-Release review OCI:
+Release review:
   stage: release
   needs: []
   image:
@@ -127,7 +129,7 @@ Release review OCI:
     - if: $CI_MERGE_REQUEST_ID
 
 
-Release version OCI:
+Release version:
   stage: release
   needs: []
   image:
@@ -139,23 +141,6 @@ Release version OCI:
     - 'sed -i "s/name: .*/name: os2mo-helm-chart/g" os2mo/Chart.yaml'
     - helm package --version=${CI_COMMIT_TAG} os2mo
     - helm push os2mo-helm-chart-${CI_COMMIT_TAG}.tgz oci://${RELEASE_REGISTRY_NAMESPACE}
-  rules:
-    - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
-
-
-Release version:
-  stage: release
-  needs: []
-  image:
-    name: alpine/helm:3.7.1
-    entrypoint: [""]
-  tags:
-    - docker
-  before_script:
-    - helm plugin install https://github.com/chartmuseum/helm-push.git
-    - helm repo add magenta-chartmuseum $HELM_REPO
-  script:
-    - helm cm-push --version=$CI_COMMIT_TAG os2mo magenta-chartmuseum
   rules:
     - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 
@@ -181,40 +166,17 @@ deploy_helm_chart:
   stage: review
   needs: []
   image:
-    name: alpine/helm:3.7.1
+    name: alpine/helm:3.9.4
     entrypoint: [""]
-  tags:
-    - docker
   before_script:
-    - helm plugin install https://github.com/chartmuseum/helm-push.git
-    - helm repo add magenta-chartmuseum $HELM_REPO
+    - helm registry login --username ${RELEASE_REGISTRY_USER} --password ${RELEASE_REGISTRY_PASSWORD} ${RELEASE_REGISTRY}
   script:
-    - helm cm-push --version=$REVIEW_VERSION --force os2mo magenta-chartmuseum
+    - 'sed -i "s/name: .*/name: os2mo-helm-chart/g" os2mo/Chart.yaml'
+    - helm package --version=${REVIEW_VERSION} os2mo
+    - helm push os2mo-helm-chart-${REVIEW_VERSION}.tgz oci://${RELEASE_REGISTRY_NAMESPACE}
   environment:
     name: chart/$CI_MERGE_REQUEST_IID
     url: $REVIEW_CHART_URL
-    on_stop: stop_helm_chart
-    auto_stop_in: 1 week
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: manual
-      allow_failure: true
-
-stop_helm_chart:
-  stage: review
-  needs: []
-  image: alpine:3
-  variables:
-    GIT_STRATEGY: none # We do not need the source code
-  tags:
-    - docker
-  before_script:
-    - apk add curl
-  script:
-    - curl -X DELETE -u $HELM_REPO_USERNAME:$HELM_REPO_PASSWORD $REVIEW_CHART_URL
-  environment:
-    name: chart/$CI_MERGE_REQUEST_IID
-    action: stop
   rules:
     - if: $CI_MERGE_REQUEST_ID
       when: manual
