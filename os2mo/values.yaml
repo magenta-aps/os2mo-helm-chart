@@ -376,18 +376,25 @@ os2sync:
   db_name: os2sync
   db_username: os2sync_admin
   # envs for os2sync_export:
+  os2sync_top_unit_uuid: null
+  os2sync_log_level: 20
+  os2sync_autowash: true
+  os2sync_ca_verify_os2sync: true
+  os2sync_ca_verify_os2mo: false
+  os2sync_truncate_length: 100
   os2sync_xfer_cpr: false
-  os2sync_phone_scope_classes: null
-  os2sync_email_scope_classes: null
-  os2sync_ignored_unit_levels: null
-  os2sync_ignored_unit_types: null
-  os2sync_templates: null
-  os2sync_sync_managers: False
-  os2sync_use_contact_for_tasks: False
-  os2sync_employee_engagement_address: null
-  os2sync_uuid_from_it_systems: null
-  os2sync_user_key_it_system_name: null
-  os2sync_filter_hierarchy_names: null
+  os2sync_phone_scope_classes: []
+  os2sync_email_scope_classes: []
+  os2sync_ignored_unit_levels: []
+  os2sync_ignored_unit_types: []
+  os2sync_templates: []
+  os2sync_sync_managers: false
+  os2sync_use_contact_for_tasks: false
+  os2sync_employee_engagement_address: []
+  os2sync_uuid_from_it_systems: []
+  os2sync_user_key_it_system_name: []
+  os2sync_filter_hierarchy_names: []
+
   resources:
     requests:
       memory: "512Mi"
