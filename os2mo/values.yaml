@@ -58,6 +58,9 @@ os2mo:
       tag: 12.8-11.7
       pullPolicy: IfNotPresent
     make_superuser: false
+  alembic:
+    user: null
+    password_secret: mox-secret
   resources:
     requests:
       memory: "1024Mi"

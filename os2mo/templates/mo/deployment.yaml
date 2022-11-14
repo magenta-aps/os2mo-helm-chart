@@ -30,11 +30,6 @@ spec:
       {{- end }}
       containers:
         - name: mo
-          {{- if and (ne .Values.os2mo.image.tag "latest") (contains "." .Values.os2mo.image.tag) }}
-            {{- if and (.Values.os2mo.probes.enabled) (semverCompare "<3.24.0" .Values.os2mo.image.tag) }}
-              {{- fail "MO version must be at least 3.24.0 when probes are enabled" }}
-            {{- end }}
-          {{- end }}
           image: "{{ .Values.os2mo.image.registry }}/{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
           imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
           env:
@@ -74,12 +69,6 @@ spec:
             # AMQP
             {{- if .Values.amqp.enabled }}
             {{- $is_missing_url_secret := empty .Values.amqp.url_secret }}
-
-            {{- if and (ne .Values.os2mo.image.tag "latest") (contains "." .Values.os2mo.image.tag) }}
-              {{- if (semverCompare "<4.5.0" .Values.os2mo.image.tag) }}
-                {{- fail "MO version must be at least 4.5.0 when AMQP is enabled" }}
-              {{- end }}
-            {{- end }}
 
             {{- if $is_missing_url_secret }}
               {{- fail "Must have url_secret set if AMQP is enabled" }}
@@ -242,11 +231,15 @@ spec:
             - name: DB_NAME
               value: {{ include "os2mo.mox_db_name" . }}
             - name: DB_USER
+              {{ if .Values.os2mo.alembic.user }}
+              value: {{ .Values.os2mo.alembic.user }}
+              {{ else }}
               value: {{ include "os2mo.mox_db_user" . }}
+              {{ end }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mox-secret
+                  name: {{ .Values.os2mo.alembic.password_secret }}
                   key: db_password
           envFrom:
             - configMapRef:
