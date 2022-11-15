@@ -204,15 +204,11 @@ spec:
             - name: PGDATABASE
               value: {{ include "os2mo.mox_db_name" . }}
             - name: PGUSER
-              value: {{ .Values.database.user }}
+              value: {{ include "os2mo.mox_db_user" . }}
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  {{ if .Values.database.password_secret }}
-                  name: {{ .Values.database.password_secret }}
-                  {{ else }}
-                  name: mox-db-secret
-                  {{ end }}
+                  name: mox-secret
                   key: db_password
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
