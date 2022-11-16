@@ -79,7 +79,7 @@ spec:
 
 
           ports:
-            - containerPort: 5000
+            - containerPort: 8000
           resources:
             {{- toYaml .Values.os2sync.resources | nindent 12 }}
           

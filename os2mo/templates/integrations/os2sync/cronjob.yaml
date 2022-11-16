@@ -1,0 +1,38 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if and (.Values.os2sync.enabled) (.Values.os2sync.cronjob_enabled) }}
+# v1beta1 necessary for Kubernetes versions < 1.21
+apiVersion: {{ ternary "batch/v1beta1" "batch/v1" (.Capabilities.APIVersions.Has "batch/v1beta1/CronJob") }}
+kind: CronJob
+metadata:
+  name: cronjob-os2sync-export
+  labels:
+    app: os2sync-export
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  schedule: {{ .Values.os2sync.cronjob_schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: cronjob-os2sync-export
+              image: curlimages/curl
+              command: ["/bin/sh","-c"]
+              args: [ 'curl -X POST "http://os2sync-export-service:8000/trigger"' ]
+              resources:
+                requests:
+                  memory: "64Mi"
+                  cpu: "5m"
+                limits:
+                  memory: "128Mi"
+                  cpu: "10m"
+          initContainers:
+            {{ include "os2mo.wait-for-os2sync-export" . | nindent 12 }}
+          restartPolicy: OnFailure
+{{- end }}

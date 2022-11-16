@@ -346,6 +346,8 @@ orgviewer:
 
 os2sync:
   enabled: false
+  cronjob_enabled: true
+  cronjob_schedule: "0 0 * * *"
   image:
     registry: docker.io
     repository: os2sync/linux
