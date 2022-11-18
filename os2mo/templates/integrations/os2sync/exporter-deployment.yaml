@@ -33,7 +33,7 @@ spec:
             - name: Municipality
               value: {{ required "The Municipality ENV is missing" .Values.os2sync.municipality | quote }}
             - name: mora_base
-              value: "http://mora-service:5000"
+              value: {{ .Values.os2sync.mora_base | default "http://mo-service:5000" | quote }}
             - name: os2sync_top_unit_uuid
               value: {{ required "The top level uuid is missing" .Values.os2sync.os2sync_top_unit_uuid | quote }}
             - name: os2sync_api_url
