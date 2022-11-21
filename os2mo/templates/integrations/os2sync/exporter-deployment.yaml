@@ -100,7 +100,7 @@ spec:
           env:
             {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
             - name: POSTGRES_SCHEMA_NAME
-              value: terraform_remote_state_sd_changed_at
++              value: terraform_remote_state_os2sync_export
 
             # Keycloak REST connection
             - name: TF_VAR_admin_password
@@ -113,7 +113,7 @@ spec:
             - name: TF_VAR_client_name
               value: "{{ $keycloak_client_id }}"
             - name: TF_VAR_client_roles
-              value: '["admin"]'
++              value: '["reader"]'
             - name: TF_VAR_client_secret
               valueFrom:
                 secretKeyRef:
