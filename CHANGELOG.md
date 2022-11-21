@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.5.3 - 2022-11-21
+------------------
+
+[#53478] Remove plus signs added during review in gitlab
+
 5.5.2 - 2022-11-21
 ------------------
 
