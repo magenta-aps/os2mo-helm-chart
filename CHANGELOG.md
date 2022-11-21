@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.5.2 - 2022-11-21
+------------------
+
+[#53478] Add keycloak client and secret for os2sync_export
+
 5.5.1 - 2022-11-18
 ------------------
 
