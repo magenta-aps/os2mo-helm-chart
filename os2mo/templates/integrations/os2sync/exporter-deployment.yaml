@@ -87,6 +87,8 @@ spec:
               value: {{ .Values.os2sync.os2sync_user_key_it_system_name | default "Active Directory" | quote }}
             - name: os2sync_filter_hierarchy_names
               value: {{ .Values.os2sync.os2sync_filter_hierarchy_names | default "[]" | quote }}
+            - name: os2sync_filter_users_by_it_system
+              value: {{ .Values.os2sync.os2sync_filter_users_by_it_system | default false | quote }}
           ports:
             - containerPort: 8000
           resources:
