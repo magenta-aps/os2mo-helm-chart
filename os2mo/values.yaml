@@ -352,7 +352,7 @@ os2sync:
     registry: docker.io
     repository: os2sync/linux
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   exporter:
     registry: docker.io
     repository: magentaaps/os2mo-os2sync-export
