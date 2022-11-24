@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.5.6 - 2022-11-24
+------------------
+
+[#53629] Omada: Use address visibility 'Public' instead of 'Internal'
+
 5.5.5 - 2022-11-23
 ------------------
 
