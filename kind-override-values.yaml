@@ -6,8 +6,6 @@ os2mo:
   image:
     pullPolicy: Always
   replicaCount: 1
-  gunicorn:
-    max_workers: 1
   init:
     enabled: false
     image:

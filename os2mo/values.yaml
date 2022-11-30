@@ -40,8 +40,6 @@ os2mo:
     pullPolicy: IfNotPresent
     pullSecret: null
   port: 80
-  gunicorn:
-    max_workers: 1
   init:
     enabled: false
     image:
