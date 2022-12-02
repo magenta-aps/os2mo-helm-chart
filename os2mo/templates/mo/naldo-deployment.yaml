@@ -29,6 +29,9 @@ spec:
           env:
             - name: PUBLIC_BASE_URL
               value: "https://{{ .Values.ingress.hostname }}"
+          envFrom:
+            - configMapRef:
+                name: naldo-config
           ports:
             - containerPort: 3000
           resources:
