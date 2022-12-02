@@ -123,6 +123,7 @@ os2mo:
       limits:
         memory: "128Mi"
         cpu: "200m"
+    environment: {}
 
 dipex:
   image:
