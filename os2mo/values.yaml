@@ -225,8 +225,12 @@ omada:
     pullPolicy: IfNotPresent
   odata_url: "MUST BE OVERRIDDEN"
   host_header: null
-  ntlm:
+  oidc:
     enabled: false
+    client_id: null
+    client_secret_name: omada-oidc-secret
+    auth_realm: null
+    auth_server: null
   insecure_skip_ssl_verify: false
   interval: 1800
   environment: {}
