@@ -13,8 +13,6 @@ variables:
   RELEASE_REGISTRY_NAMESPACE: ${RELEASE_REGISTRY}/magentaaps
 
   REVIEW_URL: https://review-chart-mr$CI_MERGE_REQUEST_IID.moraci.magentahosted.dk
-  # REVIEW_VERSION is used by the config-updater in salt-automation. Make sure to keep them synchronised!
-  REVIEW_VERSION: 0.0.0-mr$CI_MERGE_REQUEST_IID
   # Would be nice to include tag here, but Docker Hub doesn't support 🤷‍♀️
   REVIEW_CHART_URL: ${RELEASE_REGISTRY}/magentaaps/os2mo-helm-chart
 
@@ -110,23 +108,9 @@ Release build:
   before_script:
     - helm registry login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
   script:
+    - 'sed -i "s/name: .*/name: os2mo-helm-chart/g" os2mo/Chart.yaml'
     - helm package --version=0.0.0-${CI_COMMIT_SHA} os2mo
-    - helm push os2mo-0.0.0-${CI_COMMIT_SHA}.tgz oci://$CI_REGISTRY_IMAGE
-
-
-Release review:
-  stage: release
-  needs: []
-  image:
-    name: alpine/helm:3.9.4
-    entrypoint: [""]
-  before_script:
-    - helm registry login --username ${CI_REGISTRY_USER} --password ${CI_REGISTRY_PASSWORD} ${CI_REGISTRY}
-  script:
-    - helm package --version=${REVIEW_VERSION} os2mo
-    - helm push os2mo-${REVIEW_VERSION}.tgz oci://${CI_REGISTRY_IMAGE}
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
+    - helm push os2mo-helm-chart-0.0.0-${CI_COMMIT_SHA}.tgz oci://$CI_REGISTRY_IMAGE
 
 
 Release version:
@@ -174,7 +158,7 @@ Deploy Review:
     - apt-get update && apt-get install -y curl jq
   script:
     - curl --silent --fail --request POST --user $CONFIG_UPDATER_REVIEW_APP_USERNAME:$CONFIG_UPDATER_REVIEW_APP_PASSWORD "https://config-updater.magentahosted.dk/os2mo/review-apps/chart/deploy?mr_id=$CI_MERGE_REQUEST_IID&commit_sha=$CI_COMMIT_SHA"
-    - until $(curl "${REVIEW_URL}/version/" | jq ".mo_hash == \"$CI_COMMIT_SHA\""); do sleep 5; done
+    - until curl "${REVIEW_URL}/version/"; do sleep 5; done
   environment:
     name: review/$CI_MERGE_REQUEST_IID
     url: $REVIEW_URL

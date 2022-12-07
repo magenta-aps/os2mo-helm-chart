@@ -36,48 +36,60 @@ spec:
           env:
             - name: ENABLE_METRICS
               value: "True"
-            # TODO: Use separate integration token instead of global dipex one
-            - name: MO__CLIENT_ID
+
+            # MO OIDC
+            - name: MO__OIDC__CLIENT_ID
+              # TODO: Use separate integration token instead of global dipex one
               value: "dipex"
-            - name: MO__CLIENT_SECRET
+            - name: MO__OIDC__CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
-            # TODO: use separate integration AMQP user instead of global one
+
+            # MO AMQP
             - name: MO__AMQP__URL
               valueFrom:
                 secretKeyRef:
+                  # TODO: use separate integration AMQP user instead of global one
                   name: {{ .Values.amqp.url_secret }}
                   key: url
+
+            # Omada
             - name: OMADA__URL
               value: "{{ .Values.omada.odata_url }}"
             {{- if .Values.omada.host_header }}
             - name: OMADA__HOST_HEADER
               value: "{{ .Values.omada.host_header }}"
             {{- end }}
-            {{- if .Values.omada.ntlm.enabled }}
-            - name: OMADA__NTLM_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: omada-ntlm-secret
-                  key: ntlm_username
-            - name: OMADA__NTLM_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: omada-ntlm-secret
-                  key: ntlm_password
-            {{- end }}
             - name: OMADA__INSECURE_SKIP_SSL_VERIFY
               value: "{{ .Values.omada.insecure_skip_ssl_verify }}"
-            # TODO: use separate integration AMQP user instead of global one
+            - name: OMADA__INTERVAL
+              value: "{{ .Values.omada.interval }}"
+
+            # Omada OIDC
+            {{- if .Values.omada.oidc.enabled }}
+            - name: OMADA__OIDC__CLIENT_ID
+              value: "{{ .Values.omada.oidc.client_id }}"
+            - name: OMADA__OIDC__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.omada.oidc.client_secret_name }}
+                  key: client_secret
+            - name: OMADA__OIDC__AUTH_REALM
+              value: "{{ .Values.omada.oidc.auth_realm }}"
+            - name: OMADA__OIDC__AUTH_SERVER
+              value: "{{ .Values.omada.oidc.auth_server }}"
+            {{- end }}
+
+            # Omada AMQP
             - name: OMADA__AMQP__URL
               valueFrom:
                 secretKeyRef:
+                  # TODO: use separate integration AMQP user instead of global one
                   name: {{ .Values.amqp.url_secret }}
                   key: url
-            - name: OMADA__INTERVAL
-              value: "{{ .Values.omada.interval }}"
+
           envFrom:
             - configMapRef:
                 name: omada
