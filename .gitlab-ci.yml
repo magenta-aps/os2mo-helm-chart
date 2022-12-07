@@ -162,29 +162,9 @@ pages:
 
 # Review Stage
 ##############
-deploy_helm_chart:
-  stage: review
-  needs: []
-  image:
-    name: alpine/helm:3.9.4
-    entrypoint: [""]
-  before_script:
-    - helm registry login --username ${RELEASE_REGISTRY_USER} --password ${RELEASE_REGISTRY_PASSWORD} ${RELEASE_REGISTRY}
-  script:
-    - 'sed -i "s/name: .*/name: os2mo-helm-chart/g" os2mo/Chart.yaml'
-    - helm package --version=${REVIEW_VERSION} os2mo
-    - helm push os2mo-helm-chart-${REVIEW_VERSION}.tgz oci://${RELEASE_REGISTRY_NAMESPACE}
-  environment:
-    name: chart/$CI_MERGE_REQUEST_IID
-    url: $REVIEW_CHART_URL
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: manual
-      allow_failure: true
-
 Deploy Review:
   stage: review
-  needs: ["deploy_helm_chart"]
+  needs: []
   image: debian:bullseye
   variables:
     GIT_STRATEGY: none # We do not need the source code
@@ -193,7 +173,7 @@ Deploy Review:
   before_script:
     - apt-get update && apt-get install -y curl jq
   script:
-    - curl --silent --fail --request POST --user $CONFIG_UPDATER_REVIEW_APP_USERNAME:$CONFIG_UPDATER_REVIEW_APP_PASSWORD "https://config-updater.magentahosted.dk/os2mo/review-apps/chart/deploy?mr_id=$CI_MERGE_REQUEST_IID"
+    - curl --silent --fail --request POST --user $CONFIG_UPDATER_REVIEW_APP_USERNAME:$CONFIG_UPDATER_REVIEW_APP_PASSWORD "https://config-updater.magentahosted.dk/os2mo/review-apps/chart/deploy?mr_id=$CI_MERGE_REQUEST_IID&commit_sha=$CI_COMMIT_SHA"
     - until $(curl "${REVIEW_URL}/version/" | jq ".mo_hash == \"$CI_COMMIT_SHA\""); do sleep 5; done
   environment:
     name: review/$CI_MERGE_REQUEST_IID
