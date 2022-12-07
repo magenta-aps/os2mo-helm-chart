@@ -174,7 +174,7 @@ Deploy Review:
     - apt-get update && apt-get install -y curl jq
   script:
     - curl --silent --fail --request POST --user $CONFIG_UPDATER_REVIEW_APP_USERNAME:$CONFIG_UPDATER_REVIEW_APP_PASSWORD "https://config-updater.magentahosted.dk/os2mo/review-apps/chart/deploy?mr_id=$CI_MERGE_REQUEST_IID&commit_sha=$CI_COMMIT_SHA"
-    - until $(curl "${REVIEW_URL}/version/" | jq ".mo_hash == \"$CI_COMMIT_SHA\""); do sleep 5; done
+    - until curl "${REVIEW_URL}/version/"; do sleep 5; done
   environment:
     name: review/$CI_MERGE_REQUEST_IID
     url: $REVIEW_URL
