@@ -1,0 +1,96 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.sql_export.enabled }}
+{{- $keycloak_client_id := "integration_sql_export" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-export
+  labels:
+    app: sql-export
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: sql-export
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: sql-export
+    spec:
+      containers:
+        - name: sql-export
+          image: "{{ .Values.sql_export.image.registry }}/{{ .Values.sql_export.image.repository }}:{{ .Values.sql_export.image.tag }}"
+          imagePullPolicy: {{ .Values.sql_export.image.pullPolicy }}
+          env:
+            - name: AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+
+            - name: CLIENT_ID
+              value: "{{ $keycloak_client_id }}"
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sql-export-client-secret
+                  key: client_secret
+
+            {{- if not (empty .Values.sql_export.actual_state_secret_name) }}
+            - name: ACTUAL_STATE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sql_export.actual_state_secret_name }}
+                  key: password
+            {{- end }}
+
+            {{- if not (empty .Values.sql_export.historic_state_secret_name) }}
+            - name: HISTORIC_STATE__PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sql_export.historic_state_secret_name }}
+                  key: password
+            {{- end }}
+          envFrom:
+            - configMapRef:
+                name: sql-export
+          ports:
+            - containerPort: 8000
+          resources:
+            {{- toYaml .Values.sql_export.resources | nindent 12 }}
+      initContainers:
+        {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
+        {{ include "os2mo.wait-for-mo" . | nindent 8 }}
+        - name: create-client-secret
+          image: "{{ .Values.keycloak.integrationbuilder.image.registry }}/{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
+          imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
+          env:
+            {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
+            - name: POSTGRES_SCHEMA_NAME
+              value: terraform_remote_state_sql_export
+
+            # Keycloak REST connection
+            - name: TF_VAR_admin_password
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "os2mo.keycloak_admin_secret" . }}
+                  key: admin_password
+
+            # Configuration of the client
+            - name: TF_VAR_client_name
+              value: "{{ $keycloak_client_id }}"
+            - name: TF_VAR_client_roles
+              value: '["admin"]'
+            - name: TF_VAR_client_secret
+              valueFrom:
+                secretKeyRef:
+                  name: sql-export-client-secret
+                  key: client_secret
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+{{- end }}
