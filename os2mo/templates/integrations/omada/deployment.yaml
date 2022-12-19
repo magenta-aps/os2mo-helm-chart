@@ -37,21 +37,23 @@ spec:
             - name: ENABLE_METRICS
               value: "True"
 
-            # MO OIDC
-            - name: MO__OIDC__CLIENT_ID
-              # TODO: Use separate integration token instead of global dipex one
+            # MO Auth
+            # TODO: Use separate integration token instead of global dipex one
+            - name: MO__AUTH__CLIENT_ID
               value: "dipex"
-            - name: MO__OIDC__CLIENT_SECRET
+            - name: MO__AUTH__CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
+            - name: MO__AUTH__SERVER
+              value: "http://keycloak-service:8080/auth"
 
             # MO AMQP
+            # TODO: use separate integration AMQP user instead of global one
             - name: MO__AMQP__URL
               valueFrom:
                 secretKeyRef:
-                  # TODO: use separate integration AMQP user instead of global one
                   name: {{ .Values.amqp.url_secret }}
                   key: url
 
@@ -76,10 +78,10 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.omada.oidc.client_secret_name }}
                   key: client_secret
-            - name: OMADA__OIDC__AUTH_REALM
-              value: "{{ .Values.omada.oidc.auth_realm }}"
-            - name: OMADA__OIDC__AUTH_SERVER
-              value: "{{ .Values.omada.oidc.auth_server }}"
+            - name: OMADA__OIDC__TOKEN_ENDPOINT
+              value: "{{ .Values.omada.oidc.token_endpoint }}"
+            - name: OMADA__OIDC__SCOPE
+              value: "{{ .Values.omada.oidc.scope }}"
             {{- end }}
 
             # Omada AMQP
