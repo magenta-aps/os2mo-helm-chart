@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.8.0 - 2022-12-21
+------------------
+
+[#53756] Remove `insecure_skip_ssl_verify` feature flag from Omada
+
 5.7.1 - 2022-12-21
 ------------------
 
