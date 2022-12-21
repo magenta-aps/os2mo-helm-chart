@@ -64,8 +64,6 @@ spec:
             - name: OMADA__HOST_HEADER
               value: "{{ .Values.omada.host_header }}"
             {{- end }}
-            - name: OMADA__INSECURE_SKIP_SSL_VERIFY
-              value: "{{ .Values.omada.insecure_skip_ssl_verify }}"
             - name: OMADA__INTERVAL
               value: "{{ .Values.omada.interval }}"
 

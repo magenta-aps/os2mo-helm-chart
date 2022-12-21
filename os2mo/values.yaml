@@ -231,7 +231,6 @@ omada:
     client_secret_name: omada-oidc-secret
     token_endpoint: null
     scope: null
-  insecure_skip_ssl_verify: false
   interval: 1800
   environment: {}
   resources:
