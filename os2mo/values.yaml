@@ -229,8 +229,8 @@ omada:
     enabled: false
     client_id: null
     client_secret_name: omada-oidc-secret
-    auth_realm: null
-    auth_server: null
+    token_endpoint: null
+    scope: null
   insecure_skip_ssl_verify: false
   interval: 1800
   environment: {}
