@@ -51,6 +51,13 @@ spec:
             - name: SD_IMPORT_RUN_DB
               value: "{{ .Values.sd_changed_at.sd_import_run_db }}"
 
+            {{ if and .Values.sentry.dsn .Values.sentry.environment }}
+            - name: SENTRY_DSN
+              value: {{ .Values.sentry.dsn | quote }}
+            - name: SENTRY_ENVIRONMENT
+              value: {{ .Values.sentry.environment | quote }}
+            {{ end }}
+
             - name: MO_URL
               value: "http://mo-service:5000"
             - name: AUTH_SERVER
