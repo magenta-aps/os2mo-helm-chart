@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.9.0 - 2023-01-05
+------------------
+
+[#54303] Sentry support for os2sync, AD and SD integrations
+
 5.8.0 - 2022-12-21
 ------------------
 
