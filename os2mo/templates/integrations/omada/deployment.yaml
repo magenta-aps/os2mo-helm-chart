@@ -59,11 +59,7 @@ spec:
 
             # Omada
             - name: OMADA__URL
-              value: "{{ .Values.omada.odata_url }}"
-            {{- if .Values.omada.host_header }}
-            - name: OMADA__HOST_HEADER
-              value: "{{ .Values.omada.host_header }}"
-            {{- end }}
+              value: "{{ .Values.omada.odata.url }}"
             - name: OMADA__INTERVAL
               value: "{{ .Values.omada.interval }}"
 
@@ -136,5 +132,10 @@ spec:
         - name: omada-pv-storage
           persistentVolumeClaim:
             claimName: omada-pv-claim
-
+      {{- if and .Values.omada.odata.ip .Values.omada.odata.hostname }}
+      hostAliases:
+        - ip: {{ .Values.omada.odata.ip }}
+          hostnames:
+            - {{ .Values.omada.odata.hostname }}
+      {{- end }}
 {{- end }}
