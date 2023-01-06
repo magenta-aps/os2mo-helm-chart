@@ -230,8 +230,10 @@ omada:
     repository: magentaaps/os2mint-omada
     tag: latest
     pullPolicy: IfNotPresent
-  odata_url: "MUST BE OVERRIDDEN"
-  host_header: null
+  odata:
+    url: "MUST BE OVERRIDDEN"
+    ip: null
+    hostname: null
   oidc:
     enabled: false
     client_id: null
