@@ -1,6 +1,15 @@
 CHANGELOG
 =========
 
+5.11.1 - 2023-01-12
+-------------------
+
+fix: [#50615] Add guards to integration service monitors.
+
+Before this fix the service monitors for sd-changed-at, sdtool and
+sql_export would be deployed even when the corresponding deployments
+would not, thus resulting in noop-service monitors.
+
 5.11.0 - 2023-01-06
 -------------------
 
