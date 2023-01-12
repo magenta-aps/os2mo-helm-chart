@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
+{{- if .Values.sd_changed_at.enabled }}
 {{- if .Values.metrics.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -15,4 +16,5 @@ spec:
       app: sd-changed-at
   endpoints:
   - port: "8000"
+{{- end }}
 {{- end }}

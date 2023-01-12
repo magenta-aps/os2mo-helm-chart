@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
+{{- if .Values.sdtool.enabled }}
 {{- if .Values.metrics.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -15,4 +16,5 @@ spec:
       app: sdtool
   endpoints:
   - port: "80"
+{{- end }}
 {{- end }}
