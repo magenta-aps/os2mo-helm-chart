@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.11.2 - 2023-01-13
+-------------------
+
+[#xxxxx] os2sync_export cleanup settings and add sentry
+
 5.11.1 - 2023-01-12
 -------------------
 
