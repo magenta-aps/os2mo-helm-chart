@@ -89,6 +89,15 @@ spec:
               value: {{ .Values.os2sync.os2sync_filter_hierarchy_names | default "[]" | quote }}
             - name: os2sync_filter_users_by_it_system
               value: {{ .Values.os2sync.os2sync_filter_users_by_it_system | default false | quote }}
+            {{ if .Values.sentry.environment }}
+            - name: SENTRY_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sentry.secret }}
+                  key: dsn
+            - name: SENTRY_ENVIRONMENT
+              value: {{ .Values.sentry.environment | quote }}
+            {{ end }}
           ports:
             - containerPort: 8000
           resources:
