@@ -34,6 +34,8 @@ spec:
               value: {{ required "The Municipality ENV is missing" .Values.os2sync.municipality | quote }}
             - name: mora_base
               value: {{ .Values.os2sync.mora_base | default "http://mo-service:5000" | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.os2sync.os2sync_log_level | default "INFO" | quote }}
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
             - name: AUTH_REALM
@@ -50,7 +52,7 @@ spec:
             - name: os2sync_api_url
               value: "http://os2sync-service:5000/api"
             - name: os2sync_hash_cache
-              value: {{ .Values.os2sync.os2sync_hash_cache | default "/tmo/hash_cache" | quote }}
+              value: {{ .Values.os2sync.os2sync_hash_cache | default "/tmp/hash_cache" | quote }}
             - name: os2sync_xfer_cpr
               value: {{ .Values.os2sync.os2sync_xfer_cpr | default false | quote }}
             - name: os2sync_autowash
