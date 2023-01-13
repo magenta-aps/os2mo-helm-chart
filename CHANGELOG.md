@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.11.3 - 2023-01-13
+-------------------
+
+[#xxxxx] OS2Sync_export: allow setting log level. Use INFO as default.
+
 5.11.2 - 2023-01-13
 -------------------
 
