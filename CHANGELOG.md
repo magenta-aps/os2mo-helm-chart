@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+5.11.4 - 2023-01-13
+-------------------
+
+fix: [#54112] Fix API version for Cronjob
+
+We are not using Kubernetes < 1.21 anywhere anymore
+
 5.11.3 - 2023-01-13
 -------------------
 
