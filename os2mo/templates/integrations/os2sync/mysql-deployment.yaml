@@ -42,7 +42,7 @@ spec:
           ports:
             - containerPort: 3306
           volumeMounts:
-            - name: os2sync-mysql
+            - name: os2sync-mysql-pv
               mountPath: /var/lib/mysql
       volumes:
         - name: os2sync-mysql-pv
