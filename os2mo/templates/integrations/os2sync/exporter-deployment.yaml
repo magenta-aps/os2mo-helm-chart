@@ -63,6 +63,8 @@ spec:
               value: {{ .Values.os2sync.os2sync_ca_verify_os2mo | default true | quote }}
             - name: os2sync_phone_scope_classes
               value: {{ .Values.os2sync.os2sync_phone_scope_classes | default "[]" | quote }}
+            - name: os2sync_landline_scope_classes
+              value: {{ .Values.os2sync.os2sync_landline_scope_classes | default "[]" | quote }}
             - name: os2sync_email_scope_classes
               value: {{ .Values.os2sync.os2sync_email_scope_classes | default "[]" | quote }}
             - name: os2sync_ignored_unit_levels
