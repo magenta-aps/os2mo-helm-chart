@@ -24,7 +24,6 @@ spec:
       containers:
         - name: os2mo-init
           image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
-          imagePullPolicy: {{ .Values.os2mo.init.image.pullPolicy }}
           env:
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"

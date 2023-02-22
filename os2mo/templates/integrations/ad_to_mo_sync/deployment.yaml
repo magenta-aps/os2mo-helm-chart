@@ -28,7 +28,6 @@ spec:
       containers:
         - name: ad-to-mo-sync
           image: "{{ .Values.ad_to_mo_sync.image.registry }}/{{ .Values.ad_to_mo_sync.image.repository }}:{{ .Values.ad_to_mo_sync.image.tag }}"
-          imagePullPolicy: {{ .Values.ad_to_mo_sync.image.pullPolicy }}
           env:
             {{ if .Values.sentry.environment }}
             - name: SENTRY_DSN
@@ -125,7 +124,6 @@ spec:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         - name: create-client-secret
           image: "{{ .Values.keycloak.integrationbuilder.image.registry }}/{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
-          imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
           env:
             {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
             - name: POSTGRES_SCHEMA_NAME
@@ -151,7 +149,6 @@ spec:
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
         - name: os2mo-init
           image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
-          imagePullPolicy: {{ .Values.os2mo.init.image.pullPolicy }}
           env:
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
