@@ -33,7 +33,6 @@ spec:
       containers:
         - name: orggatekeeper
           image: "{{ .Values.orggatekeeper.image.registry }}/{{ .Values.orggatekeeper.image.repository }}:{{ .Values.orggatekeeper.image.tag }}"
-          imagePullPolicy: {{ .Values.orggatekeeper.image.pullPolicy }}
           env:
             - name: CLIENT_ID
               value: "{{ $keycloak_client_id }}"
@@ -91,7 +90,6 @@ spec:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         - name: create-client-secret
           image: "{{ .Values.keycloak.integrationbuilder.image.registry }}/{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
-          imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
           env:
             {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
             - name: POSTGRES_SCHEMA_NAME
@@ -117,7 +115,6 @@ spec:
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
         - name: os2mo-init
           image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
-          imagePullPolicy: {{ .Values.os2mo.init.image.pullPolicy }}
           env:
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"

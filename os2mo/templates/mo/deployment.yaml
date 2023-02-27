@@ -31,7 +31,6 @@ spec:
       containers:
         - name: mo
           image: "{{ .Values.os2mo.image.registry }}/{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
-          imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
           env:
             - name: PORT
               value: "5000"
@@ -148,7 +147,6 @@ spec:
         {{- end }}
         - name: mox-init
           image: "{{ .Values.os2mo.db_init.image.registry }}/{{ .Values.os2mo.db_init.image.repository }}:{{ .Values.os2mo.db_init.image.tag }}"
-          imagePullPolicy: {{ .Values.os2mo.db_init.image.pullPolicy }}
           env:
             - name: POSTGRES_HOST
               value: {{ .Values.database.host }}
@@ -213,7 +211,6 @@ spec:
         {{ end }}
         - name: alembic
           image: "{{ .Values.os2mo.image.registry }}/{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
-          imagePullPolicy: {{ .Values.os2mo.image.pullPolicy }}
           command: [ "python3", "-m", "oio_rest", "initdb", "--wait", "30" ]
           env:
             - name: DB_HOST
@@ -239,7 +236,6 @@ spec:
 
         - name: keycloak-realm-builder
           image: "{{ .Values.keycloak.builder.image.registry }}/{{ .Values.keycloak.builder.image.repository }}:{{ .Values.keycloak.builder.image.tag }}"
-          imagePullPolicy: {{ .Values.keycloak.builder.image.pullPolicy }}
           envFrom:
             - configMapRef:
                 name: keycloak-gen-config

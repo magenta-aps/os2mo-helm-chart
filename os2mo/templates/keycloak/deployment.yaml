@@ -27,7 +27,6 @@ spec:
       containers:
         - name: keycloak
           image: "{{ .Values.keycloak.image.registry }}/{{ .Values.keycloak.image.repository }}:{{ .Values.keycloak.image.tag }}"
-          imagePullPolicy: {{ .Values.keycloak.image.pullPolicy }}
           env:
             - name: KEYCLOAK_USER
               value: admin
@@ -86,7 +85,6 @@ spec:
       initContainers:
         - name: keycloak-init
           image: "{{ .Values.keycloak.init.image.registry }}/{{ .Values.keycloak.init.image.repository }}:{{ .Values.keycloak.init.image.tag }}"
-          imagePullPolicy: {{ .Values.keycloak.init.image.pullPolicy }}
           env:
             - name: POSTGRES_DB
               value: {{ .Values.database.db }}

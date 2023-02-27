@@ -27,7 +27,6 @@ spec:
       containers:
         - name: os2sync
           image: "{{ .Values.os2sync.image.registry }}/{{ .Values.os2sync.image.repository }}:{{ .Values.os2sync.image.tag }}"
-          imagePullPolicy: {{ .Values.os2sync.image.pullPolicy }}
           env:
             - name: ClientCertPath
               value: "/certificate/certificate.p12"

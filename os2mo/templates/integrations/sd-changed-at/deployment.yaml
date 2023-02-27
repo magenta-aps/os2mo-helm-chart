@@ -28,7 +28,6 @@ spec:
       containers:
         - name: sd-changed-at
           image: "{{ .Values.sd_changed_at.image.registry }}/{{ .Values.sd_changed_at.image.repository }}:{{ .Values.sd_changed_at.image.tag }}"
-          imagePullPolicy: {{ .Values.sd_changed_at.image.pullPolicy }}
           env:
             {{- if not .Values.sd_changed_at.sd_global_from_date }}
               {{- fail "SD_GLOBAL_FROM_DATE must be set" }}
@@ -107,7 +106,6 @@ spec:
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
         - name: create-client-secret
           image: "{{ .Values.keycloak.integrationbuilder.image.registry }}/{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
-          imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
           env:
             {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
             - name: POSTGRES_SCHEMA_NAME
@@ -134,7 +132,6 @@ spec:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         - name: prepare-run-db
           image: "{{ .Values.sd_changed_at.init.image.registry }}/{{ .Values.sd_changed_at.init.image.repository }}:{{ .Values.sd_changed_at.init.image.tag }}"
-          imagePullPolicy: {{ .Values.sd_changed_at.init.image.pullPolicy }}
           env:
             - name: SD_GLOBAL_FROM_DATE
               value: "{{ .Values.sd_changed_at.sd_global_from_date }}"

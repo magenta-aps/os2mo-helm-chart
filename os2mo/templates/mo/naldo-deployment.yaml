@@ -25,7 +25,6 @@ spec:
       containers:
         - name: mo-naldo
           image: "{{ .Values.os2mo.naldo.image.registry }}/{{ .Values.os2mo.naldo.image.repository }}:{{ .Values.os2mo.naldo.image.tag }}"
-          imagePullPolicy: {{ .Values.os2mo.naldo.image.pullPolicy }}
           env:
             - name: PUBLIC_BASE_URL
               value: "https://{{ .Values.ingress.hostname }}"

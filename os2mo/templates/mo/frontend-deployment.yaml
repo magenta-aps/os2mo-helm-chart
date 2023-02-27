@@ -32,7 +32,6 @@ spec:
       containers:
         - name: mo-frontend
           image: "{{ .Values.os2mo.frontend.image.registry }}/{{ .Values.os2mo.frontend.image.repository }}:{{ .Values.os2mo.frontend.image.tag }}"
-          imagePullPolicy: {{ .Values.os2mo.frontend.image.pullPolicy }}
           ports:
             - containerPort: 80
           resources:
