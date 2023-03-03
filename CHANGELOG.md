@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.16.0 - 2023-03-03
+-------------------
+
+[#54852] Support for os2sync_export featureflag os2sync_version_3
+
 5.15.0 - 2023-02-21
 -------------------
 
