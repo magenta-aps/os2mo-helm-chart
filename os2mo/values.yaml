@@ -488,7 +488,7 @@ manager_engagement_elevator:
   enabled: false
   image:
     registry: docker.io
-    repository: magentaaps/os2mo-manager-elevator
+    repository: magentaaps/os2mo-amqp-trigger-elevate-manager
     tag: latest
     pullPolicy: IfNotPresent
   environment: {}
