@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.17.0 - 2023-03-06
+-------------------
+
+[#54842] Introduce the manager engagement elevator application
+
 5.16.0 - 2023-03-03
 -------------------
 
