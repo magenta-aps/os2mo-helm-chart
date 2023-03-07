@@ -157,3 +157,7 @@ mox
 {{- define "os2mo.wait-for-os2sync-export" -}}
 {{ ( include "os2mo.wait-for-service" (dict "name" "os2sync-export" "port" 8000 "url" "/" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
 {{- end }}
+
+{{- define "os2mo.wait-for-orggatekeeper" -}}
+{{ ( include "os2mo.wait-for-service" (dict "name" "orggatekeeper" "port" 8000 "url" "/" "resources" .Values.initContainers.resources "Values" .Values ) ) }}
+{{- end }}
