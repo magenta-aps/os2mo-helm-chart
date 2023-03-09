@@ -23,7 +23,7 @@ spec:
             - name: cronjob-orggatekeeper
               image: curlimages/curl
               command: ["/bin/sh","-c"]
-              args: [ 'curl --silent --show-error --fail-with-body "http://orggatekeeper-service:8000/ensure-no-unset"' ]
+              args: [ 'curl -X POST --silent --show-error --fail-with-body "http://orggatekeeper-service:8000/ensure-no-unset"' ]
               resources:
                 requests:
                   memory: "64Mi"
