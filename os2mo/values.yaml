@@ -382,6 +382,8 @@ os2sync:
 
 orggatekeeper:
   enabled: false
+  cronjob_enabled: true
+  cronjob_schedule: "0 * * * *"
   image:
     registry: docker.io
     repository: magentaaps/os2mo-amqp-trigger-organisation-gatekeeper
