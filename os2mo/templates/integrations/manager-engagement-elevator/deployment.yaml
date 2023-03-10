@@ -62,6 +62,26 @@ spec:
             - containerPort: 8000
           resources:
             {{- toYaml .Values.manager_engagement_elevator.resources | nindent 12 }}
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8000
+            periodSeconds: {{ .Values.manager_engagement_elevator.probes.liveness.periodSeconds }}
+            timeoutSeconds: {{ .Values.manager_engagement_elevator.probes.liveness.timeoutSeconds }}
+            failureThreshold: {{ .Values.manager_engagement_elevator.probes.liveness.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8000
+            periodSeconds: {{ .Values.manager_engagement_elevator.probes.readiness.periodSeconds }}
+            timeoutSeconds: {{ .Values.manager_engagement_elevator.probes.readiness.timeoutSeconds }}
+            failureThreshold: {{ .Values.manager_engagement_elevator.probes.readiness.failureThreshold }}
+          startupProbe:
+            httpGet:
+              path: /health/ready
+              port: 8000
+            failureThreshold: {{ .Values.manager_engagement_elevator.probes.startupProbe.failureThreshold }}
+            periodSeconds: {{ .Values.manager_engagement_elevator.probes.startupProbe.periodSeconds }}
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         - name: create-client-secret
