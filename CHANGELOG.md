@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+5.19.0 - 2023-03-10
+-------------------
+
+[#55008] Probes for the manager engagement elevator application
+
 5.18.2 - 2023-03-10
 -------------------
 
