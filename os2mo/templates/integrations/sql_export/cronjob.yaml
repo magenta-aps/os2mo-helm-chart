@@ -23,7 +23,7 @@ spec:
             - name: cronjob-sql-export
               image: curlimages/curl
               command: ["/bin/sh","-c"]
-              args: [ 'curl "http://sql-export-service:8000/trigger"' ]
+              args: [ 'curl -X POST "http://sql-export-service:8000/trigger"' ]
               resources:
                 requests:
                   memory: "64Mi"
