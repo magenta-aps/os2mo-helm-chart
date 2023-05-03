@@ -23,7 +23,10 @@ spec:
             - name: cronjob-sql-export
               image: curlimages/curl
               command: ["/bin/sh","-c"]
-              args: [ 'curl -X POST "http://sql-export-service:8000/trigger"' ]
+              args: [ 'curl -X POST "http://sql-export-service:8000/trigger?resolve_dar=${RESOLVE_DAR}"' ]
+              env:
+                - name: RESOLVE_DAR
+                  value: {{ .Values.sql_export.resolve_dar | default false | quote }}
               resources:
                 requests:
                   memory: "64Mi"
