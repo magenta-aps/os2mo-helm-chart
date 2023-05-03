@@ -26,7 +26,7 @@ spec:
               args: [ 'curl -X POST "http://sql-export-service:8000/trigger?resolve_dar=${RESOLVE_DAR}"' ]
               env:
                 - name: RESOLVE_DAR
-                  value: {{ .Values.sql_export.resolve_dar | default false | quote }}
+                  value: {{ .Values.sql_export.resolve_dar | quote }}
               resources:
                 requests:
                   memory: "64Mi"
