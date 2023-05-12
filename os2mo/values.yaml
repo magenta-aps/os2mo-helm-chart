@@ -220,18 +220,8 @@ omada:
     registry: docker.io
     repository: magentaaps/os2mint-omada
     tag: latest
-  odata:
-    url: "MUST BE OVERRIDDEN"
-    ip: null
-    hostname: null
-  oidc:
-    enabled: false
-    client_id: null
-    client_secret_name: omada-oidc-secret
-    token_endpoint: null
-    scope: null
-  interval: 1800
-  environment: {}
+  extraEnv: null
+  hostAliases: null
   resources:
     requests:
       memory: "256Mi"

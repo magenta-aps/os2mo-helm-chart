@@ -33,61 +33,31 @@ spec:
         - name: omada
           image: "{{ .Values.omada.image.registry }}/{{ .Values.omada.image.repository }}:{{ .Values.omada.image.tag }}"
           env:
-            - name: ENABLE_METRICS
-              value: "True"
-
-            # MO Auth
             # TODO: Use separate integration token instead of global dipex one
-            - name: MO__AUTH__CLIENT_ID
+            - name: FASTRAMQPI__CLIENT_ID
               value: "dipex"
-            - name: MO__AUTH__CLIENT_SECRET
+            - name: FASTRAMQPI__CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
-            - name: MO__AUTH__SERVER
+            - name: FASTRAMQPI__AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
-
-            # MO AMQP
             # TODO: use separate integration AMQP user instead of global one
-            - name: MO__AMQP__URL
+            - name: FASTRAMQPI__AMQP__URL
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.amqp.url_secret }}
                   key: url
-
-            # Omada
-            - name: OMADA__URL
-              value: "{{ .Values.omada.odata.url }}"
-            - name: OMADA__INTERVAL
-              value: "{{ .Values.omada.interval }}"
-
-            # Omada OIDC
-            {{- if .Values.omada.oidc.enabled }}
-            - name: OMADA__OIDC__CLIENT_ID
-              value: "{{ .Values.omada.oidc.client_id }}"
-            - name: OMADA__OIDC__CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.omada.oidc.client_secret_name }}
-                  key: client_secret
-            - name: OMADA__OIDC__TOKEN_ENDPOINT
-              value: "{{ .Values.omada.oidc.token_endpoint }}"
-            - name: OMADA__OIDC__SCOPE
-              value: "{{ .Values.omada.oidc.scope }}"
-            {{- end }}
-
-            # Omada AMQP
+            # TODO: use separate integration AMQP user instead of global one
             - name: OMADA__AMQP__URL
               valueFrom:
                 secretKeyRef:
-                  # TODO: use separate integration AMQP user instead of global one
                   name: {{ .Values.amqp.url_secret }}
                   key: url
-
-          envFrom:
-            - configMapRef:
-                name: omada
+            {{- if .Values.omada.extraEnv }}
+            {{ toYaml .Values.omada.extraEnv | indent 12 | trim }}
+            {{- end }}
           ports:
             - containerPort: 80
           volumeMounts:
@@ -130,10 +100,8 @@ spec:
         - name: omada-pv-storage
           persistentVolumeClaim:
             claimName: omada-pv-claim
-      {{- if and .Values.omada.odata.ip .Values.omada.odata.hostname }}
+      {{- if .Values.omada.hostAliases }}
       hostAliases:
-        - ip: {{ .Values.omada.odata.ip }}
-          hostnames:
-            - {{ .Values.omada.odata.hostname }}
+        {{ toYaml .Values.omada.hostAliases | indent 8 | trim }}
       {{- end }}
 {{- end }}
