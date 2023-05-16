@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2023 Magenta ApS <https://magenta.dk>
+# SPDX-License-Identifier: MPL-2.0
+
+{{- range .Values.externalIntegrations }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .jobName | quote }}
+spec:
+  template:
+    spec:
+      containers:
+        - name: create-external-client-keycloak-token
+          image: "{{ $.Values.keycloak.integrationbuilder.image.registry }}/{{ $.Values.keycloak.integrationbuilder.image.repository }}:{{ $.Values.keycloak.integrationbuilder.image.tag }}"
+          imagePullPolicy: {{ $.Values.keycloak.integrationbuilder.image.pullPolicy }}
+          env:
+            {{- with $ }}
+            {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
+            - name: TF_VAR_admin_password
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "os2mo.keycloak_admin_secret" . }}
+                  key: admin_password
+            {{- end }}
+            - name: POSTGRES_SCHEMA_NAME
+              value: "terraform_remote_state_{{ .keycloakClientID }}"
+
+            - name: TF_VAR_client_name
+              value: {{ .keycloakClientID | quote }}
+            - name: TF_VAR_client_roles
+              value: {{ .roles | quote }}
+            - name: TF_VAR_client_secret
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .secret }}
+                  key: client_secret
+      restartPolicy: OnFailure
+---
+{{- end }}
