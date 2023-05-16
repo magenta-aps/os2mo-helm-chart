@@ -515,3 +515,10 @@ manager_engagement_elevator:
       periodSeconds: 10
       timeoutSeconds: 1
       failureThreshold: 3
+
+# External integrations to create a Keycloak token for, each should specify:
+# * `jobName`, e.g. "legoland-keycloak-token-creator"
+# * `keycloakClientID`
+# * `secret`, a name of a secret that must contain the key "client_secret"
+# * `roles`, RBAC roles for the integration builder, e.g. '["admin"]'
+externalIntegrations: []
