@@ -13,6 +13,12 @@ metadata:
   {{- with .Values.ingress.annotations }}
   {{- toYaml . | nindent 4 }}
   {{- end }}
+    nginx.ingress.kubernetes.io/server-snippet: |
+      # Old versions of Keycloak use /auth/admin, newer just use /admin.
+      location ~ ^/(auth/admin|admin) {
+        deny all;
+        return 403;
+      }
 spec:
   {{- if ne .Values.ingress.class "" }}
   ingressClassName: {{ .Values.ingress.class }}

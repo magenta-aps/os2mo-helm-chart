@@ -18,6 +18,7 @@ sentry:
 
 ingress:
   # Must be 'nginx' for basic-auth to work
+  # Must be 'nginx' for protection of Keycloak admin endpoints
   class: "nginx"
   # TLS hostname
   hostname: "os2mo.example.com"
