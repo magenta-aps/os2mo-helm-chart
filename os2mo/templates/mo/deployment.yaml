@@ -263,8 +263,6 @@ spec:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
-            - name: TF_VAR_KEYCLOAK_IDP_NAME_ID_POLICY_FORMAT
-              value: "Unspecified"
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
       restartPolicy: Always
