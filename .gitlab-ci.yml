@@ -37,12 +37,10 @@ workflow:
     - if: $CI_MERGE_REQUEST_ID
 
 include:
-  - project: 'labs/salt-automation'
-    ref: 'master'
-    file: '/gitlab-ci-templates/common/autopub.v1.yml'
-  - project: "labs/salt-automation"
-    ref: "master"
-    file: "/gitlab-ci-templates/common/config-updater-meta.v1.yml"
+  - project: labs/salt-automation
+    file:
+      - gitlab-ci-templates/common/conventional-commits.v1.yml
+      - gitlab-ci-templates/common/config-updater-meta.v1.yml
 
 # ---------------------------------------------------------------------------
 # Templates
