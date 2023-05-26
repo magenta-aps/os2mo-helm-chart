@@ -1,6 +1,13 @@
 CHANGELOG
 =========
 
+6.2.0 - 2023-05-26
+------------------
+
+feat: [#53868] make orgviewer use both adm and med variables
+
+feat: [#56220] allow Keycloak admin access from localhost
+
 6.1.1 - 2023-05-24
 ------------------
 
