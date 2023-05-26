@@ -100,8 +100,4 @@ spec:
         - name: omada-pv-storage
           persistentVolumeClaim:
             claimName: omada-pv-claim
-      {{- if .Values.omada.hostAliases }}
-      hostAliases:
-        {{ toYaml .Values.omada.hostAliases | indent 8 | trim }}
-      {{- end }}
 {{- end }}
