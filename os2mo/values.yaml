@@ -221,7 +221,6 @@ omada:
     repository: magentaaps/os2mint-omada
     tag: latest
   extraEnv: null
-  hostAliases: null
   resources:
     requests:
       memory: "256Mi"
