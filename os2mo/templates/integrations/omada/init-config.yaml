@@ -14,6 +14,8 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 data:
+  # NOTE: These are the classes required in SILKEBORG, as they are the only
+  # Omada kubernetes user.
   config: |
     facets:
       employee_address_type:
