@@ -321,6 +321,7 @@ orgviewer:
       limits:
         memory: "256Mi"
         cpu: "250m"
+    environment: {}
 
   adm:
     enabled: false
@@ -337,6 +338,7 @@ orgviewer:
       limits:
         memory: "256Mi"
         cpu: "250m"
+    environment: {}
 
 os2sync:
   enabled: false
