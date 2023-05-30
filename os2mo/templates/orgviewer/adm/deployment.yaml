@@ -62,7 +62,6 @@ spec:
           envFrom:
             - configMapRef:
                 name: orgviewer-environment-config
-          envFrom:
             - configMapRef:
                 name: orgviewer-adm-config
           ports:
