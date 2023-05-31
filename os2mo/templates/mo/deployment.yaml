@@ -72,6 +72,8 @@ spec:
             {{- else }}
             - name: AMQP_ENABLE
               value: "true"
+            - name: AMQP_ENABLE_NEW_SUBSYSTEM
+              value: "false"
             - name: AMQP_URL
               valueFrom:
                 secretKeyRef:
