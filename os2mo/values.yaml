@@ -59,7 +59,7 @@ os2mo:
     image:
       registry: docker.io
       repository: magentaaps/postgres-os2mo
-      tag: 12.8-11.7
+      tag: 13-11.19-bullseye
     make_superuser: false
   resources:
     requests:
