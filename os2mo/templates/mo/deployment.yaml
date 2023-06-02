@@ -60,7 +60,7 @@ spec:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mox-secret
+                  name: {{ .Values.database.mox.secret }}
                   key: db_password
 
             # AMQP
@@ -177,7 +177,7 @@ spec:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mox-secret
+                  name: {{ .Values.database.mox.secret }}
                   key: db_password
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
@@ -200,11 +200,7 @@ spec:
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  {{ if .Values.database.password_secret }}
-                  name: {{ .Values.database.password_secret }}
-                  {{ else }}
-                  name: mox-db-secret
-                  {{ end }}
+                  name: {{ .Values.database.mox.secret }}
                   key: db_password
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
@@ -226,7 +222,7 @@ spec:
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: mox-secret
+                  name: {{ .Values.database.mox.secret }}
                   key: db_password
           envFrom:
             - configMapRef:

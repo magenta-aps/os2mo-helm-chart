@@ -219,6 +219,7 @@ database:
   mox:
     name: "mox"
     user: "mox"
+    secret: "mox-secret"
 
 omada:
   enabled: false
