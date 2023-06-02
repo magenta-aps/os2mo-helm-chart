@@ -199,7 +199,6 @@ database:
     tag: "11"
   host: mox-db-service
   user: postgres
-  db_prefix: ""
   # Name of the secret to use for external database.
   # If not set, it will be generated with the below password.
   password_secret: null
@@ -213,6 +212,13 @@ database:
     limits:
       memory: "2048Mi"
       cpu: "2000m"
+
+  keycloak:
+    name: "keycloak"
+    user: "keycloak"
+  mox:
+    name: "mox"
+    user: "mox"
 
 omada:
   enabled: false
