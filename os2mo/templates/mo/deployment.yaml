@@ -54,9 +54,9 @@ spec:
               value: {{ .Values.database.sslmode }}
             {{ end }}
             - name: DB_NAME
-              value: {{ include "os2mo.mox_db_name" . }}
+              value: {{ .Values.database.mox.name }}
             - name: DB_USER
-              value: {{ include "os2mo.mox_db_user" . }}
+              value: {{ .Values.database.mox.user }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -171,9 +171,9 @@ spec:
                   key: db_password
 
             - name: DB_NAME
-              value: {{ include "os2mo.mox_db_name" . }}
+              value: {{ .Values.database.mox.name }}
             - name: DB_USER
-              value: {{ include "os2mo.mox_db_user" . }}
+              value: {{ .Values.database.mox.user }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -194,7 +194,7 @@ spec:
               value: {{ .Values.database.sslmode }}
             {{ end }}
             - name: PGDATABASE
-              value: {{ include "os2mo.mox_db_name" . }}
+              value: {{ .Values.database.mox.name }}
             - name: PGUSER
               value: {{ .Values.database.user }}
             - name: PGPASSWORD
@@ -220,9 +220,9 @@ spec:
               value: {{ .Values.database.sslmode }}
             {{ end }}
             - name: DB_NAME
-              value: {{ include "os2mo.mox_db_name" . }}
+              value: {{ .Values.database.mox.name }}
             - name: DB_USER
-              value: {{ include "os2mo.mox_db_user" . }}
+              value: {{ .Values.database.mox.user }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:

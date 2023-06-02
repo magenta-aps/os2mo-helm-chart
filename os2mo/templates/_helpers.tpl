@@ -69,26 +69,10 @@ Create the name of the service account to use
 {{- .Values.keycloak.admin_secret | default "keycloak-admin-secret" }}
 {{- end }}
 
-{{- define "os2mo.keycloak_db_name" -}}
-{{- if .Values.database.db_prefix -}}
-{{ .Values.database.db_prefix }}_keycloak
-{{- else -}}
-keycloak
-{{- end }}
-{{- end }}
-
-{{- define "os2mo.keycloak_db_user" -}}
-{{- if .Values.database.db_prefix -}}
-{{ .Values.database.db_prefix }}_keycloak
-{{- else -}}
-keycloak
-{{- end }}
-{{- end }}
-
 {{- define "os2mo.keycloak_db_connection_string" -}}
 {{- $use_ssl := (ne .Values.database.sslmode "") -}}
 {{- $sslmode := ternary "require" "disable" $use_ssl -}}
-postgres://{{ include "os2mo.keycloak_db_user" . }}:$(KEYCLOAK_DB_PASSWORD)@{{ .Values.database.host }}/{{ include "os2mo.keycloak_db_name" . }}?sslmode={{ $sslmode }}
+postgres://{{ .Values.database.keycloak.user }}:$(KEYCLOAK_DB_PASSWORD)@{{ .Values.database.host }}/{{ .Values.database.keycloak.name }}?sslmode={{ $sslmode }}
 {{- end }}
 
 {{- define "os2mo.keycloak_terraform_db_connection" -}}
@@ -101,22 +85,6 @@ postgres://{{ include "os2mo.keycloak_db_user" . }}:$(KEYCLOAK_DB_PASSWORD)@{{ .
 # Postgres state connection
 - name: POSTGRES_CONNECTION_STRING
   value: {{ include "os2mo.keycloak_db_connection_string" . }}
-{{- end }}
-
-{{- define "os2mo.mox_db_name" -}}
-{{- if .Values.database.db_prefix -}}
-{{ .Values.database.db_prefix }}_mox
-{{- else -}}
-mox
-{{- end }}
-{{- end }}
-
-{{- define "os2mo.mox_db_user" -}}
-{{- if .Values.database.db_prefix -}}
-{{ .Values.database.db_prefix }}_mox
-{{- else -}}
-mox
-{{- end }}
 {{- end }}
 
 {{- define "os2mo.wait-for-service" -}}

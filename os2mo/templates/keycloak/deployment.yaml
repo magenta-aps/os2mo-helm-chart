@@ -48,11 +48,11 @@ spec:
             - name: DB_ADDR
               value: {{ .Values.database.host }}
             - name: DB_DATABASE
-              value: {{ template "os2mo.keycloak_db_name" . }}
+              value: {{ .Values.database.keycloak.name }}
             - name: DB_SCHEMA
               value: public
             - name: DB_USER
-              value: {{ template "os2mo.keycloak_db_user" . }}
+              value: {{ .Values.database.keycloak.user }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -107,9 +107,9 @@ spec:
                   key: db_password
 
             - name: KEYCLOAK_DB_NAME
-              value: {{ template "os2mo.keycloak_db_name" . }}
+              value: {{ .Values.database.keycloak.name }}
             - name: KEYCLOAK_DB_USER
-              value: {{ template "os2mo.keycloak_db_user" . }}
+              value: {{ .Values.database.keycloak.user }}
             - name: KEYCLOAK_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
