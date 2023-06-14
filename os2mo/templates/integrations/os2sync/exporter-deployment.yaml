@@ -45,6 +45,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.amqp.url_secret }}
+                  key: url
             - name: AUTH_REALM
               value: "mo"
             - name: CLIENT_ID
