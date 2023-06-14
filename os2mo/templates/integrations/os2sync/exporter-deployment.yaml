@@ -31,12 +31,20 @@ spec:
           env:
             - name: Municipality
               value: {{ required "The Municipality ENV is missing" .Values.os2sync.municipality | quote }}
+            # TODO: mora_base is deprecated. Remove when we are ready to use event-driven in prod.
             - name: mora_base
               value: {{ .Values.os2sync.mora_base | default "http://mo-service:5000" | quote }}
+            - name: MO_URL
+              value:  "http://mo-service:5000"
             - name: LOG_LEVEL
               value: {{ .Values.os2sync.os2sync_log_level | default "INFO" | quote }}
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
+              # TODO: use separate integration AMQP user instead of global one
+            - name: AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
             - name: AUTH_REALM
               value: "mo"
             - name: CLIENT_ID
