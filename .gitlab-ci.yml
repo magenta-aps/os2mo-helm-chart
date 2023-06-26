@@ -12,10 +12,6 @@ variables:
   RELEASE_REGISTRY: index.docker.io
   RELEASE_REGISTRY_NAMESPACE: ${RELEASE_REGISTRY}/magentaaps
 
-  REVIEW_URL: https://review-chart-mr$CI_MERGE_REQUEST_IID.moraci.magentahosted.dk
-  # Would be nice to include tag here, but Docker Hub doesn't support 🤷‍♀️
-  REVIEW_CHART_URL: ${RELEASE_REGISTRY}/magentaaps/os2mo-helm-chart
-
 cache:
   key: "${CI_JOB_NAME}"
   paths:
@@ -26,7 +22,6 @@ cache:
 stages:
   - lint
   - test
-  - review
   - release
   - deploy
 
@@ -141,49 +136,6 @@ pages:
       - public
   rules:
     - if: $CI_COMMIT_TAG =~ /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
-
-# Review Stage
-##############
-Deploy Review:
-  stage: review
-  needs: []
-  image: debian:bullseye
-  variables:
-    GIT_STRATEGY: none # We do not need the source code
-  tags:
-    - deploy
-  before_script:
-    - apt-get update && apt-get install -y curl jq
-  script:
-    - curl --silent --fail --request POST --user $CONFIG_UPDATER_REVIEW_APP_USERNAME:$CONFIG_UPDATER_REVIEW_APP_PASSWORD "https://config-updater.magentahosted.dk/os2mo/review-apps/chart/deploy?mr_id=$CI_MERGE_REQUEST_IID&commit_sha=$CI_COMMIT_SHA"
-    - until curl "${REVIEW_URL}/version/"; do sleep 5; done
-  environment:
-    name: review/$CI_MERGE_REQUEST_IID
-    url: $REVIEW_URL
-    on_stop: Stop Review
-    auto_stop_in: 1 week
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: manual
-      allow_failure: true
-
-Stop Review:
-  stage: review
-  needs: []
-  image: curlimages/curl:7.81.0
-  variables:
-    GIT_STRATEGY: none # We do not need the source code
-  tags:
-    - deploy
-  script:
-    - curl --silent --fail --request POST --user $CONFIG_UPDATER_REVIEW_APP_USERNAME:$CONFIG_UPDATER_REVIEW_APP_PASSWORD "https://config-updater.magentahosted.dk/os2mo/review-apps/chart/undeploy?mr_id=$CI_MERGE_REQUEST_IID"
-  environment:
-    name: review/$CI_MERGE_REQUEST_IID
-    action: stop
-  rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: manual
-      allow_failure: true
 
 
 # Release stage
