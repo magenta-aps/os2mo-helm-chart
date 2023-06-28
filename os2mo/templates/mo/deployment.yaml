@@ -104,12 +104,14 @@ spec:
             - name: CONFDB_SHOW_ORG_UNIT_BUTTON
               value: {{ .Values.sdtool.enabled | quote }}
 
-          envFrom:
-          - configMapRef:
-              name: mo-config
-          - configMapRef:
-              name: mo-json-config
-
+            {{- range $name, $value := .Values.os2mo.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $name, $value := .Values.os2mo.environment_containing_json }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           ports:
             - containerPort: 5000
           resources:
@@ -220,9 +222,14 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.database.mox.secret }}
                   key: db_password
-          envFrom:
-            - configMapRef:
-                name: mo-config
+            {{- range $name, $value := .Values.os2mo.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $name, $value := .Values.os2mo.environment_containing_json }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.os2mo.resources | nindent 12 }}
 
