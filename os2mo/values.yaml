@@ -70,6 +70,7 @@ os2mo:
       cpu: "1500m"
   headless: false
   environment: {}
+  extraEnv: null
   probes:
     enabled: true
     startupProbe:
