@@ -235,9 +235,6 @@ spec:
 
         - name: keycloak-realm-builder
           image: "{{ .Values.keycloak.builder.image.registry }}/{{ .Values.keycloak.builder.image.repository }}:{{ .Values.keycloak.builder.image.tag }}"
-          envFrom:
-            - configMapRef:
-                name: keycloak-gen-config
           env:
             {{ include "os2mo.keycloak_terraform_db_connection" . | nindent 12 }}
             - name: TF_VAR_KEYCLOAK_ADMIN_USERNAME
@@ -262,6 +259,10 @@ spec:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
+            {{- range $name, $value := .Values.keycloak.builder.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
       restartPolicy: Always
