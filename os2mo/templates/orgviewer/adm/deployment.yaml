@@ -64,9 +64,11 @@ spec:
               value: {{ $value | quote }}
             {{- end }}
 
-          envFrom:
-            - configMapRef:
-                name: orgviewer-adm-config
+            {{- range $name, $value := .Values.orgviewer.adm.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+
           ports:
             - containerPort: 80
           resources:
