@@ -100,6 +100,8 @@ spec:
               value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
             - name: KEYCLOAK_MO_CLIENT
               value: "mo-frontend"
+            - name: KEYCLOAK_RBAC_ENABLED
+              value: {{ .Values.os2mo.keycloakRbacEnabled | quote }}
 
             - name: CONFDB_SHOW_ORG_UNIT_BUTTON
               value: {{ .Values.sdtool.enabled | quote }}

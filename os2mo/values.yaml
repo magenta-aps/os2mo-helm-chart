@@ -69,6 +69,7 @@ os2mo:
       memory: "2048Mi"
       cpu: "1500m"
   headless: false
+  keycloakRbacEnabled: true
   environment: {}
   extraEnv: null
   probes:
