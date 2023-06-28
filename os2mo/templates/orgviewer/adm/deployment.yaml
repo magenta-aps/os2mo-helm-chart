@@ -59,9 +59,12 @@ spec:
             - name: VUE_APP_TREE_LAYOUT
               value: "vertical"
 
+            {{- range $name, $value := .Values.orgviewer.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+
           envFrom:
-            - configMapRef:
-                name: orgviewer-environment-config
             - configMapRef:
                 name: orgviewer-adm-config
           ports:
