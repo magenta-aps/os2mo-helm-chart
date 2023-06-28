@@ -32,6 +32,11 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- if not .Values.os2mo.naldo.environment }}
+            {{- if .Values.os2mo.naldo.extraEnv }}
+            {{ toYaml .Values.os2mo.naldo.extraEnv | indent 12 | trim }}
+            {{- end }}
+            {{- end }}
           ports:
             - containerPort: 3000
           resources:
