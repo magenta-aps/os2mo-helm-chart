@@ -63,6 +63,11 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- if not .Values.orggatekeeper.environment }}
+            {{- if .Values.orggatekeeper.extraEnv }}
+            {{ toYaml .Values.orggatekeeper.extraEnv | indent 12 | trim }}
+            {{- end }}
+            {{- end }}
           ports:
             - containerPort: 8000
           resources:
