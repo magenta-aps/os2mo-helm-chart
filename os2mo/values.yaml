@@ -423,6 +423,7 @@ adguid_sync:
     repository: magentaaps/os2mo-amqp-trigger-adguid-sync
     tag: latest
   environment: {}
+  extraEnv: null
   resources:
     requests:
       memory: "256Mi"
