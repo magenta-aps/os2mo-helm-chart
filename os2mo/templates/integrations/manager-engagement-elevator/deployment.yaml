@@ -54,10 +54,10 @@ spec:
             - name: SENTRY_ENVIRONMENT
               value: {{ .Values.sentry.environment | quote }}
             {{ end }}
-          envFrom:
-            # The configMap is capable of handling JSON ENVs
-            - configMapRef:
-                name: manager-engagement-elevator-config
+            {{- range $name, $value := .Values.manager_engagement_elevator.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           ports:
             - containerPort: 8000
           resources:

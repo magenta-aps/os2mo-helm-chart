@@ -59,9 +59,10 @@ spec:
             - name: SENTRY_ENVIRONMENT
               value: {{ .Values.sentry.environment | quote }}
             {{ end }}
-          envFrom:
-            - configMapRef:
-                name: orggatekeeper-config
+            {{- range $name, $value := .Values.orggatekeeper.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           ports:
             - containerPort: 8000
           resources:

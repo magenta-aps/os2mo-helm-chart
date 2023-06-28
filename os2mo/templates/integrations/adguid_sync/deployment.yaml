@@ -89,11 +89,14 @@ spec:
               value: {{ required "AD_CPR_ATTRIBUTE must be set" .Values.adguid_sync.ad_cpr_attribute | quote }}
             - name: AD_SEARCH_BASE
               value: {{ required "AD_SEARCH_BASE must be set" .Values.adguid_sync.ad_search_base | quote }}
-          envFrom:
-            - configMapRef:
-                name: adguid-sync-config
-            - configMapRef:
-                name: adguid-sync-json-config
+            {{- range $name, $value := .Values.adguid_sync.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $name, $value := .Values.adguid_sync.environment_containing_json }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           ports:
             - containerPort: 8000
           resources:

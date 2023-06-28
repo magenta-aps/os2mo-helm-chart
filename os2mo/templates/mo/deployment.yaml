@@ -104,16 +104,14 @@ spec:
             - name: CONFDB_SHOW_ORG_UNIT_BUTTON
               value: {{ .Values.sdtool.enabled | quote }}
 
-          envFrom:
-          {{- if .Values.os2mo.external_env_config_map_name }}
-          - configMapRef:
-              name: "{{ .Values.os2mo.external_env_config_map_name }}"
-          {{- end }}
-          - configMapRef:
-              name: mo-config
-          - configMapRef:
-              name: mo-json-config
-
+            {{- range $name, $value := .Values.os2mo.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $name, $value := .Values.os2mo.environment_containing_json }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           ports:
             - containerPort: 5000
           resources:
@@ -224,17 +222,19 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.database.mox.secret }}
                   key: db_password
-          envFrom:
-            - configMapRef:
-                name: mo-config
+            {{- range $name, $value := .Values.os2mo.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $name, $value := .Values.os2mo.environment_containing_json }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.os2mo.resources | nindent 12 }}
 
         - name: keycloak-realm-builder
           image: "{{ .Values.keycloak.builder.image.registry }}/{{ .Values.keycloak.builder.image.repository }}:{{ .Values.keycloak.builder.image.tag }}"
-          envFrom:
-            - configMapRef:
-                name: keycloak-gen-config
           env:
             {{ include "os2mo.keycloak_terraform_db_connection" . | nindent 12 }}
             - name: TF_VAR_KEYCLOAK_ADMIN_USERNAME
@@ -259,6 +259,10 @@ spec:
                 secretKeyRef:
                   name: keycloak-dipex-secret
                   key: client_secret
+            {{- range $name, $value := .Values.keycloak.builder.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
       restartPolicy: Always

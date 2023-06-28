@@ -91,11 +91,14 @@ spec:
               value: {{ required "AD_SEARCH_BASE must be set" .Values.ad_to_mo_sync.ad_search_base | quote }}
             - name: AD_MAPPINGS
               value: {{ required "AD_MAPPINGS must be set" .Values.ad_to_mo_sync.ad_mappings | quote }}
-          envFrom:
-            - configMapRef:
-                name: ad-to-mo-sync-config
-            - configMapRef:
-                name: ad-to-mo-sync-json-config
+            {{- range $name, $value := .Values.ad_to_mo_sync.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $name, $value := .Values.ad_to_mo_sync.environment_containing_json }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           ports:
             - containerPort: 8000
           resources:
