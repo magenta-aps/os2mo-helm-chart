@@ -78,6 +78,11 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- if not .Values.sdtool.environment }}
+            {{- if .Values.sdtool.extraEnv }}
+            {{ toYaml .Values.sdtool.extraEnv | indent 12 | trim }}
+            {{- end }}
+            {{- end }}
           ports:
             - containerPort: 80
           resources:

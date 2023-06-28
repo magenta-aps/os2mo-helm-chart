@@ -69,7 +69,9 @@ os2mo:
       memory: "2048Mi"
       cpu: "1500m"
   headless: false
+  keycloakRbacEnabled: true
   environment: {}
+  extraEnv: null
   probes:
     enabled: true
     startupProbe:
@@ -125,6 +127,7 @@ os2mo:
         memory: "128Mi"
         cpu: "200m"
     environment: {}
+    extraEnv: null
 
 dipex:
   image:
@@ -168,6 +171,7 @@ keycloak:
       repository: magentaaps/os2mo-keycloak-realm-builder
       tag: latest
     environment: {}
+    extraEnv: null
   integrationbuilder:
     image:
       registry: docker.io
@@ -252,6 +256,7 @@ sd_changed_at:
   sd_monthly_hourly_divide: null
   sd_import_run_db: null
   environment: {}
+  extraEnv: null
   cronjob_enabled: true
   cronjob_schedule: "*/5 6-17 * * *"
   resources:
@@ -271,6 +276,7 @@ sdtool:
   sd_secret_name: sd-secret
   sd_too_deep: '[]'
   environment: {}
+  extraEnv: null
   resources:
     requests:
       memory: "256Mi"
@@ -299,6 +305,7 @@ orgviewer:
     repository: magentaaps/os2orgviewer
     tag: latest
   environment: {}
+  extraEnv: null
 
   med:
     enabled: false
@@ -316,6 +323,7 @@ orgviewer:
         memory: "256Mi"
         cpu: "250m"
     environment: {}
+    extraEnv: null
 
   adm:
     enabled: false
@@ -333,6 +341,7 @@ orgviewer:
         memory: "256Mi"
         cpu: "250m"
     environment: {}
+    extraEnv: null
 
 os2sync:
   enabled: false
@@ -386,6 +395,7 @@ orggatekeeper:
     repository: magentaaps/os2mo-amqp-trigger-organisation-gatekeeper
     tag: latest
   environment: {}
+  extraEnv: null
   resources:
     requests:
       memory: "256Mi"
@@ -414,6 +424,7 @@ adguid_sync:
     repository: magentaaps/os2mo-amqp-trigger-adguid-sync
     tag: latest
   environment: {}
+  extraEnv: null
   resources:
     requests:
       memory: "256Mi"
@@ -442,6 +453,7 @@ ad_to_mo_sync:
     repository: magentaaps/os2mo-amqp-trigger-ad-to-mo-sync
     tag: latest
   environment: {}
+  extraEnv: null
   resources:
     requests:
       memory: "256Mi"
@@ -469,6 +481,7 @@ sql_export:
     repository: magentaaps/os2mo-sql_export
     tag: latest
   environment: {}
+  extraEnv: null
   actual_state_secret_name: null
   historic_state_secret_name: null
   cronjob_enabled: true
@@ -490,6 +503,7 @@ manager_engagement_elevator:
     tag: latest
     pullPolicy: IfNotPresent
   environment: {}
+  extraEnv: null
   resources:
     requests:
       memory: "512Mi"

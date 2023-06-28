@@ -100,6 +100,8 @@ spec:
               value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
             - name: KEYCLOAK_MO_CLIENT
               value: "mo-frontend"
+            - name: KEYCLOAK_RBAC_ENABLED
+              value: {{ .Values.os2mo.keycloakRbacEnabled | quote }}
 
             - name: CONFDB_SHOW_ORG_UNIT_BUTTON
               value: {{ .Values.sdtool.enabled | quote }}
@@ -107,6 +109,11 @@ spec:
             {{- range $name, $value := .Values.os2mo.environment }}
             - name: {{ $name }}
               value: {{ $value | quote }}
+            {{- end }}
+            {{- if not .Values.os2mo.environment }}
+            {{- if .Values.os2mo.extraEnv }}
+            {{ toYaml .Values.os2mo.extraEnv | indent 12 | trim }}
+            {{- end }}
             {{- end }}
           ports:
             - containerPort: 5000
@@ -222,6 +229,11 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
+            {{- if not .Values.os2mo.environment }}
+            {{- if .Values.os2mo.extraEnv }}
+            {{ toYaml .Values.os2mo.extraEnv | indent 12 | trim }}
+            {{- end }}
+            {{- end }}
           resources:
             {{- toYaml .Values.os2mo.resources | nindent 12 }}
 
@@ -254,6 +266,11 @@ spec:
             {{- range $name, $value := .Values.keycloak.builder.environment }}
             - name: {{ $name }}
               value: {{ $value | quote }}
+            {{- end }}
+            {{- if not .Values.keycloak.builder.environment }}
+            {{- if .Values.keycloak.builder.extraEnv }}
+            {{ toYaml .Values.os2mo.extraEnv | indent 12 | trim }}
+            {{- end }}
             {{- end }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
