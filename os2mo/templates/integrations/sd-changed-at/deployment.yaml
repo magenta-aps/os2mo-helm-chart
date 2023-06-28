@@ -91,9 +91,10 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.sd_changed_at.sd_secret_name }}
                   key: sd_institution
-          envFrom:
-            - configMapRef:
-                name: sd-changed-at
+            {{- range $name, $value := .Values.sd_changed_at.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
           ports:
             - containerPort: 5000
           resources:
