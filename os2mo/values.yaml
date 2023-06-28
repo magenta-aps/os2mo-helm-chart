@@ -70,7 +70,6 @@ os2mo:
       cpu: "1500m"
   headless: false
   environment: {}
-  environment_containing_json: {}
   probes:
     enabled: true
     startupProbe:
@@ -415,7 +414,6 @@ adguid_sync:
     repository: magentaaps/os2mo-amqp-trigger-adguid-sync
     tag: latest
   environment: {}
-  environment_containing_json: {}
   resources:
     requests:
       memory: "256Mi"
@@ -444,7 +442,6 @@ ad_to_mo_sync:
     repository: magentaaps/os2mo-amqp-trigger-ad-to-mo-sync
     tag: latest
   environment: {}
-  environment_containing_json: {}
   resources:
     requests:
       memory: "256Mi"

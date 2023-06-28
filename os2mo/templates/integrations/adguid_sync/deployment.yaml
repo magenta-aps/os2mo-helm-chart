@@ -93,10 +93,6 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
-            {{- range $name, $value := .Values.adguid_sync.environment_containing_json }}
-            - name: {{ $name }}
-              value: {{ $value | quote }}
-            {{- end }}
           ports:
             - containerPort: 8000
           resources:
