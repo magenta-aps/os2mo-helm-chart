@@ -69,7 +69,6 @@ os2mo:
       memory: "2048Mi"
       cpu: "1500m"
   headless: false
-  external_env_config_map_name: null
   environment: {}
   environment_containing_json: {}
   probes:
