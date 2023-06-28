@@ -304,6 +304,7 @@ orgviewer:
     repository: magentaaps/os2orgviewer
     tag: latest
   environment: {}
+  extraEnv: null
 
   med:
     enabled: false
@@ -321,6 +322,7 @@ orgviewer:
         memory: "256Mi"
         cpu: "250m"
     environment: {}
+    extraEnv: null
 
   adm:
     enabled: false
@@ -338,6 +340,7 @@ orgviewer:
         memory: "256Mi"
         cpu: "250m"
     environment: {}
+    extraEnv: null
 
 os2sync:
   enabled: false
