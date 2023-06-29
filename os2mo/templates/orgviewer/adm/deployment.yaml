@@ -63,20 +63,10 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
-            {{- if not .Values.orgviewer.environment }}
-            {{- if .Values.orgviewer.extraEnv }}
-            {{ toYaml .Values.orgviewer.extraEnv | indent 12 | trim }}
-            {{- end }}
-            {{- end }}
 
             {{- range $name, $value := .Values.orgviewer.adm.environment }}
             - name: {{ $name }}
               value: {{ $value | quote }}
-            {{- end }}
-            {{- if not .Values.orgviewer.adm.environment }}
-            {{- if .Values.orgviewer.adm.extraEnv }}
-            {{ toYaml .Values.orgviewer.adm.extraEnv | indent 12 | trim }}
-            {{- end }}
             {{- end }}
 
           ports:

@@ -35,11 +35,9 @@ os2mo:
     log_level: DEBUG
   db_init:
     make_superuser: true
-  extraEnv:
-    - name: GRAPHQL_ENABLE
-      value: true
-    - name: KEYCLOAK_VERIFY_AUDIENCE
-      value: false
+  environment:
+    GRAPHQL_ENABLE: true
+    KEYCLOAK_VERIFY_AUDIENCE: false
   resources:
     requests:
       memory: "1024Mi"
@@ -52,13 +50,10 @@ keycloak:
   builder:
     lora_realm_enabled: true
     lora_dipex_client_enabled: true
-    extraEnv:
-      - name: KEYCLOAK_SSL_REQUIRED_MO
-        value: none
-      - name: KEYCLOAK_SSL_REQUIRED_LORA
-        value: none
-      - name: KEYCLOAK_REALM_USERS
-        value: '[
+    environment:
+      KEYCLOAK_SSL_REQUIRED_MO: none
+      KEYCLOAK_SSL_REQUIRED_LORA: none
+      KEYCLOAK_REALM_USERS: '[
         {
           "username": "bruce",
           "password": "bruce",

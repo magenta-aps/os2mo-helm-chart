@@ -95,11 +95,6 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
-            {{- if not .Values.sd_changed_at.environment }}
-            {{- if .Values.sd_changed_at.extraEnv }}
-            {{ toYaml .Values.sd_changed_at.extraEnv | indent 12 | trim }}
-            {{- end }}
-            {{- end }}
           ports:
             - containerPort: 5000
           resources:

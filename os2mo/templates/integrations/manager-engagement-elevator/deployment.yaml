@@ -58,11 +58,6 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
-            {{- if not .Values.manager_engagement_elevator.environment }}
-            {{- if .Values.manager_engagement_elevator.extraEnv }}
-            {{ toYaml .Values.manager_engagement_elevator.extraEnv | indent 12 | trim }}
-            {{- end }}
-            {{- end }}
           ports:
             - containerPort: 8000
           resources:
