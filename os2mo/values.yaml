@@ -170,7 +170,6 @@ keycloak:
       repository: magentaaps/os2mo-keycloak-realm-builder
       tag: latest
     environment: {}
-    extraEnv: null
   integrationbuilder:
     image:
       registry: docker.io

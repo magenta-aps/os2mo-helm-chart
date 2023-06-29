@@ -267,11 +267,6 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
-            {{- if not .Values.keycloak.builder.environment }}
-            {{- if .Values.keycloak.builder.extraEnv }}
-            {{ toYaml .Values.os2mo.extraEnv | indent 12 | trim }}
-            {{- end }}
-            {{- end }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
       restartPolicy: Always
