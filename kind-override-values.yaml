@@ -35,11 +35,9 @@ os2mo:
     log_level: DEBUG
   db_init:
     make_superuser: true
-  extraEnv:
-    - name: GRAPHQL_ENABLE
-      value: true
-    - name: KEYCLOAK_VERIFY_AUDIENCE
-      value: false
+  environment:
+    GRAPHQL_ENABLE: true
+    KEYCLOAK_VERIFY_AUDIENCE: false
   resources:
     requests:
       memory: "1024Mi"

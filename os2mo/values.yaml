@@ -71,7 +71,6 @@ os2mo:
   headless: false
   keycloakRbacEnabled: true
   environment: {}
-  extraEnv: null
   probes:
     enabled: true
     startupProbe:
