@@ -127,7 +127,6 @@ os2mo:
         memory: "128Mi"
         cpu: "200m"
     environment: {}
-    extraEnv: null
 
 dipex:
   image:
