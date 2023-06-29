@@ -503,7 +503,6 @@ manager_engagement_elevator:
     tag: latest
     pullPolicy: IfNotPresent
   environment: {}
-  extraEnv: null
   resources:
     requests:
       memory: "512Mi"
