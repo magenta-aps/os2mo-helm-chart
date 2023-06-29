@@ -395,7 +395,6 @@ orggatekeeper:
     repository: magentaaps/os2mo-amqp-trigger-organisation-gatekeeper
     tag: latest
   environment: {}
-  extraEnv: null
   resources:
     requests:
       memory: "256Mi"
