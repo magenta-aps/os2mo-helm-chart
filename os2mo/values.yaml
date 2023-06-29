@@ -453,7 +453,6 @@ ad_to_mo_sync:
     repository: magentaaps/os2mo-amqp-trigger-ad-to-mo-sync
     tag: latest
   environment: {}
-  extraEnv: null
   resources:
     requests:
       memory: "256Mi"
