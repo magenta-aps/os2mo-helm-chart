@@ -93,11 +93,6 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
-            {{- if not .Values.adguid_sync.environment }}
-            {{- if .Values.adguid_sync.extraEnv }}
-            {{ toYaml .Values.adguid_sync.extraEnv | indent 12 | trim }}
-            {{- end }}
-            {{- end }}
           ports:
             - containerPort: 8000
           resources:
