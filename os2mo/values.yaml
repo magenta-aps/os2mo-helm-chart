@@ -276,7 +276,6 @@ sdtool:
   sd_secret_name: sd-secret
   sd_too_deep: '[]'
   environment: {}
-  extraEnv: null
   resources:
     requests:
       memory: "256Mi"
