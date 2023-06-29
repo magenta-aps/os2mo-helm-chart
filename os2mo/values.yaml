@@ -481,7 +481,6 @@ sql_export:
     repository: magentaaps/os2mo-sql_export
     tag: latest
   environment: {}
-  extraEnv: null
   actual_state_secret_name: null
   historic_state_secret_name: null
   cronjob_enabled: true

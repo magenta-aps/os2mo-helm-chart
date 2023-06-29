@@ -60,11 +60,6 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
-            {{- if not .Values.sql_export.environment }}
-            {{- if .Values.sql_export.extraEnv }}
-            {{ toYaml .Values.sql_export.extraEnv | indent 12 | trim }}
-            {{- end }}
-            {{- end }}
           ports:
             - containerPort: 8000
           resources:
