@@ -106,19 +106,6 @@ spec:
             periodSeconds: {{ .Values.ad_to_mo_sync.probes.liveness.periodSeconds }}
             timeoutSeconds: {{ .Values.ad_to_mo_sync.probes.liveness.timeoutSeconds }}
             failureThreshold: {{ .Values.ad_to_mo_sync.probes.liveness.failureThreshold }}
-          readinessProbe:
-            httpGet:
-              path: /health/ready
-              port: 8000
-            periodSeconds: {{ .Values.ad_to_mo_sync.probes.readiness.periodSeconds }}
-            timeoutSeconds: {{ .Values.ad_to_mo_sync.probes.readiness.timeoutSeconds }}
-            failureThreshold: {{ .Values.ad_to_mo_sync.probes.readiness.failureThreshold }}
-          startupProbe:
-            httpGet:
-              path: /health/ready
-              port: 8000
-            failureThreshold: {{ .Values.ad_to_mo_sync.probes.startupProbe.failureThreshold }}
-            periodSeconds: {{ .Values.ad_to_mo_sync.probes.startupProbe.periodSeconds }}
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         - name: create-client-secret

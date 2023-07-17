@@ -395,18 +395,10 @@ orggatekeeper:
       memory: "512Mi"
       cpu: "250m"
   probes:
-    startupProbe:
-      failureThreshold: 150
-      periodSeconds: 2
     liveness:
       periodSeconds: 10
       timeoutSeconds: 1
       failureThreshold: 3
-    readiness:
-      periodSeconds: 10
-      timeoutSeconds: 1
-      failureThreshold: 3
-
 
 adguid_sync:
   enabled: false
@@ -423,18 +415,10 @@ adguid_sync:
       memory: "512Mi"
       cpu: "250m"
   probes:
-    startupProbe:
-      failureThreshold: 150
-      periodSeconds: 2
     liveness:
       periodSeconds: 10
       timeoutSeconds: 1
       failureThreshold: 3
-    readiness:
-      periodSeconds: 10
-      timeoutSeconds: 1
-      failureThreshold: 3
-
 
 ad_to_mo_sync:
   enabled: false
@@ -451,14 +435,7 @@ ad_to_mo_sync:
       memory: "512Mi"
       cpu: "250m"
   probes:
-    startupProbe:
-      failureThreshold: 150
-      periodSeconds: 2
     liveness:
-      periodSeconds: 10
-      timeoutSeconds: 1
-      failureThreshold: 3
-    readiness:
       periodSeconds: 10
       timeoutSeconds: 1
       failureThreshold: 3
@@ -499,14 +476,7 @@ manager_engagement_elevator:
       memory: "1024Mi"
       cpu: "1000m"
   probes:
-    startupProbe:
-      failureThreshold: 150
-      periodSeconds: 2
     liveness:
-      periodSeconds: 10
-      timeoutSeconds: 1
-      failureThreshold: 3
-    readiness:
       periodSeconds: 10
       timeoutSeconds: 1
       failureThreshold: 3
