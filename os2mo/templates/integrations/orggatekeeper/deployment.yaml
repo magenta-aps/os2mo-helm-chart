@@ -74,19 +74,6 @@ spec:
             periodSeconds: {{ .Values.orggatekeeper.probes.liveness.periodSeconds }}
             timeoutSeconds: {{ .Values.orggatekeeper.probes.liveness.timeoutSeconds }}
             failureThreshold: {{ .Values.orggatekeeper.probes.liveness.failureThreshold }}
-          readinessProbe:
-            httpGet:
-              path: /health/ready
-              port: 8000
-            periodSeconds: {{ .Values.orggatekeeper.probes.readiness.periodSeconds }}
-            timeoutSeconds: {{ .Values.orggatekeeper.probes.readiness.timeoutSeconds }}
-            failureThreshold: {{ .Values.orggatekeeper.probes.readiness.failureThreshold }}
-          startupProbe:
-            httpGet:
-              path: /health/ready
-              port: 8000
-            failureThreshold: {{ .Values.orggatekeeper.probes.startupProbe.failureThreshold }}
-            periodSeconds: {{ .Values.orggatekeeper.probes.startupProbe.periodSeconds }}
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         - name: create-client-secret

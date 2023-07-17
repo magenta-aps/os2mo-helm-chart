@@ -62,18 +62,15 @@ spec:
             - name: JDBC_PARAMS
               value: "sslmode={{ .Values.database.sslmode }}"
             {{ end }}
-          # Liveness probe configuration
           livenessProbe:
             httpGet:
               path: /auth/
               port: 8080
             timeoutSeconds: 5
-          # Readiness probe configuration
           readinessProbe:
             httpGet:
               path: /auth/realms/master
               port: 8080
-          # Startup probe configuration
           startupProbe:
             httpGet:
               path: /auth/realms/master
