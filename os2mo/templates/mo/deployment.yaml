@@ -72,7 +72,13 @@ spec:
             {{- else }}
             - name: AMQP_ENABLE
               value: "true"
+              # TODO: Remove AMQP_URL when everyone is on OS2mo v23.11.5
             - name: AMQP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            - name: AMQP__URL
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.amqp.url_secret }}
