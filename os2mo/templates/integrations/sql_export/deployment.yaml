@@ -40,6 +40,19 @@ spec:
                   name: sql-export-client-secret
                   key: client_secret
 
+            # TODO remove this once sql-export uses FASTRAMQPI__AMQP__URL as
+            # all the other integrations does.
+            - name: AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            - name: FASTRAMQPI__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+
             {{- if not (empty .Values.sql_export.actual_state_secret_name) }}
             - name: ACTUAL_STATE__PASSWORD
               valueFrom:
