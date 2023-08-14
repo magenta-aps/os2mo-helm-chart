@@ -226,6 +226,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.database.mox.secret }}
                   key: db_password
+            # KEYCLOAK_RBAC_ENABLED is duplicated here because Alembic
+            # initialises the same settings object as OS2mo proper, for some
+            # reason.
+            - name: KEYCLOAK_RBAC_ENABLED
+              value: {{ .Values.os2mo.keycloakRbacEnabled | quote }}
             {{- range $name, $value := .Values.os2mo.environment }}
             - name: {{ $name }}
               value: {{ $value | quote }}
