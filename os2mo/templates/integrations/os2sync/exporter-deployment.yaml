@@ -38,6 +38,8 @@ spec:
               value:  "http://mo-service:5000"
             - name: LOG_LEVEL
               value: {{ .Values.os2sync.os2sync_log_level | default "INFO" | quote }}
+            - name: GRAPHQL_TIMEOUT
+              value: "9999"
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
               # TODO: use separate integration AMQP user instead of global one
