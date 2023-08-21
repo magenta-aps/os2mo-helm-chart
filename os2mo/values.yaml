@@ -502,6 +502,21 @@ manager_terminator:
       timeoutSeconds: 1
       failureThreshold: 3
 
+os2mo_smtp:
+  enabled: false
+  image:
+    registry: docker.io
+    repository: magentaaps/os2mo-smtp
+    tag: latest
+  extraEnv: []
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
 # External integrations to create a Keycloak token for, each should specify:
 # * `jobName`, e.g. "legoland-keycloak-token-creator"
 # * `keycloakClientID`
