@@ -6,7 +6,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: cronjob-sql-export
+  name: cronjob-sql-export-actual
   labels:
     app: sql-export
   {{- with .Values.annotations }}
