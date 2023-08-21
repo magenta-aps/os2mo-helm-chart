@@ -1,0 +1,52 @@
+---
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+{{- if .Values.os2mo_smtp.enabled }}
+
+# TODO: see https://git.magenta.dk/rammearkitektur/os2mo-helm-chart/-/merge_requests/142#note_140651
+{{- if not .Values.amqp.enabled }}
+  {{- fail "Must have AMQP enabled if os2mo-smtp is enabled" }}
+{{- end }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: os2mo-smtp
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app: os2mo-smtp
+  template:
+    metadata:
+      labels:
+        app: os2mo-smtp
+    spec:
+      containers:
+        - name: os2mo-smtp
+          image: "{{ .Values.os2mo_smtp.image.registry }}/{{ .Values.os2mo_smtp.image.repository }}:{{ .Values.os2mo_smtp.image.tag }}"
+          env:
+            - name: FASTRAMQPI__MO_URL
+              value: "http://mo-service:5000"
+            - name: FASTRAMQPI__CLIENT_ID
+              value: "dipex"
+            - name: FASTRAMQPI__AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: FASTRAMQPI__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
+            - name: FASTRAMQPI__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: amqp-url-secret
+                  key: url
+            {{ toYaml .Values.os2mo_smtp.extraEnv | indent 12 | trim }}
+          resources:
+            {{- toYaml .Values.os2mo_smtp.resources | nindent 12 }}
+{{- end }}
