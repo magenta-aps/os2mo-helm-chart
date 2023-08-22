@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
-{{- if and (.Values.sql_export.enabled) (.Values.sql_export.cronjob_enabled) }}
+{{- if and (.Values.sql_export.enabled) (.Values.sql_export.actual_state.cronjob_enabled) }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -14,7 +14,7 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  schedule: {{ .Values.sql_export.cronjob_schedule | quote }}
+  schedule: {{ .Values.sql_export.actual_state.cronjob_schedule | quote }}
   jobTemplate:
     spec:
       template:

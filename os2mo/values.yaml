@@ -447,10 +447,19 @@ sql_export:
     repository: magentaaps/os2mo-sql_export
     tag: latest
   environment: {}
-  actual_state_secret_name: null
-  historic_state_secret_name: null
-  cronjob_enabled: true
-  cronjob_schedule: "*/5 6-17 * * *"
+
+  actual_state:
+    # A secret containing the database password under the key "password"
+    secret_name: null
+    cronjob_enabled: true
+    cronjob_schedule: "*/90 * * * *"  # At every 90th minute
+
+  historic_state:
+    # A secret containing the database password under the key "password"
+    secret_name: null
+    cronjob_enabled: true
+    cronjob_schedule: "0 0 * * *"  # Once a day, at midnight
+
   resolve_dar: false
   resources:
     requests:
