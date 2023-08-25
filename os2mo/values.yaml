@@ -45,7 +45,6 @@ os2mo:
     registry: docker.io
     repository: magentaaps/os2mo
     tag: latest
-    pullSecret: null
   port: 80
   init:
     enabled: false
@@ -93,7 +92,6 @@ os2mo:
       registry: docker.io
       repository: magentaaps/os2mo-frontend
       tag: latest
-      pullSecret: null
     resources:
       requests:
         memory: "64Mi"
@@ -119,7 +117,6 @@ os2mo:
       registry: docker.io
       repository: magentaaps/os2mo-naldo
       tag: latest
-      pullSecret: null
     resources:
       requests:
         memory: "64Mi"

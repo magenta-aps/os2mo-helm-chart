@@ -24,10 +24,6 @@ spec:
       labels:
         app: mo
     spec:
-      {{- if not (empty .Values.os2mo.image.pullSecret) }}
-      imagePullSecrets:
-        - name: {{ .Values.os2mo.image.pullSecret }}
-      {{- end }}
       containers:
         - name: mo
           image: "{{ .Values.os2mo.image.registry }}/{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
