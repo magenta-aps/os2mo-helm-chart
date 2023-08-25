@@ -1,0 +1,86 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.os2mo.newAMQPSubSystemEnabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mo-amqp-subsystem-deployment
+  labels:
+    subsystem: amqp
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      subsystem: amqp
+  template:
+    metadata:
+      labels:
+        subsystem: amqp
+    spec:
+      {{- if not (empty .Values.os2mo.image.pullSecret) }}
+      imagePullSecrets:
+        - name: {{ .Values.os2mo.image.pullSecret }}
+      {{- end }}
+      containers:
+        - name: amqp-subsystem
+          image: "{{ .Values.os2mo.image.registry }}/{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
+          command: ["python", "-m", "mora.cli", "amqp", "start"]
+          env:
+            - name: DB_HOST
+              value: {{ .Values.database.host }}
+            {{ if ne .Values.database.sslmode "" }}
+            - name: DB_SSLMODE
+              value: {{ .Values.database.sslmode }}
+            {{ end }}
+            - name: DB_NAME
+              value: {{ .Values.database.mox.name }}
+            - name: DB_USER
+              value: {{ .Values.database.mox.user }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.mox.secret }}
+                  key: db_password
+
+              # TODO: Remove AMQP_URL when everyone is on OS2mo v23.11.5
+            - name: AMQP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            - name: AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+
+            # Keycloak
+            - name: KEYCLOAK_SCHEMA
+              value: http
+            - name: KEYCLOAK_PORT
+              value: "8080"
+            - name: KEYCLOAK_HOST
+              value: "keycloak-service"
+            {{- $is_http := empty .Values.ingress.tls_secret }}
+            {{- $protocol := ternary "http" "https" $is_http }}
+            - name: KEYCLOAK_AUTH_SERVER_URL
+              value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
+            - name: KEYCLOAK_MO_CLIENT
+              value: "mo-frontend"
+            - name: KEYCLOAK_RBAC_ENABLED
+              value: {{ .Values.os2mo.keycloakRbacEnabled | quote }}
+
+            {{- range $name, $value := .Values.os2mo.environment }}
+            - name: {{ $name }}
+              value: {{ $value | quote }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.os2mo.resources | nindent 12 }}
+      restartPolicy: Always
+{{- end }}
