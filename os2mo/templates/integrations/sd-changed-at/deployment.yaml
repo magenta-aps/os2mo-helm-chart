@@ -129,6 +129,8 @@ spec:
                 secretKeyRef:
                   name: sd-changed-at-client-secret
                   key: client_secret
+            - name: TF_VAR_client_uuid
+              value: "5dc4a1ce-baad-c0de-7364-6368616e6765"
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         - name: prepare-run-db

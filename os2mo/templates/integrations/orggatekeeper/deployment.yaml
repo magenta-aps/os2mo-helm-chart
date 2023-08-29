@@ -100,6 +100,9 @@ spec:
                 secretKeyRef:
                   name: orggatekeeper-client-secret
                   key: client_secret
+            - name: TF_VAR_client_uuid
+              value: "ca1e4ee9-baad-c0de-6761-74656b656570"
+
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
         - name: os2mo-init
           image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"

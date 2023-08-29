@@ -139,6 +139,9 @@ spec:
                 secretKeyRef:
                   name: os2sync-export-client-secret
                   key: client_secret
+            - name: TF_VAR_client_uuid
+              value: "0525711c-baad-c0de-006f-733273796e63"
+
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
 
