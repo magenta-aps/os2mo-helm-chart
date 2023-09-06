@@ -39,8 +39,6 @@ spec:
                 secretKeyRef:
                   name: sql-export-client-secret
                   key: client_secret
-            - name: GRAPHQL_TIMEOUT
-              value: {{ .Values.sql_export.graphql_timeout | default "300"| quote }}
 
             # TODO remove this once sql-export uses FASTRAMQPI__AMQP__URL as
             # all the other integrations does.
