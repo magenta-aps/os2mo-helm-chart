@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 {{- if .Values.orgviewer.adm.enabled }}
-{{- $keycloak_client_id := "orgviewer" }}
+{{- $keycloak_client_id := "orgviewer_adm" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -44,10 +44,13 @@ spec:
             - name: GLOBAL_API_ROOT_UUID
               value: {{ .Values.orgviewer.adm.org_uuid }}
 
+            - name: KEYCLOAK_CLIENT_ID
+              value: {{ $keycloak_client_id }}
+
             - name: KEYCLOAK_CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: orgviewer-client-secret
+                  name: orgviewer-adm-client-secret
                   key: client_secret
 
             - name: GLOBAL_ORG_PERSON_RELATION
@@ -104,7 +107,7 @@ spec:
             - name: TF_VAR_client_secret
               valueFrom:
                 secretKeyRef:
-                  name: orgviewer-client-secret
+                  name: orgviewer-adm-client-secret
                   key: client_secret
             - name: TF_VAR_client_uuid
               value: "04c71e7a-baad-c0de-6F72-677669657761"
