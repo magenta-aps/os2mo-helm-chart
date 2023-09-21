@@ -61,13 +61,6 @@ spec:
             - containerPort: 8000
           resources:
             {{- toYaml .Values.manager_terminator.resources | nindent 12 }}
-          livenessProbe:
-            httpGet:
-              path: /health/live
-              port: 8000
-            periodSeconds: {{ .Values.manager_terminator.probes.liveness.periodSeconds }}
-            timeoutSeconds: {{ .Values.manager_terminator.probes.liveness.timeoutSeconds }}
-            failureThreshold: {{ .Values.manager_terminator.probes.liveness.failureThreshold }}
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         - name: create-client-secret
