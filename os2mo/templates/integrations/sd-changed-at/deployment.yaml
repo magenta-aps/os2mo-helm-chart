@@ -95,6 +95,16 @@ spec:
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
+            - name: APP_DBPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sd_changed_at.sd_secret_name }}
+                  key: app_dbpassword
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.mox.secret }}
+                  key: db_password
           ports:
             - containerPort: 5000
           resources:
