@@ -245,6 +245,16 @@ sd_changed_at:
     registry: docker.io
     repository: magentaaps/os2mo-sd-changed-at
     tag: latest
+  payload_db:
+    name: sd_payload
+    user: sd_payload
+    init:
+      image:
+        registry: docker.io
+        # We will use this for now
+        # (see https://redmine.magenta-aps.dk/issues/57967)
+        repository: magentaaps/postgres-keycloak-init
+        tag: 12.7-11.7
   mora_base: http://mo-service:5000
   sd_secret_name: sd-secret
   sd_global_from_date: null
