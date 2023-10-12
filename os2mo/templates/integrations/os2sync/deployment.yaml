@@ -67,30 +67,11 @@ spec:
           resources:
             {{- toYaml .Values.os2sync.resources | nindent 12 }}
           volumeMounts:
-            - name: pkcs12-certificate
-              mountPath: /certificate
+            - name: certificate-volume
               readOnly: true
-      initContainers:
-        - name: create-certificate-file
-          image: "{{ .Values.os2sync.init.image.registry }}/{{ .Values.os2sync.init.image.repository }}:{{ .Values.os2sync.init.image.tag }}"
-          command: ["/bin/sh", "-c"]
-          args: ["/usr/bin/openssl pkcs12 -export -in /tmp/tls.crt -inkey /tmp/tls.key -name os2sync -out /certificate/certificate.p12 -passout env:ClientCertPassword"]
-          env:
-            - name: ClientCertPassword
-              valueFrom:
-                secretKeyRef:
-                  name: os2sync-secret
-                  key: client_cert_password
-          volumeMounts:
-            - name: os2sync-tls-secret
-              mountPath: "/tmp"
-              readOnly: true
-            - name: pkcs12-certificate
-              mountPath: /certificate
+              mountPath: "/certificate"
       volumes:
-        - name: os2sync-tls-secret
+        - name: certificate-volume
           secret:
-            secretName: os2sync-tls-secret
-        - name: pkcs12-certificate
-          emptyDir: {}
+            secretName: os2sync-certificate-secret
 {{- end }}
