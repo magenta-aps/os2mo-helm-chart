@@ -75,6 +75,11 @@ keycloak:
 sdtool:
   enabled: false
 
+database:
+  mox:
+    user: postgres
+    secret: mox-db-secret
+
 fixture: "kolding"
 
 orgviewer:
