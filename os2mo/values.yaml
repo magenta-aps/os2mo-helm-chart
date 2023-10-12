@@ -289,6 +289,19 @@ sdtool:
       memory: "512Mi"
       cpu: "250m"
 
+sdtool_plus:
+  enabled: false
+  image:
+    registry: docker.io
+    repository: magentaaps/os2mo-sdtool-plus
+    tag: latest
+  sd_secret_name: sd-secret
+  environment: {}
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+
 initContainers:
   resources:
     requests:

@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.sdtool_plus.enabled }}
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sdtool-plus
+  labels:
+    app: sdtool-plus
+spec:
+  selector:
+    matchLabels:
+      app: sdtool-plus
+  endpoints:
+  - port: "8000"
+{{- end }}
+{{- end }}
