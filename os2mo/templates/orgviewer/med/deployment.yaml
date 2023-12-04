@@ -84,7 +84,7 @@ spec:
           env:
             {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
             - name: POSTGRES_SCHEMA_NAME
-              value: terraform_remote_state_orgviewer
+              value: terraform_remote_state_orgviewer_med
 
             # Keycloak REST connection
             - name: TF_VAR_admin_password
