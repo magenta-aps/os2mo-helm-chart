@@ -37,6 +37,8 @@ spec:
               value: {{ .Values.sentry.environment | quote }}
             {{ end }}
 
+            - name: ENVIRONMENT
+              value: {{ .Values.sdtool_plus.docker_environment | quote }}
             - name: MORA_BASE
               value: "http://mo-service:5000"
             - name: AUTH_SERVER
@@ -50,8 +52,10 @@ spec:
                 secretKeyRef:
                   name: sdtool-plus-client-secret
                   key: client_secret
+            - name: DB_HOST
+              value: {{ .Values.database.host }}
 
-            # The three ENVs below require an sd-secret created in Flux
+            # The 4 ENVs below require an sd-secret created in Flux
 
             - name: SD_USERNAME
               valueFrom:
@@ -68,6 +72,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.sdtool_plus.sd_secret_name }}
                   key: sd_institution
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sdtool_plus.sd_secret_name }}
+                  key: db_password
 
             {{- range $name, $value := .Values.sdtool_plus.environment }}
             - name: {{ $name }}
@@ -106,4 +115,34 @@ spec:
                   key: client_secret
             - name: TF_VAR_client_uuid
               value: "5d700141-baad-c0de-0000-7364746f6f6c"
+        - name: sd-db-init
+          image: "{{ .Values.sd_changed_at.payload_db.init.image.registry }}/{{ .Values.sd_changed_at.payload_db.init.image.repository }}:{{ .Values.sd_changed_at.payload_db.init.image.tag }}"
+          env:
+            - name: POSTGRES_HOST
+              value: {{ .Values.database.host }}
+            - name: POSTGRES_USER
+              value: {{ .Values.database.user }}
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  {{ if .Values.database.password_secret }}
+                  name: {{ .Values.database.password_secret }}
+                  {{ else }}
+                  name: mox-db-secret
+                  {{ end }}
+                  key: db_password
+            # The ENVs below are named KEYCLOAK_... since we are currently using
+            # the Keycloak DB init-container. This will be fixed in
+            # https://redmine.magenta-aps.dk/issues/57967
+            - name: KEYCLOAK_DB_NAME
+              value: {{ .Values.sdtool_plus.rundb.name | quote }}
+            - name: KEYCLOAK_DB_USER
+              value: {{ .Values.sdtool_plus.rundb.user | quote }}
+            - name: KEYCLOAK_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.sd_changed_at.sd_secret_name }}
+                  key: db_password
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
 {{- end }}

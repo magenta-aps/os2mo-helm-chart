@@ -296,6 +296,10 @@ sdtool_plus:
     repository: magentaaps/os2mo-sdtool-plus
     tag: latest
   sd_secret_name: sd-secret
+  docker_environment: production
+  rundb:
+    name: sdtool_plus
+    user: sdtool_plus
   environment: {}
   resources:
     requests:
