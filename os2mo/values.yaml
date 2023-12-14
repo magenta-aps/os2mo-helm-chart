@@ -296,6 +296,16 @@ sdtool_plus:
     repository: magentaaps/os2mo-sdtool-plus
     tag: latest
   sd_secret_name: sd-secret
+  rundb:
+    name: sdtool_plus
+    user: sdtool_plus
+    init:
+      image:
+        registry: docker.io
+        # We will use this for now
+        # (see https://redmine.magenta-aps.dk/issues/57967)
+        repository: magentaaps/postgres-keycloak-init
+        tag: 12.7-11.7
   environment: {}
   resources:
     requests:
