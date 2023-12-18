@@ -296,6 +296,8 @@ sdtool_plus:
     repository: magentaaps/os2mo-sdtool-plus
     tag: latest
   sd_secret_name: sd-secret
+  cronjob_enabled: false
+  cronjob_schedule: "0 6 * * *"
   rundb:
     name: sdtool_plus
     user: sdtool_plus
