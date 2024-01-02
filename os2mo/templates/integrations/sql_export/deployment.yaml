@@ -31,6 +31,8 @@ spec:
           env:
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
+            - name: MORA_BASE
+              value: "http://mo-service:5000"
 
             - name: CLIENT_ID
               value: "{{ $keycloak_client_id }}"
