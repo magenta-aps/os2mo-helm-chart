@@ -9,12 +9,9 @@ annotations:
 metrics:
   enabled: false
 
-# Optional Sentry support.
-# To enable, set the environment (e.g. os2mo.silkeborg.prod) and create a
-# secret "sentry-secret" with the "dsn" key.
 sentry:
   secret: sentry-secret
-  environment: null
+  environment: os2mo.silkeborg.prod
 
 ingress:
   # Must be 'nginx' for basic-auth to work
