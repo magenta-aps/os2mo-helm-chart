@@ -23,7 +23,7 @@ spec:
             - name: cronjob-sd-changed-at
               image: curlimages/curl
               command: ["/bin/sh","-c"]
-              args: [ 'curl --silent --show-error --fail-with-body "http://sd-changed-at-service:8000/trigger"' ]
+              args: [ 'curl --silent --show-error --fail-with-body -X POST "http://sd-changed-at-service:8000/trigger"' ]
               resources:
                 requests:
                   memory: "64Mi"
