@@ -26,6 +26,38 @@ spec:
     spec:
       containers:
         - name: keycloak
+          {{ if .Values.keycloak.ff_upgrade }}
+          image: magentaaps/os2mo-keycloak:33.4.1
+          env:
+            {{- $is_https := empty .Values.ingress.tls_secret }}
+            {{- $protocol := ternary "http" "https" $is_https }}
+            - name: KC_HOSTNAME_URL
+              value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
+            - name: KC_HOSTNAME_ADMIN_URL
+              value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
+
+            - name: KEYCLOAK_ADMIN
+              value: admin
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "os2mo.keycloak_admin_secret" . }}
+                  key: admin_password
+
+            - name: KC_DB_URL_HOST
+              value: {{ .Values.database.host }}
+            - name: KC_DB_SCHEMA
+              value: public
+            - name: KC_DB_DATABASE
+              value: {{ .Values.database.keycloak.name }}
+            - name: KC_DB_USERNAME
+              value: {{ .Values.database.keycloak.user }}
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: db_password
+          {{ else }}
           image: "{{ .Values.keycloak.image.registry }}/{{ .Values.keycloak.image.repository }}:{{ .Values.keycloak.image.tag }}"
           env:
             - name: KEYCLOAK_USER
@@ -62,6 +94,7 @@ spec:
             - name: JDBC_PARAMS
               value: "sslmode={{ .Values.database.sslmode }}"
             {{ end }}
+          {{ end }}
           livenessProbe:
             httpGet:
               path: /auth/
