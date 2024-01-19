@@ -150,6 +150,7 @@ dipex:
       cpu: "1000m"
 
 keycloak:
+  ff_upgrade: false
   image:
     registry: quay.io
     repository: keycloak/keycloak
