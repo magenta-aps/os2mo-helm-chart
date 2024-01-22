@@ -93,9 +93,9 @@ spec:
             - name: PGHOST
               value: {{ .Values.database.host }}
             - name: APP_DATABASE
-              value: {{ .Values.sd_changed_at.payload_db.name }}
+              value: {{ .Values.sd_changed_at.db.name }}
             - name: APP_DBUSER
-              value: {{ .Values.sd_changed_at.payload_db.user }}
+              value: {{ .Values.sd_changed_at.db.user }}
             - name: APP_DBPASSWORD
               valueFrom:
                 secretKeyRef:
@@ -137,7 +137,7 @@ spec:
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
         - name: sd-db-init
-          image: "{{ .Values.sd_changed_at.payload_db.init.image.registry }}/{{ .Values.sd_changed_at.payload_db.init.image.repository }}:{{ .Values.sd_changed_at.payload_db.init.image.tag }}"
+          image: "{{ .Values.sd_changed_at.db.init.image.registry }}/{{ .Values.sd_changed_at.db.init.image.repository }}:{{ .Values.sd_changed_at.db.init.image.tag }}"
           env:
             - name: POSTGRES_HOST
               value: {{ .Values.database.host }}
@@ -156,9 +156,9 @@ spec:
             # the Keycloak DB init-container. This will be fixed in
             # see https://redmine.magenta-aps.dk/issues/57967
             - name: KEYCLOAK_DB_NAME
-              value: {{ .Values.sd_changed_at.payload_db.name | quote }}
+              value: {{ .Values.sd_changed_at.db.name | quote }}
             - name: KEYCLOAK_DB_USER
-              value: {{ .Values.sd_changed_at.payload_db.user | quote }}
+              value: {{ .Values.sd_changed_at.db.user | quote }}
             - name: KEYCLOAK_DB_PASSWORD
               valueFrom:
                 secretKeyRef:

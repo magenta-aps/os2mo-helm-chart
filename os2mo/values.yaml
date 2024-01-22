@@ -243,9 +243,9 @@ sd_changed_at:
     registry: docker.io
     repository: magentaaps/os2mo-sd-changed-at
     tag: latest
-  payload_db:
-    name: sd_payload
-    user: sd_payload
+  db:
+    name: sd
+    user: sd
     init:
       image:
         registry: docker.io
