@@ -110,9 +110,6 @@ spec:
             - containerPort: 5000
           resources:
             {{- toYaml .Values.sd_changed_at.resources | nindent 12 }}
-          volumeMounts:
-            - name: sd-pv
-              mountPath: "/mnt/dipex"
       initContainers:
         {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
         {{ include "os2mo.wait-for-mo" . | nindent 8 }}
@@ -174,20 +171,4 @@ spec:
                   key: app_dbpassword
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
-        - name: prepare-run-db
-          image: "{{ .Values.sd_changed_at.init.image.registry }}/{{ .Values.sd_changed_at.init.image.repository }}:{{ .Values.sd_changed_at.init.image.tag }}"
-          env:
-            - name: SD_GLOBAL_FROM_DATE
-              value: "{{ .Values.sd_changed_at.sd_global_from_date }}"
-            - name: SD_IMPORT_RUN_DB
-              value: "{{ .Values.sd_changed_at.sd_import_run_db }}"
-          resources:
-            {{- toYaml .Values.initContainers.resources | nindent 12 }}
-          volumeMounts:
-            - name: sd-pv
-              mountPath: "/mnt/dipex"
-      volumes:
-        - name: sd-pv
-          persistentVolumeClaim:
-            claimName: sd-pvc
 {{- end }}
