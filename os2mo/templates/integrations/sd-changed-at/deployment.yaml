@@ -38,17 +38,12 @@ spec:
             {{- if not .Values.sd_changed_at.sd_monthly_hourly_divide }}
               {{- fail "SD_MONTHLY_HOURLY_DIVIDE must be set" }}
             {{- end }}
-            {{- if not .Values.sd_changed_at.sd_import_run_db }}
-              {{- fail "SD_IMPORT_RUN_DB must be set" }}
-            {{- end }}
             - name: SD_GLOBAL_FROM_DATE
               value: "{{ .Values.sd_changed_at.sd_global_from_date }}"
             - name: SD_JOB_FUNCTION
               value: "{{ .Values.sd_changed_at.sd_job_function }}"
             - name: SD_MONTHLY_HOURLY_DIVIDE
               value: "{{ .Values.sd_changed_at.sd_monthly_hourly_divide }}"
-            - name: SD_IMPORT_RUN_DB
-              value: "{{ .Values.sd_changed_at.sd_import_run_db }}"
 
             {{ if .Values.sentry.environment }}
             - name: SENTRY_DSN
