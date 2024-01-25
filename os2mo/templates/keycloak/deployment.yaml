@@ -58,9 +58,9 @@ spec:
                   name: keycloak-secret
                   key: db_password
             # TODO: #59355
-            {{ if ne .Values.database.sslmode "" }}
+            {{ if ne .Values.database.keycloak_jdbc_params "" }}
             - name: KC_DB_URL_PROPERTIES
-              value: "?sslmode={{ .Values.database.sslmode }}"
+              value: "?{{ .Values.database.keycloak_jdbc_params }}"
             {{ end }}
           {{ else }}
           image: "{{ .Values.keycloak.image.registry }}/{{ .Values.keycloak.image.repository }}:{{ .Values.keycloak.image.tag }}"
