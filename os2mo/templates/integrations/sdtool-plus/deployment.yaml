@@ -37,6 +37,12 @@ spec:
               value: {{ .Values.sentry.environment | quote }}
             {{ end }}
 
+            - name: FASTRAMQPI__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+
             - name: MORA_BASE
               value: "http://mo-service:5000"
             - name: AUTH_SERVER
