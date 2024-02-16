@@ -47,7 +47,6 @@ os2mo:
       cpu: "1000m"
 
 keycloak:
-  ff_upgrade: true
   builder:
     lora_realm_enabled: true
     lora_dipex_client_enabled: true
