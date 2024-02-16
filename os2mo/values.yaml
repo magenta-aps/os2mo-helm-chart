@@ -150,11 +150,10 @@ dipex:
       cpu: "1000m"
 
 keycloak:
-  ff_upgrade: false
   image:
-    registry: quay.io
-    repository: keycloak/keycloak
-    tag: 14.0.0
+    registry: docker.io
+    repository: magentaaps/os2mo-keycloak
+    tag: 33.4.1
   init:
     image:
       registry: docker.io

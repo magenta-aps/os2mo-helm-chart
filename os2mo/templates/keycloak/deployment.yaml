@@ -26,8 +26,7 @@ spec:
     spec:
       containers:
         - name: keycloak
-          {{ if .Values.keycloak.ff_upgrade }}
-          image: magentaaps/os2mo-keycloak:33.4.1
+          image: "{{ .Values.keycloak.image.registry }}/{{ .Values.keycloak.image.repository }}:{{ .Values.keycloak.image.tag }}"
           env:
             {{- $is_https := empty .Values.ingress.tls_secret }}
             {{- $protocol := ternary "http" "https" $is_https }}
@@ -57,49 +56,10 @@ spec:
                 secretKeyRef:
                   name: keycloak-secret
                   key: db_password
-            # TODO: #59355
             {{ if ne .Values.database.keycloak_jdbc_params "" }}
             - name: KC_DB_URL_PROPERTIES
               value: "?{{ .Values.database.keycloak_jdbc_params }}"
             {{ end }}
-          {{ else }}
-          image: "{{ .Values.keycloak.image.registry }}/{{ .Values.keycloak.image.repository }}:{{ .Values.keycloak.image.tag }}"
-          env:
-            - name: KEYCLOAK_USER
-              value: admin
-            - name: KEYCLOAK_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "os2mo.keycloak_admin_secret" . }}
-                  key: admin_password
-
-            {{- $is_https := empty .Values.ingress.tls_secret }}
-            {{- $protocol := ternary "http" "https" $is_https }}
-            - name: KEYCLOAK_FRONTEND_URL
-              value: "{{ $protocol }}://{{ .Values.ingress.hostname }}/auth/"
-            - name: PROXY_ADDRESS_FORWARDING
-              value: 'true'
-
-            - name: DB_VENDOR
-              value: POSTGRES
-            - name: DB_ADDR
-              value: {{ .Values.database.host }}
-            - name: DB_DATABASE
-              value: {{ .Values.database.keycloak.name }}
-            - name: DB_SCHEMA
-              value: public
-            - name: DB_USER
-              value: {{ .Values.database.keycloak.user }}
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-secret
-                  key: db_password
-            {{ if ne .Values.database.sslmode "" }}
-            - name: JDBC_PARAMS
-              value: "sslmode={{ .Values.database.sslmode }}"
-            {{ end }}
-          {{ end }}
           livenessProbe:
             httpGet:
               path: /auth/
