@@ -209,7 +209,7 @@ spec:
         {{ end }}
         - name: alembic
           image: "{{ .Values.os2mo.image.registry }}/{{ .Values.os2mo.image.repository }}:{{ .Values.os2mo.image.tag }}"
-          command: [ "python3", "-m", "oio_rest", "initdb", "--wait", "30" ]
+          command: [ "alembic", "upgrade", "head"]
           env:
             - name: DB_HOST
               value: {{ .Values.database.host }}
