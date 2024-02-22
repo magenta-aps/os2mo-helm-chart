@@ -42,7 +42,20 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.amqp.url_secret }}
                   key: url
+            - name: FASTRAMQPI__MO_URL
+              value: "http://mo-service:5000"
+            - name: FASTRAMQPI__AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: FASTRAMQPI__CLIENT_ID
+              value: "{{ $keycloak_client_id }}"
+            - name: FASTRAMQPI__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sdtool-plus-client-secret
+                  key: client_secret
 
+            # TODO: remove these ones when we have converted to use the
+            # FastRAMQPI GraphQL client everywhere in the application
             - name: MORA_BASE
               value: "http://mo-service:5000"
             - name: AUTH_SERVER
