@@ -17,8 +17,6 @@ spec:
   selector:
     matchLabels:
       app: mo
-  strategy:
-    type: {{ .Values.os2mo.strategy }}
   template:
     metadata:
       labels:
