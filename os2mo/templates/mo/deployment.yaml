@@ -255,17 +255,39 @@ spec:
               value: "[\"{{ $protocol }}://{{ .Values.ingress.hostname }}/*\"]"
             - name: TF_VAR_KEYCLOAK_MO_CLIENT_WEB_ORIGIN
               value: "[\"{{ $protocol }}://{{ .Values.ingress.hostname }}\"]"
-            - name: TF_VAR_KEYCLOAK_DIPEX_CLIENT_ENABLED
-              value: 'true'
-            - name: TF_VAR_KEYCLOAK_DIPEX_CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-dipex-secret
-                  key: client_secret
             {{- range $name, $value := .Values.keycloak.builder.environment }}
             - name: {{ $name }}
               value: {{ $value | quote }}
             {{- end }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
+
+        - name: create-dipex-client-secret
+          image: "{{ .Values.keycloak.integrationbuilder.image.registry }}/{{ .Values.keycloak.integrationbuilder.image.repository }}:{{ .Values.keycloak.integrationbuilder.image.tag }}"
+          imagePullPolicy: {{ .Values.keycloak.integrationbuilder.image.pullPolicy }}
+          env:
+            {{ include "os2mo.keycloak_terraform_db_connection" .  | nindent 12 }}
+            - name: POSTGRES_SCHEMA_NAME
+              value: terraform_remote_state_dipex_client
+
+            # Keycloak REST connection
+            - name: TF_VAR_admin_password
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "os2mo.keycloak_admin_secret" . }}
+                  key: admin_password
+
+            # Configuration of the client
+            - name: TF_VAR_client_name
+              value: dipex
+            - name: TF_VAR_client_roles
+              value: '["admin"]'
+            - name: TF_VAR_client_secret
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
+            - name: TF_VAR_client_uuid
+              value: "d1fec000-baad-c0de-0000-004449504558"
+
       restartPolicy: Always
