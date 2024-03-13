@@ -31,7 +31,7 @@ spec:
             - name: AUTH_REALM
               value: "mo"
             - name: CLIENT_ID
-              value: "d1fec000-baad-c0de-0000-004449504558"  # TODO: don't use dipex client
+              value: "dipex"  # TODO: don't use dipex client
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
