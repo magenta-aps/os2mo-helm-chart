@@ -136,10 +136,12 @@ spec:
         - name: os2mo-init
           image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
           env:
-            - name: AUTH_SERVER
-              value: "http://keycloak-service:8080/auth"
             - name: MO_URL
               value: "http://mo-service:5000"
+            - name: AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: AUTH_REALM
+              value: "mo"
             - name: CLIENT_ID
               value: "{{ $keycloak_client_id }}"
             - name: CLIENT_SECRET
@@ -147,8 +149,8 @@ spec:
                 secretKeyRef:
                   name: adguid-sync-client-secret
                   key: client_secret
-            - name: LORA_URL
-              value: "http://mo-service:5000/lora"
+            - name: LOG_LEVEL
+              value: {{ .Values.os2mo.init.log_level | quote }}
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
           volumeMounts:
