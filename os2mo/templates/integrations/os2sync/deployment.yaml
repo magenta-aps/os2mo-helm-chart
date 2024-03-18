@@ -28,26 +28,36 @@ spec:
         - name: os2sync
           image: "{{ .Values.os2sync.image.registry }}/{{ .Values.os2sync.image.repository }}:{{ .Values.os2sync.image.tag }}"
           env:
-            - name: ClientCertPath
+            - name: ClientSettings__WscKeystoreLocation
               value: "/certificate/certificate.p12"
-            - name: ClientCertPassword
+            - name: ClientSettings__WscKeystorePassword
               valueFrom:
                 secretKeyRef:
                   name: os2sync-secret
                   key: client_cert_password
             - name: DisableRevocationCheck
               value: {{ .Values.os2sync.disable_revocation_check | quote }}
-            - name: LogRequestResponse
+            - name: LogSettings__LogRequestResponse
               value: {{ .Values.os2sync.log_request_response | quote }}
-            - name: Municipality
+            - name: CVR
               value: {{ required "The Municipality ENV is missing" .Values.os2sync.municipality | quote }}
-            - name: EnableScheduler
+            - name: SchedulerSettings__Enabled
               value: {{ .Values.os2sync.enable_scheduler | quote }}
+            - name: ServiceSettings__WspCertificateLocation
+              value: "/trust/organisation.cer"
+            - name: StsSettings__StsCertificateLocation
+              value: "/trust/sts.cer"
+            # Although "TrustAllCertificates" sounds ominous it's not that bad.
+            # The above certificates are used for validation, this flag only disables 
+            # verifying root CA for those certificates.
+            # OS2sync does not currently work without this flag enabled
+            - name: TrustAllCertificates
+              value: "true"
             - name: Environment
               value: {{ .Values.os2sync.environment | quote }}
-            - name: LogLevel
+            - name: LogSettings__LogLevel
               value: {{ .Values.os2sync.log_level | quote }}
-            - name: DatabaseType
+            - name: SchedulerSettings__DBType
               value: MYSQL
             - name: DB_HOST
               value: {{ required "The OS2sync DB_HOST ENV is missing" .Values.os2sync.db_host | quote }}
@@ -60,8 +70,8 @@ spec:
                 secretKeyRef:
                   name: os2sync-secret
                   key: db_password
-            - name: DBConnectionString
-              value: "server=$(DB_HOST);user id=$(DB_USERNAME);password=$(DB_PASSWORD);database=$(DB_NAME);persistsecurityinfo=True;port=3306;"
+            - name: SchedulerSettings__DBConnectionString
+              value: "server=$(DB_HOST);user id=$(DB_USERNAME);password=$(DB_PASSWORD);database=$(DB_NAME);persistsecurityinfo=True"
           ports:
             - containerPort: 5000
           resources:
@@ -70,7 +80,27 @@ spec:
             - name: certificate-volume
               readOnly: true
               mountPath: "/certificate"
+            - name: trust
+              readOnly: true
+              mountPath: "/trust"
       volumes:
+        - name: trust
+          configMap:
+            name: trust-config
+            items: 
+            {{ if eq .Values.os2sync.environment "PROD" }}
+              - key: prod-org.cer
+                path: organisation.cer
+              - key: prod-sts.cer
+                path: sts.cer
+            {{ else if eq .Values.os2sync.environment "TEST" }}
+              - key: test-org.cer
+                path: organisation.cer
+              - key: test-sts.cer
+                path: sts.cer
+            {{ else }}
+              {{- fail ".Values.os2sync.environment must be set to either TEST or PROD" }}
+            {{ end }}
         - name: certificate-volume
           secret:
             secretName: os2sync-certificate-secret
