@@ -281,7 +281,7 @@ spec:
             - name: TF_VAR_client_name
               value: dipex
             - name: TF_VAR_client_roles
-              value: '["admin"]'
+              value: '["admin", "service_api"]'
             - name: TF_VAR_client_secret
               valueFrom:
                 secretKeyRef:
