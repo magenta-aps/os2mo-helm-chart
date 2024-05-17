@@ -13,6 +13,8 @@ sentry:
   secret: sentry-secret
   environment: os2mo.silkeborg.prod
 
+timezone: "Europe/Copenhagen"
+
 ingress:
   # Must be 'nginx' for basic-auth to work
   # Must be 'nginx' for protection of Keycloak admin endpoints

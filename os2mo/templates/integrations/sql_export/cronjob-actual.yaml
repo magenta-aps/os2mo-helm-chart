@@ -15,6 +15,7 @@ metadata:
   {{- end }}
 spec:
   schedule: {{ .Values.sql_export.actual_state.cronjob_schedule | quote }}
+  timeZone: {{ .Values.timezone | quote }}
   jobTemplate:
     spec:
       template:
