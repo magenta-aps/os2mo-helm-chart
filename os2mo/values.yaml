@@ -43,7 +43,6 @@ os2mo:
     tag: latest
   port: 80
   init:
-    enabled: false
     image:
       registry: docker.io
       repository: magentaaps/os2mo-init

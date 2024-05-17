@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 ---
-{{- if .Values.os2mo.init.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -61,4 +60,3 @@ spec:
             items:
               - key: config
                 path: config.yml
-{{- end }}
