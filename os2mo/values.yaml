@@ -309,6 +309,7 @@ sdtool_plus:
         # (see https://redmine.magenta-aps.dk/issues/57967)
         repository: magentaaps/postgres-keycloak-init
         tag: 12.7-11.7
+  email_secret_name: null
   environment: {}
   resources:
     requests:
