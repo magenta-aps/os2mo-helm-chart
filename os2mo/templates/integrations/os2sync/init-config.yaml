@@ -19,8 +19,8 @@ data:
       org_unit_address_type:
         contact:
           title: "Henvendelsessted"
-          scope: "TEXT"
+          scope: "DAR"
         location:
           title: "Lokation"
-          scope: "TEXT"
+          scope: "DAR"
 {{- end }}
