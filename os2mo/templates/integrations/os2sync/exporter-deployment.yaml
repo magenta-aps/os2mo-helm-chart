@@ -61,8 +61,6 @@ spec:
               value: {{ required "The top level uuid is missing" .Values.os2sync.os2sync_top_unit_uuid | quote }}
             - name: os2sync_api_url
               value: {{ .Values.os2sync.os2sync_api_url| default "http://os2sync-service:5000/api" | quote }}
-            - name: os2sync_hash_cache
-              value: {{ .Values.os2sync.os2sync_hash_cache | default "/tmp/hash_cache" | quote }}
             - name: os2sync_xfer_cpr
               value: {{ .Values.os2sync.os2sync_xfer_cpr | default false | quote }}
             - name: os2sync_autowash
@@ -144,6 +142,36 @@ spec:
 
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
-
+        - name: os2mo-init
+          image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
+          env:
+            - name: MO_URL
+              value: "http://mo-service:5000"
+            - name: AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: AUTH_REALM
+              value: "mo"
+            - name: CLIENT_ID
+              value: "dipex"
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
+            - name: LOG_LEVEL
+              value: {{ .Values.os2mo.init.log_level | quote }}
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          volumeMounts:
+           - name: os2sync-export-init-config-volume
+             mountPath: /config
+             readOnly: true
+      volumes:
+        - name: os2sync-export-init-config-volume
+          configMap:
+            name: os2sync-export-init-config
+            items:
+              - key: config
+                path: config.yml
           
 {{- end }}
