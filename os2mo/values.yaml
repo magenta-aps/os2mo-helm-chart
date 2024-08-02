@@ -219,6 +219,29 @@ database:
     user: "mox"
     secret: "mox-secret"
 
+fkk:
+  enabled: false
+  image:
+    registry: docker.io
+    repository: magentaaps/os2mo-fkk
+    tag: latest
+  extraEnv: null
+  database:
+    init:
+      image:
+        registry: docker.io
+        # We will use this for now
+        # (see https://redmine.magenta-aps.dk/issues/57967)
+        repository: magentaaps/postgres-keycloak-init
+        tag: 12.7-11.7
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "100m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+
 omada:
   enabled: false
   image:

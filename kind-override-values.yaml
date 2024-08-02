@@ -103,3 +103,11 @@ os2sync:
   # The municipality CVR
   municipality: 12345678
   db_host: mysql
+
+fkk:
+  enabled: false
+  extraEnv:
+    - name: FKK__ENVIRONMENT
+      value: "test"
+    - name: FKK__AUTHORITY_CONTEXT_CVR
+      value: "25052943"  # Magenta Aps CVR
