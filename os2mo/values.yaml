@@ -11,7 +11,7 @@ metrics:
 
 sentry:
   secret: sentry-secret
-  environment: os2mo.silkeborg.prod
+  environment: null
 
 timezone: "Europe/Copenhagen"
 
