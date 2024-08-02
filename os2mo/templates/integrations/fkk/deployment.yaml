@@ -1,0 +1,105 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.omada.enabled }}
+# TODO: see https://git.magenta.dk/rammearkitektur/os2mo-helm-chart/-/merge_requests/142#note_140651
+{{- if not .Values.amqp.enabled }}
+  {{- fail "Must have AMQP enabled if omada is enabled" }}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: omada-deployment
+  labels:
+    app: omada
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: omada
+  strategy:
+    type: Recreate  # we need to force Recreate strategy when using persistent volumes
+  template:
+    metadata:
+      labels:
+        app: omada
+    spec:
+      containers:
+        - name: omada
+          image: "{{ .Values.omada.image.registry }}/{{ .Values.omada.image.repository }}:{{ .Values.omada.image.tag }}"
+          env:
+            # TODO: Use separate integration token instead of global dipex one
+            - name: FASTRAMQPI__CLIENT_ID
+              value: "dipex"
+            - name: FASTRAMQPI__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
+            - name: FASTRAMQPI__AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            # TODO: use separate integration AMQP user instead of global one
+            - name: FASTRAMQPI__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            # TODO: use separate integration AMQP user instead of global one
+            - name: OMADA__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            {{- if .Values.omada.extraEnv }}
+            {{ toYaml .Values.omada.extraEnv | indent 12 | trim }}
+            {{- end }}
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: omada-pv-storage
+              mountPath: /data/
+          resources:
+            {{- toYaml .Values.omada.resources | nindent 12 }}
+      initContainers:
+        {{ include "os2mo.wait-for-keycloak" . | nindent 8 }}
+        {{ include "os2mo.wait-for-mo" . | nindent 8 }}
+        - name: os2mo-init
+          image: "{{ .Values.os2mo.init.image.registry }}/{{ .Values.os2mo.init.image.repository }}:{{ .Values.os2mo.init.image.tag }}"
+          env:
+            - name: MO_URL
+              value: "http://mo-service:5000"
+            - name: AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: AUTH_REALM
+              value: "mo"
+            - name: CLIENT_ID
+              value: "dipex"  # TODO: don't use dipex client
+            - name: CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-dipex-secret
+                  key: client_secret
+            - name: LOG_LEVEL
+              value: {{ .Values.os2mo.init.log_level | quote }}
+          resources:
+            {{- toYaml .Values.initContainers.resources | nindent 12 }}
+          volumeMounts:
+           - name: omada-init-config-volume
+             mountPath: /config
+             readOnly: true
+      volumes:
+        - name: omada-init-config-volume
+          configMap:
+            name: omada-init-config
+            items:
+              - key: config
+                path: config.yml
+        - name: omada-pv-storage
+          persistentVolumeClaim:
+            claimName: omada-pv-claim
+{{- end }}

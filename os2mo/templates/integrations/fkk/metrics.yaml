@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.omada.enabled }}
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: omada
+  labels:
+    app: omada
+spec:
+  selector:
+    matchLabels:
+      app: omada
+  endpoints:
+  - port: "8000"
+{{- end }}
+{{- end }}
