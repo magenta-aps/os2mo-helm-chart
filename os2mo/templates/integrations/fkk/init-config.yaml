@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.fkk.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fkk-init-config
+  labels:
+    app: fkk
+  {{- with .Values.annotations }}
+  annotations:
+  {{- toYaml . | nindent 4 }}
+  {{- end }}
+data:
+  # NOTE: This should be kept in sync with os2mo-fkk/init.config.yaml and
+  # salt-automation/salt/states/os2mo/fkk/files/init.config.yml!
+  config: |
+    facets:
+      kle_aspect:
+        Ansvarlig:
+          title: "Ansvarlig"
+          scope: "ANSVARLIG"
+        # NOTE: Today, the term "Informeret" is used instead of "Indsigt", but
+        # historically KOMBIT, and therefore OS2mo, has used the term "Indsigt".
+        # We keep the historic 'Indsigt' user key but rename its title to the newer
+        # 'Informeret'.
+        # https://digitaliseringskataloget.dk/files/integration-files/110520211231/SF1500%20Anvisninger%20-%20v2.0%20-%20v6.0%20Services%2020210511.pdf
+        # https://git.magenta.dk/rammearkitektur/os2mo-data-import-and-export/-/blob/a78ce927f12f7aa327b502143207346906dd0d68/integrations/kle/kle_import_export.py#L21-32
+        Indsigt:
+          title: "Informeret"
+          scope: "INFORMERET"
+        Udførende:
+          title: "Udførende"
+          scope: "UDFOERENDE"
+{{- end }}

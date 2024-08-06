@@ -1,0 +1,20 @@
+# SPDX-FileCopyrightText: Magenta ApS
+#
+# SPDX-License-Identifier: MPL-2.0
+---
+{{- if .Values.fkk.enabled }}
+{{- if .Values.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fkk
+  labels:
+    app: fkk
+spec:
+  selector:
+    matchLabels:
+      app: fkk
+  endpoints:
+  - port: "8000"
+{{- end }}
+{{- end }}
