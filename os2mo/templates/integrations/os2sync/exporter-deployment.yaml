@@ -31,9 +31,25 @@ spec:
           env:
             - name: Municipality
               value: {{ required "The Municipality ENV is missing" .Values.os2sync.municipality | quote }}
-            # TODO: mora_base is deprecated. Remove when we are ready to use event-driven in prod.
-            - name: mora_base
-              value: {{ .Values.os2sync.mora_base | default "http://mo-service:5000" | quote }}
+            - name: FASTRAMQPI__MO_URL
+              value:  "http://mo-service:5000"
+            - name: FASTRAMQPI__AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: FASTRAMQPI__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            - name: FASTRAMQPI__AUTH_REALM
+              value: "mo"
+            - name: FASTRAMQPI__CLIENT_ID
+              value: "{{ $keycloak_client_id }}"
+            - name: FASTRAMQPI__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: os2sync-export-client-secret
+                  key: client_secret
+            # TODO: Remove the following section when os2sync_export is upgraded past version 6 everywhere
             - name: MO_URL
               value:  "http://mo-service:5000"
             - name: LOG_LEVEL
@@ -42,7 +58,6 @@ spec:
               value: {{ .Values.os2sync.graphql_timeout | default "300"| quote }}
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
-              # TODO: use separate integration AMQP user instead of global one
             - name: AMQP__URL
               valueFrom:
                 secretKeyRef:
@@ -57,6 +72,7 @@ spec:
                 secretKeyRef:
                   name: os2sync-export-client-secret
                   key: client_secret
+            # end of legacy settings section - Delete to here.
             - name: os2sync_api_url
               value: {{ .Values.os2sync.os2sync_api_url| default "http://os2sync-service:5000/api" | quote }}
             {{- if .Values.os2sync.extraEnv }}

@@ -426,7 +426,12 @@ os2sync:
   db_name: os2sync
   db_username: os2sync_admin
   # envs for os2sync_export:
-  os2sync_top_unit_uuid: null
+  extraEnv:
+    - name: top_unit_uuid
+      value: null
+      # TODO: Remove the following section when os2sync_export is upgraded past version 6 everywhere
+    - name: os2sync_top_unit_uuid
+      value: null
 
   resources:
     requests:
