@@ -57,46 +57,11 @@ spec:
                 secretKeyRef:
                   name: os2sync-export-client-secret
                   key: client_secret
-            - name: os2sync_top_unit_uuid
-              value: {{ required "The top level uuid is missing" .Values.os2sync.os2sync_top_unit_uuid | quote }}
             - name: os2sync_api_url
               value: {{ .Values.os2sync.os2sync_api_url| default "http://os2sync-service:5000/api" | quote }}
-            - name: os2sync_xfer_cpr
-              value: {{ .Values.os2sync.os2sync_xfer_cpr | default false | quote }}
-            - name: os2sync_autowash
-              value: {{ .Values.os2sync.os2sync_autowash | default true| quote }}
-            - name: os2sync_ca_verify_os2sync
-              value: {{ .Values.os2sync.os2sync_ca_verify_os2sync | default true | quote }}
-            - name: os2sync_ca_verify_os2mo
-              value: {{ .Values.os2sync.os2sync_ca_verify_os2mo | default true | quote }}
-            - name: os2sync_phone_scope_classes
-              value: {{ .Values.os2sync.os2sync_phone_scope_classes | default "[]" | quote }}
-            - name: os2sync_landline_scope_classes
-              value: {{ .Values.os2sync.os2sync_landline_scope_classes | default "[]" | quote }}
-            - name: os2sync_email_scope_classes
-              value: {{ .Values.os2sync.os2sync_email_scope_classes | default "[]" | quote }}
-            - name: os2sync_ignored_unit_levels
-              value: {{ .Values.os2sync.os2sync_ignored_unit_levels | default "[]" | quote }}
-            - name: os2sync_ignored_unit_types
-              value: {{ .Values.os2sync.os2sync_ignored_unit_types | default "[]" | quote }}
-            - name: os2sync_templates
-              value: {{ .Values.os2sync.os2sync_templates | default "{}" | quote }}
-            - name: os2sync_sync_managers
-              value: {{ .Values.os2sync.os2sync_sync_managers | default false | quote }}
-            - name: os2sync_use_contact_for_tasks
-              value: {{ .Values.os2sync.os2sync_use_contact_for_tasks | default false | quote }}
-            - name: os2sync_employee_engagement_address
-              value: {{ .Values.os2sync.os2sync_employee_engagement_address | default "[]" | quote }}
-            - name: os2sync_uuid_from_it_systems
-              value: {{ .Values.os2sync.os2sync_uuid_from_it_systems | default "[]" | quote }}
-            - name: os2sync_truncate_length
-              value: {{ .Values.os2sync.os2sync_truncate_length | default 200 | quote }}
-            - name: os2sync_user_key_it_system_name
-              value: {{ .Values.os2sync.os2sync_user_key_it_system_name | default "Active Directory" | quote }}
-            - name: os2sync_filter_hierarchy_names
-              value: {{ .Values.os2sync.os2sync_filter_hierarchy_names | default "[]" | quote }}
-            - name: os2sync_filter_users_by_it_system
-              value: {{ .Values.os2sync.os2sync_filter_users_by_it_system | default false | quote }}
+            {{- if .Values.os2sync.extraEnv }}
+            {{ toYaml .Values.os2sync.extraEnv | indent 12 | trim }}
+            {{- end }}
             {{ if .Values.sentry.environment }}
             - name: SENTRY_DSN
               valueFrom:
