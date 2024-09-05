@@ -31,9 +31,25 @@ spec:
           env:
             - name: Municipality
               value: {{ required "The Municipality ENV is missing" .Values.os2sync.municipality | quote }}
-            # TODO: mora_base is deprecated. Remove when we are ready to use event-driven in prod.
-            - name: mora_base
-              value: {{ .Values.os2sync.mora_base | default "http://mo-service:5000" | quote }}
+            - name: FASTRAMQPI__MO_URL
+              value:  "http://mo-service:5000"
+            - name: FASTRAMQPI__AUTH_SERVER
+              value: "http://keycloak-service:8080/auth"
+            - name: FASTRAMQPI__AMQP__URL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.amqp.url_secret }}
+                  key: url
+            - name: FASTRAMQPI__AUTH_REALM
+              value: "mo"
+            - name: FASTRAMQPI__CLIENT_ID
+              value: "{{ $keycloak_client_id }}"
+            - name: FASTRAMQPI__CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: os2sync-export-client-secret
+                  key: client_secret
+            # TODO: Remove the following section when os2sync_export is upgraded past version 6 everywhere
             - name: MO_URL
               value:  "http://mo-service:5000"
             - name: LOG_LEVEL
@@ -42,7 +58,6 @@ spec:
               value: {{ .Values.os2sync.graphql_timeout | default "300"| quote }}
             - name: AUTH_SERVER
               value: "http://keycloak-service:8080/auth"
-              # TODO: use separate integration AMQP user instead of global one
             - name: AMQP__URL
               valueFrom:
                 secretKeyRef:
@@ -57,46 +72,12 @@ spec:
                 secretKeyRef:
                   name: os2sync-export-client-secret
                   key: client_secret
-            - name: os2sync_top_unit_uuid
-              value: {{ required "The top level uuid is missing" .Values.os2sync.os2sync_top_unit_uuid | quote }}
+            # end of legacy settings section - Delete to here.
             - name: os2sync_api_url
               value: {{ .Values.os2sync.os2sync_api_url| default "http://os2sync-service:5000/api" | quote }}
-            - name: os2sync_xfer_cpr
-              value: {{ .Values.os2sync.os2sync_xfer_cpr | default false | quote }}
-            - name: os2sync_autowash
-              value: {{ .Values.os2sync.os2sync_autowash | default true| quote }}
-            - name: os2sync_ca_verify_os2sync
-              value: {{ .Values.os2sync.os2sync_ca_verify_os2sync | default true | quote }}
-            - name: os2sync_ca_verify_os2mo
-              value: {{ .Values.os2sync.os2sync_ca_verify_os2mo | default true | quote }}
-            - name: os2sync_phone_scope_classes
-              value: {{ .Values.os2sync.os2sync_phone_scope_classes | default "[]" | quote }}
-            - name: os2sync_landline_scope_classes
-              value: {{ .Values.os2sync.os2sync_landline_scope_classes | default "[]" | quote }}
-            - name: os2sync_email_scope_classes
-              value: {{ .Values.os2sync.os2sync_email_scope_classes | default "[]" | quote }}
-            - name: os2sync_ignored_unit_levels
-              value: {{ .Values.os2sync.os2sync_ignored_unit_levels | default "[]" | quote }}
-            - name: os2sync_ignored_unit_types
-              value: {{ .Values.os2sync.os2sync_ignored_unit_types | default "[]" | quote }}
-            - name: os2sync_templates
-              value: {{ .Values.os2sync.os2sync_templates | default "{}" | quote }}
-            - name: os2sync_sync_managers
-              value: {{ .Values.os2sync.os2sync_sync_managers | default false | quote }}
-            - name: os2sync_use_contact_for_tasks
-              value: {{ .Values.os2sync.os2sync_use_contact_for_tasks | default false | quote }}
-            - name: os2sync_employee_engagement_address
-              value: {{ .Values.os2sync.os2sync_employee_engagement_address | default "[]" | quote }}
-            - name: os2sync_uuid_from_it_systems
-              value: {{ .Values.os2sync.os2sync_uuid_from_it_systems | default "[]" | quote }}
-            - name: os2sync_truncate_length
-              value: {{ .Values.os2sync.os2sync_truncate_length | default 200 | quote }}
-            - name: os2sync_user_key_it_system_name
-              value: {{ .Values.os2sync.os2sync_user_key_it_system_name | default "Active Directory" | quote }}
-            - name: os2sync_filter_hierarchy_names
-              value: {{ .Values.os2sync.os2sync_filter_hierarchy_names | default "[]" | quote }}
-            - name: os2sync_filter_users_by_it_system
-              value: {{ .Values.os2sync.os2sync_filter_users_by_it_system | default false | quote }}
+            {{- if .Values.os2sync.extraEnv }}
+            {{ toYaml .Values.os2sync.extraEnv | indent 12 | trim }}
+            {{- end }}
             {{ if .Values.sentry.environment }}
             - name: SENTRY_DSN
               valueFrom:
