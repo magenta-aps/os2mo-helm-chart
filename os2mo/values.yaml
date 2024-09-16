@@ -320,6 +320,15 @@ sdtool_plus:
   sd_secret_name: sd-secret
   cronjob_enabled: false
   cronjob_schedule: "0 6 * * *"
+
+  # Only used in case of multiple institution identifiers
+  # Must be on the form
+  # cronjob_schedules:
+  #   AB: "0 6 * * *"
+  #   CD: "15 6 * * *"
+  #   EF: "30 6 * * *"
+  cronjob_schedules: {}
+
   cronjob_addr_enabled: false
   cronjob_addr_schedule: "30 6 * * *"
   rundb:

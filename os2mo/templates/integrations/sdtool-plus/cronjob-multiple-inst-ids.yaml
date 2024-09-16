@@ -19,7 +19,7 @@ metadata:
   {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  schedule: {{ $.Values.sdtool_plus.cronjob_schedule | quote }}
+  schedule: {{ get $.Values.sdtool_plus.cronjob_schedules $inst_id | quote }}
   timeZone: {{ $.Values.timezone | quote }}
   jobTemplate:
     spec:
