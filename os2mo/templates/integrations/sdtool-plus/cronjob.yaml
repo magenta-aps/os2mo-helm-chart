@@ -1,8 +1,14 @@
 # SPDX-FileCopyrightText: Magenta ApS
 #
 # SPDX-License-Identifier: MPL-2.0
+
+# This file will soon be deprecated. We keep it for now to avoid breaking changes
+# and remove it once we have switched from using the environment variable
+# MO_SUBTREE_PATH_FOR_ROOT to the variable MO_SUBTREE_PATHS_FOR_ROOT
+{{- $env := .Values.sdtool_plus.environment -}}
+{{- $hasMultipleInstIds := and $env (hasKey $env "mo_subtree_paths_for_root") -}}
+{{- if and (.Values.sdtool_plus.enabled) (.Values.sdtool_plus.cronjob_enabled) (not $hasMultipleInstIds) -}}
 ---
-{{- if and (.Values.sdtool_plus.enabled) (.Values.sdtool_plus.cronjob_enabled) }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
