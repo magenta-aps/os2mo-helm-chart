@@ -46,20 +46,20 @@ spec:
                 port:
                   number: 8080
           {{- if not .Values.os2mo.headless }}
-          - path: /new
-            pathType: Prefix
-            backend:
-              service:
-                name: mo-naldo-service
-                port:
-                  number: 3000
-          - path: /
+          - path: /old
             pathType: Prefix
             backend:
               service:
                 name: mo-frontend-service
                 port:
                   number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mo-naldo-service
+                port:
+                  number: 3000
           {{- end }}
   {{- if .Values.ingress.hostname }}
       host: {{ .Values.ingress.hostname }}
