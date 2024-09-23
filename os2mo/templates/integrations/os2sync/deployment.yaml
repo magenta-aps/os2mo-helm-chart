@@ -72,6 +72,8 @@ spec:
                   key: db_password
             - name: SchedulerSettings__DBConnectionString
               value: "server=$(DB_HOST);user id=$(DB_USERNAME);password=$(DB_PASSWORD);database=$(DB_NAME);persistsecurityinfo=True"
+            - name: PassiverAndReImportOnErrors
+              value: {{ .Values.os2sync.os2sync_passiver_and_re_import_on_errors | default "false" | quote }}
           ports:
             - containerPort: 5000
           resources:
