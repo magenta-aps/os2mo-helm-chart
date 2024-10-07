@@ -200,7 +200,11 @@ spec:
             - name: PGPASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.database.mox.secret }}
+                  {{ if .Values.database.password_secret }}
+                  name: {{ .Values.database.password_secret }}
+                  {{ else }}
+                  name: mox-db-secret
+                  {{ end }}
                   key: db_password
           resources:
             {{- toYaml .Values.initContainers.resources | nindent 12 }}
