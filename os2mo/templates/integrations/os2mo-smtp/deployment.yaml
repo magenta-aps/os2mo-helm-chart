@@ -3,6 +3,9 @@
 #
 # SPDX-License-Identifier: MPL-2.0
 {{- if .Values.os2mo_smtp.enabled }}
+{{- if or (not .Values.os2mo_smtp.database.name) (not .Values.os2mo_smtp.database.user) }}
+  {{- fail "Must have os2mo_smtp.database.name and os2mo_smtp.database.user set" }}
+{{- end }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -46,7 +49,7 @@ spec:
             {{ toYaml .Values.os2mo_smtp.extraEnv | indent 12 | trim }}
               # Database
             - name: FASTRAMQPI__DATABASE__USER
-              value: "smtp"
+              value: {{ .Values.os2mo_smtp.database.user }}
             - name: FASTRAMQPI__DATABASE__PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -55,7 +58,7 @@ spec:
             - name: FASTRAMQPI__DATABASE__HOST
               value: {{ .Values.database.host }}
             - name: FASTRAMQPI__DATABASE__NAME
-              value: "smtp"
+              value: {{ .Values.os2mo_smtp.database.name }}
           resources:
             {{- toYaml .Values.os2mo_smtp.resources | nindent 12 }}
       initContainers:
@@ -79,9 +82,9 @@ spec:
             # the Keycloak DB init-container. This will be fixed in
             # https://redmine.magenta-aps.dk/issues/57967
             - name: KEYCLOAK_DB_NAME
-              value: smtp
+              value: {{ .Values.os2mo_smtp.database.name }}
             - name: KEYCLOAK_DB_USER
-              value: smtp
+              value: {{ .Values.os2mo_smtp.database.user }}
             - name: KEYCLOAK_DB_PASSWORD
               valueFrom:
                 secretKeyRef:

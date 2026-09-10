@@ -593,6 +593,8 @@ os2mo_smtp:
         # (see https://redmine.magenta-aps.dk/issues/57967)
         repository: magentaaps/postgres-keycloak-init
         tag: 12.7-11.7
+    name: null
+    user: null
   resources:
     requests:
       memory: "256Mi"
